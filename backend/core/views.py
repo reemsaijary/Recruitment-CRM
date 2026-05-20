@@ -19,3 +19,12 @@ def dashboard(request):
     }
 
     return render(request, 'core/dashboard.html', context)
+
+def candidates_list(request):
+    candidates = Candidate.objects.all()
+
+    context = {
+        'candidates': candidates,
+    }
+
+    return render(request, 'core/candidates.html', context)

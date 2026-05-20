@@ -1,15 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
 <h1>Recruitment CRM Dashboard</h1>
 
-<hr>
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Candidates</h3>
+        <p>{{ total_candidates }}</p>
+    </div>
 
-<h2>System Statistics</h2>
+    <div class="stat-card">
+        <h3>Companies</h3>
+        <p>{{ total_companies }}</p>
+    </div>
 
-<p>Total Candidates: {{ total_candidates }}</p>
+    <div class="stat-card">
+        <h3>Jobs</h3>
+        <p>{{ total_jobs }}</p>
+    </div>
 
-<p>Total Companies: {{ total_companies }}</p>
+    <div class="stat-card">
+        <h3>Applications</h3>
+        <p>{{ total_applications }}</p>
+    </div>
 
-<p>Total Jobs: {{ total_jobs }}</p>
+    <div class="stat-card">
+        <h3>Interviews</h3>
+        <p>{{ total_interviews }}</p>
+    </div>
+</div>
 
-<p>Total Applications: {{ total_applications }}</p>
+<br>
 
-<p>Total Interviews: {{ total_interviews }}</p>
+<a href="{% url 'candidates_list' %}" class="btn">View Candidates</a>
+
+{% endblock %}

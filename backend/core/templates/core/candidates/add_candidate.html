@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Add Candidate</h1>
+
+<a href="{% url 'candidates_list' %}" class="btn">Back to Candidates</a>
+
+<br><br>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Full Name</label><br>
+        <input type="text" name="full_name" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Phone</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <label>LinkedIn URL</label><br>
+        <input type="url" name="linkedin_url"><br><br>
+
+        <label>Skills</label><br>
+        <textarea name="skills" required></textarea><br><br>
+
+        <label>Experience Years</label><br>
+        <input type="number" name="experience_years" required><br><br>
+
+        <label>Current Position</label><br>
+        <input type="text" name="current_position"><br><br>
+
+        <label>Source</label><br>
+        <input type="text" name="source"><br><br>
+
+        <label>Notes</label><br>
+        <textarea name="notes"></textarea><br><br>
+
+        <button type="submit" class="btn">Save Candidate</button>
+    </form>
+</div>
+
+{% endblock %}

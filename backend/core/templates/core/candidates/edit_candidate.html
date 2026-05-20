@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Edit Candidate</h1>
+
+<a href="{% url 'candidates_list' %}" class="btn">Back to Candidates</a>
+
+<br><br>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Full Name</label><br>
+        <input type="text" name="full_name" value="{{ candidate.full_name }}" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" value="{{ candidate.email }}" required><br><br>
+
+        <label>Phone</label><br>
+        <input type="text" name="phone" value="{{ candidate.phone }}" required><br><br>
+
+        <label>LinkedIn URL</label><br>
+        <input type="url" name="linkedin_url" value="{{ candidate.linkedin_url }}"><br><br>
+
+        <label>Skills</label><br>
+        <textarea name="skills" required>{{ candidate.skills }}</textarea><br><br>
+
+        <label>Experience Years</label><br>
+        <input type="number" name="experience_years" value="{{ candidate.experience_years }}" required><br><br>
+
+        <label>Current Position</label><br>
+        <input type="text" name="current_position" value="{{ candidate.current_position }}"><br><br>
+
+        <label>Source</label><br>
+        <input type="text" name="source" value="{{ candidate.source }}"><br><br>
+
+        <label>Notes</label><br>
+        <textarea name="notes">{{ candidate.notes }}</textarea><br><br>
+
+        <button type="submit" class="btn">Update Candidate</button>
+    </form>
+</div>
+
+{% endblock %}

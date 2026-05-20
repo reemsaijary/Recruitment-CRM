@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Candidate Details</h1>
+
+<a href="{% url 'candidates_list' %}" class="btn">Back to Candidates</a>
+<a href="{% url 'edit_candidate' candidate.id %}" class="btn">Edit Candidate</a>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Full Name:</strong> {{ candidate.full_name }}</p>
+    <p><strong>Email:</strong> {{ candidate.email }}</p>
+    <p><strong>Phone:</strong> {{ candidate.phone }}</p>
+    <p><strong>LinkedIn:</strong> {{ candidate.linkedin_url }}</p>
+    <p><strong>Skills:</strong> {{ candidate.skills }}</p>
+    <p><strong>Experience Years:</strong> {{ candidate.experience_years }}</p>
+    <p><strong>Current Position:</strong> {{ candidate.current_position }}</p>
+    <p><strong>Source:</strong> {{ candidate.source }}</p>
+    <p><strong>Notes:</strong> {{ candidate.notes }}</p>
+    <p><strong>Created At:</strong> {{ candidate.created_at }}</p>
+</div>
+
+{% endblock %}

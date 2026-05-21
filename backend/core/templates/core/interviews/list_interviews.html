@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Interviews</h1>
+
+<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+<a href="{% url 'add_interview' %}" class="btn">Add Interview</a>
+
+<br><br>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Interview Date</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for interview in interviews %}
+        <tr>
+            <td>{{ interview.application.candidate.full_name }}</td>
+            <td>{{ interview.application.job.job_title }}</td>
+            <td>{{ interview.interview_date }}</td>
+            <td>{{ interview.interview_type }}</td>
+            <td>{{ interview.status }}</td>
+            <td>
+                <a href="{% url 'interview_details' interview.id %}">View</a> |
+                <a href="{% url 'edit_interview' interview.id %}">Edit</a> |
+                <a href="{% url 'delete_interview' interview.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No interviews found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

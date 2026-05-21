@@ -32,3 +32,11 @@ from .application_views import (
     edit_application,
     delete_application,
 )
+# interview logic
+from .interview_views import (
+    interviews_list,
+    add_interview,
+    interview_details,
+    edit_interview,
+    delete_interview,
+)

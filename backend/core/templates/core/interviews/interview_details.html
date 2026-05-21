@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Interview Details</h1>
+
+<a href="{% url 'interviews_list' %}" class="btn">Back to Interviews</a>
+<a href="{% url 'edit_interview' interview.id %}" class="btn">Edit Interview</a>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Candidate:</strong> {{ interview.application.candidate.full_name }}</p>
+    <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
+    <p><strong>Company:</strong> {{ interview.application.job.company.company_name }}</p>
+    <p><strong>Interview Date:</strong> {{ interview.interview_date }}</p>
+    <p><strong>Interview Type:</strong> {{ interview.interview_type }}</p>
+    <p><strong>Status:</strong> {{ interview.status }}</p>
+    <p><strong>Notes:</strong> {{ interview.notes }}</p>
+</div>
+
+{% endblock %}

@@ -28,7 +28,11 @@ urlpatterns = [
     path('applications/<int:application_id>/edit/', views.edit_application, name='edit_application'),
     path('applications/<int:application_id>/delete/', views.delete_application, name='delete_application'),
 
-
+    path('interviews/', views.interviews_list, name='interviews_list'),
+    path('interviews/add/', views.add_interview, name='add_interview'),
+    path('interviews/<int:interview_id>/', views.interview_details, name='interview_details'),
+    path('interviews/<int:interview_id>/edit/', views.edit_interview, name='edit_interview'),
+    path('interviews/<int:interview_id>/delete/', views.delete_interview, name='delete_interview'),
 
 
 

@@ -1,114 +1,298 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Recruitment CRM</title>
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
 
-        /* Navbar */
-        .navbar {
-            background-color: #1e293b;
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #020617, #1e293b);
             color: white;
-            padding: 15px 30px;
+            padding: 20px 15px;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.closed {
+            width: 80px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .toggle-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 9px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #e5e7eb;
+            text-decoration: none;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+        .sidebar-menu a.active {
+    background-color: #2563eb;
+    color: white;
+}
+
+        .icon {
+            width: 22px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar.closed .sidebar-text,
+        .sidebar.closed .logo {
+            display: none;
+        }
+
+        .sidebar.closed .sidebar-header {
+            justify-content: center;
+        }
+
+        .sidebar.closed .sidebar-menu a {
+            justify-content: center;
+        }
+
+        /* Main */
+        .main {
+            flex: 1;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 22px 35px;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
         }
 
         .navbar h2 {
             margin: 0;
+            font-size: 24px;
         }
 
-        /* Main content */
         .container {
-            padding: 30px;
+            padding: 35px;
         }
 
-        /* Cards */
-        .card {
+        /* Reusable UI */
+        .card,
+        .stat-card {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+            border-radius: 14px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
         }
 
-        /* Buttons */
+        .card {
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
         .btn {
             display: inline-block;
-            padding: 10px 15px;
+            padding: 10px 16px;
             background-color: #2563eb;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
         }
 
         .btn:hover {
             background-color: #1d4ed8;
         }
 
-        /* Table */
+        /* Dashboard Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            padding: 25px;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .stat-card p {
+            font-size: 30px;
+            margin: 12px 0 0;
+            font-weight: bold;
+        }
+
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
 
-        table th,
-        table td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        table th {
-            background-color: #1e293b;
+        th {
+            background-color: #0f172a;
             color: white;
         }
 
-        /* Statistics Cards */
-        .stats-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+        th,
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
         }
 
-        .stat-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 200px;
-            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+        tr:hover {
+            background-color: #f1f5f9;
         }
 
-        .stat-card h3 {
-            margin: 0;
-            color: #2563eb;
+                form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
         }
 
-        .stat-card p {
-            font-size: 22px;
-            margin-top: 10px;
+        form label {
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <h2>Recruitment CRM System</h2>
-    </div>
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <h2 class="logo">RecruitCRM</h2>
+            <button onclick="toggleSidebar()" class="toggle-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-house icon"></i>
+                <span class="sidebar-text">Dashboard</span>
+            </a>
+
+            <a href="{% url 'candidates_list' %}">
+                <i class="fa-solid fa-user icon"></i>
+                <span class="sidebar-text">Candidates</span>
+            </a>
+
+            <a href="{% url 'companies_list' %}">
+                <i class="fa-solid fa-building icon"></i>
+                <span class="sidebar-text">Companies</span>
+            </a>
+
+            <a href="{% url 'jobs_list' %}">
+                <i class="fa-solid fa-briefcase icon"></i>
+                <span class="sidebar-text">Jobs</span>
+            </a>
+
+            <a href="{% url 'applications_list' %}">
+                <i class="fa-solid fa-file-lines icon"></i>
+                <span class="sidebar-text">Applications</span>
+            </a>
+
+            <a href="{% url 'interviews_list' %}">
+                <i class="fa-solid fa-calendar-days icon"></i>
+                <span class="sidebar-text">Interviews</span>
+            </a>
+
+            <a href="{% url 'evaluations_list' %}">
+                <i class="fa-solid fa-star icon"></i>
+                <span class="sidebar-text">Evaluations</span>
+            </a>
+
+            <a href="{% url 'activities_list' %}">
+                <i class="fa-solid fa-list-check icon"></i>
+                <span class="sidebar-text">Activities</span>
+            </a>
+        </nav>
+
+    </aside>
 
     <!-- Main Content -->
-    <div class="container">
+    <main class="main">
 
-        {% block content %}
-        {% endblock %}
+        <header class="navbar">
+            <h2>Recruitment CRM System</h2>
+        </header>
 
-    </div>
+        <section class="container">
+            {% block content %}
+            {% endblock %}
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("closed");
+    }
+</script>
 
 </body>
 </html>

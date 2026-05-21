@@ -5,34 +5,38 @@
 <h1>Recruitment CRM Dashboard</h1>
 
 <div class="stats-container">
+
     <div class="stat-card">
-        <h3>Candidates</h3>
-        <p>{{ total_candidates }}</p>
+        <h3>Total Candidates</h3>
+        <p>{{ candidates_count }}</p>
     </div>
 
     <div class="stat-card">
-        <h3>Companies</h3>
-        <p>{{ total_companies }}</p>
+        <h3>Total Companies</h3>
+        <p>{{ companies_count }}</p>
     </div>
 
     <div class="stat-card">
-        <h3>Jobs</h3>
-        <p>{{ total_jobs }}</p>
+        <h3>Total Jobs</h3>
+        <p>{{ jobs_count }}</p>
     </div>
 
     <div class="stat-card">
-        <h3>Applications</h3>
-        <p>{{ total_applications }}</p>
+        <h3>Total Applications</h3>
+        <p>{{ applications_count }}</p>
     </div>
 
     <div class="stat-card">
-        <h3>Interviews</h3>
-        <p>{{ total_interviews }}</p>
+        <h3>Total Interviews</h3>
+        <p>{{ interviews_count }}</p>
     </div>
+
 </div>
 
 <br>
 
-<a href="{% url 'candidates_list' %}" class="btn">View Candidates</a>
+<a href="{% url 'candidates_list' %}" class="btn">
+    View Candidates
+</a>
 
 {% endblock %}

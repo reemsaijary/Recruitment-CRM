@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Edit Application</h1>
+
+<a href="{% url 'applications_list' %}" class="btn">Back to Applications</a>
+
+<br><br>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Candidate</label><br>
+        <select name="candidate" required>
+            {% for candidate in candidates %}
+                <option value="{{ candidate.id }}" {% if candidate.id == application.candidate.id %}selected{% endif %}>
+                    {{ candidate.full_name }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Job</label><br>
+        <select name="job" required>
+            {% for job in jobs %}
+                <option value="{{ job.id }}" {% if job.id == application.job.id %}selected{% endif %}>
+                    {{ job.job_title }} - {{ job.company.company_name }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Status</label><br>
+        <select name="status" required>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if value == application.status %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Notes</label><br>
+        <textarea name="notes">{{ application.notes }}</textarea><br><br>
+
+        <button type="submit" class="btn">Update Application</button>
+    </form>
+</div>
+
+{% endblock %}

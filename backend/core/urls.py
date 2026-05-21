@@ -22,7 +22,11 @@ urlpatterns = [
     path('jobs/<int:job_id>/edit/', views.edit_job, name='edit_job'),
     path('jobs/<int:job_id>/delete/', views.delete_job, name='delete_job'),
 
-
+    path('applications/', views.applications_list, name='applications_list'),
+    path('applications/add/', views.add_application, name='add_application'),
+    path('applications/<int:application_id>/', views.application_details, name='application_details'),
+    path('applications/<int:application_id>/edit/', views.edit_application, name='edit_application'),
+    path('applications/<int:application_id>/delete/', views.delete_application, name='delete_application'),
 
 
 

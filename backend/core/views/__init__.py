@@ -24,3 +24,11 @@ from .job_views import (
     edit_job,
     delete_job,
 )
+#applications logic
+from .application_views import (
+    applications_list,
+    add_application,
+    application_details,
+    edit_application,
+    delete_application,
+)

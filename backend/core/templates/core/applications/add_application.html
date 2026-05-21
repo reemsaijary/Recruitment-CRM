@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Add Application</h1>
+
+<a href="{% url 'applications_list' %}" class="btn">Back to Applications</a>
+
+<br><br>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Candidate</label><br>
+        <select name="candidate" required>
+            <option value="">Select Candidate</option>
+            {% for candidate in candidates %}
+                <option value="{{ candidate.id }}">{{ candidate.full_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Job</label><br>
+        <select name="job" required>
+            <option value="">Select Job</option>
+            {% for job in jobs %}
+                <option value="{{ job.id }}">{{ job.job_title }} - {{ job.company.company_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Status</label><br>
+        <select name="status" required>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Notes</label><br>
+        <textarea name="notes"></textarea><br><br>
+
+        <button type="submit" class="btn">Save Application</button>
+    </form>
+</div>
+
+{% endblock %}

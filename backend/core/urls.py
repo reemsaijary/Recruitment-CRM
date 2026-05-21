@@ -40,6 +40,11 @@ urlpatterns = [
     path('evaluations/<int:evaluation_id>/edit/', views.edit_evaluation, name='edit_evaluation'),
     path('evaluations/<int:evaluation_id>/delete/', views.delete_evaluation, name='delete_evaluation'),
 
+    path('activities/', views.activities_list, name='activities_list'),
+    path('activities/add/', views.add_activity, name='add_activity'),
+    path('activities/<int:activity_id>/', views.activity_details, name='activity_details'),
+    path('activities/<int:activity_id>/edit/', views.edit_activity, name='edit_activity'),
+    path('activities/<int:activity_id>/delete/', views.delete_activity, name='delete_activity'),
 
 
 ]

@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Activity Details</h1>
+
+<a href="{% url 'activities_list' %}" class="btn">Back to Activities</a>
+<a href="{% url 'edit_activity' activity.id %}" class="btn">Edit Activity</a>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Candidate:</strong> {{ activity.application.candidate.full_name }}</p>
+
+    <p><strong>Job:</strong> {{ activity.application.job.job_title }}</p>
+
+    <p><strong>Company:</strong> {{ activity.application.job.company.company_name }}</p>
+
+    <p><strong>Activity Type:</strong> {{ activity.activity_type }}</p>
+
+    <p><strong>Due Date:</strong> {{ activity.due_date }}</p>
+
+    <p><strong>Status:</strong> {{ activity.status }}</p>
+
+    <p><strong>Notes:</strong> {{ activity.notes }}</p>
+</div>
+
+{% endblock %}

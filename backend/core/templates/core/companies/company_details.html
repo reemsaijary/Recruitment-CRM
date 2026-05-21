@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Company Details</h1>
+
+<a href="{% url 'companies_list' %}" class="btn">Back to Companies</a>
+<a href="{% url 'edit_company' company.id %}" class="btn">Edit Company</a>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Company Name:</strong> {{ company.company_name }}</p>
+    <p><strong>Contact Name:</strong> {{ company.contact_name }}</p>
+    <p><strong>Email:</strong> {{ company.email }}</p>
+    <p><strong>Phone:</strong> {{ company.phone }}</p>
+    <p><strong>Website:</strong> {{ company.website }}</p>
+    <p><strong>LinkedIn:</strong> {{ company.linkedin_url }}</p>
+    <p><strong>Industry:</strong> {{ company.industry }}</p>
+    <p><strong>Country:</strong> {{ company.country }}</p>
+    <p><strong>Company Size:</strong> {{ company.company_size }}</p>
+    <p><strong>Notes:</strong> {{ company.notes }}</p>
+    <p><strong>Created At:</strong> {{ company.created_at }}</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Edit Evaluation</h1>
+
+<a href="{% url 'evaluations_list' %}" class="btn">Back to Evaluations</a>
+
+<br><br>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Application</label><br>
+        <select name="application" required>
+            {% for application in applications %}
+                <option value="{{ application.id }}" {% if application.id == evaluation.application.id %}selected{% endif %}>
+                    {{ application.candidate.full_name }} - {{ application.job.job_title }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Score</label><br>
+        <input type="number" name="score" min="0" max="100" value="{{ evaluation.score }}" required><br><br>
+
+        <label>Recommendation</label><br>
+        <select name="recommendation">
+            <option value="">Select Recommendation</option>
+            {% for value, label in recommendation_choices %}
+                <option value="{{ value }}" {% if value == evaluation.recommendation %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Feedback</label><br>
+        <textarea name="feedback" required>{{ evaluation.feedback }}</textarea><br><br>
+
+        <button type="submit" class="btn">Update Evaluation</button>
+    </form>
+</div>
+
+{% endblock %}

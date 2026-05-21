@@ -34,6 +34,11 @@ urlpatterns = [
     path('interviews/<int:interview_id>/edit/', views.edit_interview, name='edit_interview'),
     path('interviews/<int:interview_id>/delete/', views.delete_interview, name='delete_interview'),
 
+    path('evaluations/', views.evaluations_list, name='evaluations_list'),
+    path('evaluations/add/', views.add_evaluation, name='add_evaluation'),
+    path('evaluations/<int:evaluation_id>/', views.evaluation_details, name='evaluation_details'),
+    path('evaluations/<int:evaluation_id>/edit/', views.edit_evaluation, name='edit_evaluation'),
+    path('evaluations/<int:evaluation_id>/delete/', views.delete_evaluation, name='delete_evaluation'),
 
 
 

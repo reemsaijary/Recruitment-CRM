@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Evaluation Details</h1>
+
+<a href="{% url 'evaluations_list' %}" class="btn">Back to Evaluations</a>
+<a href="{% url 'edit_evaluation' evaluation.id %}" class="btn">Edit Evaluation</a>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Candidate:</strong> {{ evaluation.application.candidate.full_name }}</p>
+    <p><strong>Job:</strong> {{ evaluation.application.job.job_title }}</p>
+    <p><strong>Company:</strong> {{ evaluation.application.job.company.company_name }}</p>
+    <p><strong>Score:</strong> {{ evaluation.score }}</p>
+    <p><strong>Recommendation:</strong> {{ evaluation.recommendation }}</p>
+    <p><strong>Feedback:</strong> {{ evaluation.feedback }}</p>
+</div>
+
+{% endblock %}

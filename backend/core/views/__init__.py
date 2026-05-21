@@ -40,3 +40,11 @@ from .interview_views import (
     edit_interview,
     delete_interview,
 )
+#evaluation logic
+from .evaluation_views import (
+    evaluations_list,
+    add_evaluation,
+    evaluation_details,
+    edit_evaluation,
+    delete_evaluation,
+)

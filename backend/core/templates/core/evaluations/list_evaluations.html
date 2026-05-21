@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Evaluations</h1>
+
+<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+<a href="{% url 'add_evaluation' %}" class="btn">Add Evaluation</a>
+
+<br><br>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Score</th>
+            <th>Recommendation</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for evaluation in evaluations %}
+        <tr>
+            <td>{{ evaluation.application.candidate.full_name }}</td>
+            <td>{{ evaluation.application.job.job_title }}</td>
+            <td>{{ evaluation.score }}</td>
+            <td>{{ evaluation.recommendation }}</td>
+            <td>
+                <a href="{% url 'evaluation_details' evaluation.id %}">View</a> |
+                <a href="{% url 'edit_evaluation' evaluation.id %}">Edit</a> |
+                <a href="{% url 'delete_evaluation' evaluation.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No evaluations found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

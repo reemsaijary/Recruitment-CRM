@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h1>Jobs</h1>
+
+<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+<a href="{% url 'add_job' %}" class="btn">Add Job</a>
+
+<br><br>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Required Skills</th>
+            <th>Status</th>
+            <th>Job Type</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.job_title }}</td>
+            <td>{{ job.company.company_name }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.required_skills }}</td>
+            <td>{{ job.status }}</td>
+            <td>{{ job.job_type }}</td>
+            <td>
+                <a href="{% url 'job_details' job.id %}">View</a> |
+                <a href="{% url 'edit_job' job.id %}">Edit</a> |
+                <a href="{% url 'delete_job' job.id %}">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No jobs found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Application, Candidate, Job
-
+from core.models import Activity
+from django.utils import timezone
+from datetime import timedelta
+from core.models import Application, Candidate, Job, Activity, Interview
 # application list
 def applications_list(request):
     applications = Application.objects.all()
@@ -94,7 +96,30 @@ def move_application_next_stage(request, application_id):
         current_index = pipeline.index(application.status)
 
         if current_index < len(pipeline) - 1:
-            application.status = pipeline[current_index + 1]
+            new_status = pipeline[current_index + 1]
+
+            application.status = new_status
             application.save()
 
+           # AUTOMATION
+        if new_status == 'Interview Scheduled':
+
+         # Create interview automatically
+            Interview.objects.create(
+                application=application,
+                interview_date=timezone.now() + timedelta(days=2),
+                interview_type='Online',
+                status='Scheduled',
+                notes='Automatically scheduled by CRM workflow'
+          )
+
+            # Create activity automatically
+            Activity.objects.create(
+                application=application,
+                activity_type='Prepare Interview',
+                due_date=timezone.now() + timedelta(days=1),
+                status='Pending',
+                notes='Automatically created by CRM workflow'
+            )
+    
     return redirect('applications_list')

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from core.views.application_views import *
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
@@ -27,6 +28,11 @@ urlpatterns = [
     path('applications/<int:application_id>/', views.application_details, name='application_details'),
     path('applications/<int:application_id>/edit/', views.edit_application, name='edit_application'),
     path('applications/<int:application_id>/delete/', views.delete_application, name='delete_application'),
+    path(
+    'applications/<int:application_id>/move-next/',move_application_next_stage,
+    name='move_application_next_stage'
+    ),
+
 
     path('interviews/', views.interviews_list, name='interviews_list'),
     path('interviews/add/', views.add_interview, name='add_interview'),

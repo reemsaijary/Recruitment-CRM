@@ -31,12 +31,22 @@
         <p>{{ interviews_count }}</p>
     </div>
 
+    <div class="stat-card">
+        <h3>Total Evaluations</h3>
+        <p>{{ evaluations_count }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Activities</h3>
+        <p>{{ activities_count }}</p>
+    </div>
+
 </div>
 
-<br>
-
-<a href="{% url 'candidates_list' %}" class="btn">
-    View Candidates
-</a>
+<div style="margin-top: 25px;">
+    <a href="{% url 'candidates_list' %}" class="btn">View Candidates</a>
+    <a href="{% url 'applications_list' %}" class="btn">View Applications</a>
+    <a href="{% url 'activities_list' %}" class="btn">View Activities</a>
+</div>
 
 {% endblock %}

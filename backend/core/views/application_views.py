@@ -74,3 +74,27 @@ def delete_application(request, application_id):
     return render(request, 'core/applications/delete_application.html', {
         'application': application
     })
+
+#move next
+def move_application_next_stage(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+
+    pipeline = [
+        'Applied',
+        'Screening',
+        'Shortlisted',
+        'Interview Scheduled',
+        'Interview Done',
+        'Evaluated',
+        'Offer Sent',
+        'Hired',
+    ]
+
+    if application.status in pipeline:
+        current_index = pipeline.index(application.status)
+
+        if current_index < len(pipeline) - 1:
+            application.status = pipeline[current_index + 1]
+            application.save()
+
+    return redirect('applications_list')

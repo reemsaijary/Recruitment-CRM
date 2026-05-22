@@ -1,20 +1,15 @@
 from django.shortcuts import render
-from core.models import Candidate, Company, Job, Application, Interview
-
+from core.models import Candidate, Company, Job, Application, Interview, Evaluation, Activity
 
 def dashboard(request):
-    total_candidates = Candidate.objects.count()
-    total_companies = Company.objects.count()
-    total_jobs = Job.objects.count()
-    total_applications = Application.objects.count()
-    total_interviews = Interview.objects.count()
-
     context = {
-        'total_candidates': total_candidates,
-        'total_companies': total_companies,
-        'total_jobs': total_jobs,
-        'total_applications': total_applications,
-        'total_interviews': total_interviews,
+        'candidates_count': Candidate.objects.count(),
+        'companies_count': Company.objects.count(),
+        'jobs_count': Job.objects.count(),
+        'applications_count': Application.objects.count(),
+        'interviews_count': Interview.objects.count(),
+        'evaluations_count': Evaluation.objects.count(),
+        'activities_count': Activity.objects.count(),
     }
 
     return render(request, 'core/dashboard.html', context)

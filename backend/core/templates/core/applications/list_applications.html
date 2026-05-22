@@ -31,6 +31,9 @@
                 <a href="{% url 'application_details' application.id %}">View</a> |
                 <a href="{% url 'edit_application' application.id %}">Edit</a> |
                 <a href="{% url 'delete_application' application.id %}">Delete</a>
+                <a href="{% url 'move_application_next_stage' application.id %}" class="btn">
+                    Move Next
+                </a>
             </td>
         </tr>
         {% empty %}

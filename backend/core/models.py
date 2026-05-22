@@ -54,15 +54,20 @@ class Job(models.Model):
 
 # This model connects a candidate with a job
 class Application(models.Model):
+    
     STATUS_CHOICES = [
-        ('Applied', 'Applied'),
-        ('Screening', 'Screening'),
-        ('Interview Scheduled', 'Interview Scheduled'),
-        ('Interview Done', 'Interview Done'),
-        ('Offer Sent', 'Offer Sent'),
-        ('Hired', 'Hired'),
-        ('Rejected', 'Rejected'),
-    ]
+    ('Applied', 'Applied'),
+    ('Screening', 'Screening'),
+    ('Shortlisted', 'Shortlisted'),
+    ('Interview Scheduled', 'Interview Scheduled'),
+    ('Interview Done', 'Interview Done'),
+    ('Evaluated', 'Evaluated'),
+    ('Offer Sent', 'Offer Sent'),
+    ('Hired', 'Hired'),
+    ('Rejected', 'Rejected'),
+]
+
+
 
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)

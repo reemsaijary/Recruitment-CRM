@@ -1,11 +1,25 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
-# This model stores company/client information
+class Profile(models.Model):
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('company', 'Company'),
+        ('candidate', 'Candidate'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
+
+
 class Company(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     company_name = models.CharField(max_length=200)
     contact_name = models.CharField(max_length=200)
-    email = models.EmailField()
     phone = models.CharField(max_length=50)
     website = models.URLField(blank=True, null=True)
     linkedin_url = models.URLField(blank=True, null=True)
@@ -19,16 +33,14 @@ class Company(models.Model):
         return self.company_name
 
 
-# This model stores candidate information
 class Candidate(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=200)
-    email = models.EmailField()
     phone = models.CharField(max_length=50)
     linkedin_url = models.URLField(blank=True, null=True)
-    skills = models.TextField()
     experience_years = models.IntegerField()
     current_position = models.CharField(max_length=200, blank=True, null=True)
-    source = models.CharField(max_length=100, blank=True, null=True)  # LinkedIn, referral, website
+    source = models.CharField(max_length=100, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -36,15 +48,14 @@ class Candidate(models.Model):
         return self.full_name
 
 
-# This model stores job openings posted by companies
 class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=200)
     location = models.CharField(max_length=100)
-    required_skills = models.TextField()
     status = models.CharField(max_length=50, default="Open")
-    job_type = models.CharField(max_length=100, blank=True, null=True)  # Full-time, Part-time, Remote
-    salary_range = models.CharField(max_length=100, blank=True, null=True)
+    job_type = models.CharField(max_length=100, blank=True, null=True)
+    min_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    max_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -52,22 +63,27 @@ class Job(models.Model):
         return self.job_title
 
 
-# This model connects a candidate with a job
+class Skill(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, null=True, blank=True)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True, blank=True)
+    skill_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.skill_name
+
+
 class Application(models.Model):
-    
     STATUS_CHOICES = [
-    ('Applied', 'Applied'),
-    ('Screening', 'Screening'),
-    ('Shortlisted', 'Shortlisted'),
-    ('Interview Scheduled', 'Interview Scheduled'),
-    ('Interview Done', 'Interview Done'),
-    ('Evaluated', 'Evaluated'),
-    ('Offer Sent', 'Offer Sent'),
-    ('Hired', 'Hired'),
-    ('Rejected', 'Rejected'),
-]
-
-
+        ('Applied', 'Applied'),
+        ('Screening', 'Screening'),
+        ('Shortlisted', 'Shortlisted'),
+        ('Interview Scheduled', 'Interview Scheduled'),
+        ('Interview Done', 'Interview Done'),
+        ('Evaluated', 'Evaluated'),
+        ('Offer Sent', 'Offer Sent'),
+        ('Hired', 'Hired'),
+        ('Rejected', 'Rejected'),
+    ]
 
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
@@ -80,7 +96,6 @@ class Application(models.Model):
         return f"{self.candidate.full_name} - {self.job.job_title}"
 
 
-# This model stores interview information
 class Interview(models.Model):
     STATUS_CHOICES = [
         ('Scheduled', 'Scheduled'),
@@ -98,7 +113,6 @@ class Interview(models.Model):
         return f"Interview for {self.application}"
 
 
-# This model stores evaluation/feedback
 class Evaluation(models.Model):
     RECOMMENDATION_CHOICES = [
         ('Hire', 'Hire'),
@@ -108,19 +122,13 @@ class Evaluation(models.Model):
 
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
     score = models.IntegerField()
-    recommendation = models.CharField(
-        max_length=100,
-        choices=RECOMMENDATION_CHOICES,
-        blank=True,
-        null=True
-    )
+    recommendation = models.CharField(max_length=100, choices=RECOMMENDATION_CHOICES, blank=True, null=True)
     feedback = models.TextField()
 
     def __str__(self):
         return f"Evaluation for {self.application}"
 
 
-# This model stores follow-up activities and reminders
 class Activity(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -129,7 +137,7 @@ class Activity(models.Model):
     ]
 
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    activity_type = models.CharField(max_length=100)  # Call, Email, Follow-up, Reminder
+    activity_type = models.CharField(max_length=100)
     due_date = models.DateTimeField()
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     notes = models.TextField(blank=True, null=True)

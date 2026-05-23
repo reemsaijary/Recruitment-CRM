@@ -20,10 +20,10 @@ def add_job(request):
             company=company,
             job_title=request.POST.get('job_title'),
             location=request.POST.get('location'),
-            required_skills=request.POST.get('required_skills'),
             status=request.POST.get('status'),
             job_type=request.POST.get('job_type'),
-            salary_range=request.POST.get('salary_range'),
+            max_salary=request.POST.get('max_salary'),
+            min_salary=request.POST.get('min_salary'),
             description=request.POST.get('description')
         )
 
@@ -52,10 +52,10 @@ def edit_job(request, job_id):
         job.company = company
         job.job_title = request.POST.get('job_title')
         job.location = request.POST.get('location')
-        job.required_skills = request.POST.get('required_skills')
         job.status = request.POST.get('status')
         job.job_type = request.POST.get('job_type')
-        job.salary_range = request.POST.get('salary_range')
+        job.max_salary = request.POST.get('max_salary')
+        job.min_salary = request.POST.get('min_salary')
         job.description = request.POST.get('description')
         job.save()
 

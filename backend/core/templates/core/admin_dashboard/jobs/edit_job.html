@@ -27,8 +27,6 @@
         <label>Location</label><br>
         <input type="text" name="location" value="{{ job.location }}" required><br><br>
 
-        <label>Required Skills</label><br>
-        <textarea name="required_skills" required>{{ job.required_skills }}</textarea><br><br>
 
         <label>Status</label><br>
         <input type="text" name="status" value="{{ job.status }}"><br><br>
@@ -36,7 +34,10 @@
         <label>Job Type</label><br>
         <input type="text" name="job_type" value="{{ job.job_type }}"><br><br>
 
-        <label>Salary Range</label><br>
+        <label>Max Salary</label><br>
+        <input type="text" name="salary_range" value="{{ job.salary_range }}"><br><br>
+
+        <label>Min Range</label><br>
         <input type="text" name="salary_range" value="{{ job.salary_range }}"><br><br>
 
         <label>Description</label><br>

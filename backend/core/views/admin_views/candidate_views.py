@@ -14,10 +14,10 @@ def add_candidate(request):
     if request.method == 'POST':
         Candidate.objects.create(
             full_name=request.POST.get('full_name'),
-            email=request.POST.get('email'),
+          
             phone=request.POST.get('phone'),
             linkedin_url=request.POST.get('linkedin_url'),
-            skills=request.POST.get('skills'),
+          
             experience_years=request.POST.get('experience_years'),
             current_position=request.POST.get('current_position'),
             source=request.POST.get('source'),
@@ -41,10 +41,10 @@ def edit_candidate(request, candidate_id):
 
     if request.method == 'POST':
         candidate.full_name = request.POST.get('full_name')
-        candidate.email = request.POST.get('email')
+       
         candidate.phone = request.POST.get('phone')
         candidate.linkedin_url = request.POST.get('linkedin_url')
-        candidate.skills = request.POST.get('skills')
+       
         candidate.experience_years = request.POST.get('experience_years')
         candidate.current_position = request.POST.get('current_position')
         candidate.source = request.POST.get('source')

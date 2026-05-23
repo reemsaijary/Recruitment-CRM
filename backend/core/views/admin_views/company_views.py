@@ -17,7 +17,6 @@ def add_company(request):
         Company.objects.create(
             company_name=request.POST.get('company_name'),
             contact_name=request.POST.get('contact_name'),
-            email=request.POST.get('email'),
             phone=request.POST.get('phone'),
             website=request.POST.get('website'),
             linkedin_url=request.POST.get('linkedin_url'),
@@ -48,7 +47,6 @@ def edit_company(request, company_id):
     if request.method == 'POST':
         company.company_name = request.POST.get('company_name')
         company.contact_name = request.POST.get('contact_name')
-        company.email = request.POST.get('email')
         company.phone = request.POST.get('phone')
         company.website = request.POST.get('website')
         company.linkedin_url = request.POST.get('linkedin_url')

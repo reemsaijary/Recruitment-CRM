@@ -1,12 +1,19 @@
 from django.contrib import admin
-from .models import Company, Candidate, Job, Application, Interview, Evaluation, Activity
+from .models import Profile, Company, Candidate, Job, Skill, Application, Interview, Evaluation, Activity
 
 
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'role')
+    search_fields = ('user__username', 'user__email', 'role')
+    list_filter = ('role',)
+
+
+@admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display = (
         'company_name',
         'contact_name',
-        'email',
         'phone',
         'website',
         'linkedin_url',
@@ -18,7 +25,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = (
         'company_name',
         'contact_name',
-        'email',
+        'user__email',
         'phone',
         'website',
         'linkedin_url',
@@ -30,13 +37,12 @@ class CompanyAdmin(admin.ModelAdmin):
     list_filter = ('industry', 'country', 'company_size', 'created_at')
 
 
+@admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
     list_display = (
         'full_name',
-        'email',
         'phone',
         'linkedin_url',
-        'skills',
         'experience_years',
         'current_position',
         'source',
@@ -44,10 +50,9 @@ class CandidateAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'full_name',
-        'email',
+        'user__email',
         'phone',
         'linkedin_url',
-        'skills',
         'current_position',
         'source',
         'notes',
@@ -55,30 +60,44 @@ class CandidateAdmin(admin.ModelAdmin):
     list_filter = ('source', 'experience_years', 'created_at')
 
 
+@admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
     list_display = (
         'company',
         'job_title',
         'location',
-        'required_skills',
         'status',
         'job_type',
-        'salary_range',
+        'min_salary',
+        'max_salary',
         'created_at',
     )
     search_fields = (
         'company__company_name',
         'job_title',
         'location',
-        'required_skills',
         'status',
         'job_type',
-        'salary_range',
         'description',
     )
     list_filter = ('status', 'job_type', 'location', 'created_at')
 
 
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = (
+        'skill_name',
+        'candidate',
+        'job',
+    )
+    search_fields = (
+        'skill_name',
+        'candidate__full_name',
+        'job__job_title',
+    )
+
+
+@admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = (
         'candidate',
@@ -96,6 +115,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = ('status', 'applied_date', 'updated_at')
 
 
+@admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
     list_display = (
         'application',
@@ -114,6 +134,7 @@ class InterviewAdmin(admin.ModelAdmin):
     list_filter = ('status', 'interview_type', 'interview_date')
 
 
+@admin.register(Evaluation)
 class EvaluationAdmin(admin.ModelAdmin):
     list_display = (
         'application',
@@ -124,13 +145,13 @@ class EvaluationAdmin(admin.ModelAdmin):
     search_fields = (
         'application__candidate__full_name',
         'application__job__job_title',
-        'score',
         'recommendation',
         'feedback',
     )
     list_filter = ('recommendation', 'score')
 
 
+@admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
     list_display = (
         'application',
@@ -147,12 +168,3 @@ class ActivityAdmin(admin.ModelAdmin):
         'notes',
     )
     list_filter = ('status', 'activity_type', 'due_date')
-
-
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(Candidate, CandidateAdmin)
-admin.site.register(Job, JobAdmin)
-admin.site.register(Application, ApplicationAdmin)
-admin.site.register(Interview, InterviewAdmin)
-admin.site.register(Evaluation, EvaluationAdmin)
-admin.site.register(Activity, ActivityAdmin)

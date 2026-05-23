@@ -7,7 +7,7 @@ from core.models import Application, Candidate, Job, Activity, Interview
 def applications_list(request):
     applications = Application.objects.all()
 
-    return render(request, 'core/applications/list_applications.html', {
+    return render(request, 'core/admin_dashboard/applications/list_applications.html', {
         'applications': applications
     })
 
@@ -29,7 +29,7 @@ def add_application(request):
 
         return redirect('applications_list')
 
-    return render(request, 'core/applications/add_application.html', {
+    return render(request, 'core/admin_dashboard/applications/add_application.html', {
         'candidates': candidates,
         'jobs': jobs,
         'status_choices': Application.STATUS_CHOICES
@@ -39,7 +39,7 @@ def add_application(request):
 def application_details(request, application_id):
     application = get_object_or_404(Application, id=application_id)
 
-    return render(request, 'core/applications/application_details.html', {
+    return render(request, 'core/admin_dashboard/applications/application_details.html', {
         'application': application
     })
 
@@ -58,7 +58,7 @@ def edit_application(request, application_id):
 
         return redirect('applications_list')
 
-    return render(request, 'core/applications/edit_application.html', {
+    return render(request, 'core/admin_dashboard/applications/edit_application.html', {
         'application': application,
         'candidates': candidates,
         'jobs': jobs,
@@ -73,7 +73,7 @@ def delete_application(request, application_id):
         application.delete()
         return redirect('applications_list')
 
-    return render(request, 'core/applications/delete_application.html', {
+    return render(request, 'core/admin_dashboard/applications/delete_application.html', {
         'application': application
     })
 

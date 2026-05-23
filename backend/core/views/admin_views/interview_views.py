@@ -5,7 +5,7 @@ from core.models import Interview, Application
 def interviews_list(request):
     interviews = Interview.objects.all()
 
-    return render(request, 'core/interviews/list_interviews.html', {
+    return render(request, 'core/admin_dashboard/interviews/list_interviews.html', {
         'interviews': interviews
     })
 
@@ -26,7 +26,7 @@ def add_interview(request):
 
         return redirect('interviews_list')
 
-    return render(request, 'core/interviews/add_interview.html', {
+    return render(request, 'core/admin_dashboard/interviews/add_interview.html', {
         'applications': applications,
         'status_choices': Interview.STATUS_CHOICES
     })
@@ -35,7 +35,7 @@ def add_interview(request):
 def interview_details(request, interview_id):
     interview = get_object_or_404(Interview, id=interview_id)
 
-    return render(request, 'core/interviews/interview_details.html', {
+    return render(request, 'core/admin_dashboard/interviews/interview_details.html', {
         'interview': interview
     })
 
@@ -54,7 +54,7 @@ def edit_interview(request, interview_id):
 
         return redirect('interviews_list')
 
-    return render(request, 'core/interviews/edit_interview.html', {
+    return render(request, 'core/admin_dashboard/interviews/edit_interview.html', {
         'interview': interview,
         'applications': applications,
         'status_choices': Interview.STATUS_CHOICES
@@ -68,6 +68,6 @@ def delete_interview(request, interview_id):
         interview.delete()
         return redirect('interviews_list')
 
-    return render(request, 'core/interviews/delete_interview.html', {
+    return render(request, 'core/admin_dashboard/interviews/delete_interview.html', {
         'interview': interview
     })

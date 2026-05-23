@@ -5,7 +5,7 @@ from core.models import Activity, Application
 def activities_list(request):
     activities = Activity.objects.all()
 
-    return render(request, 'core/activities/list_activities.html', {
+    return render(request, 'core/admin_dashboard/activities/list_activities.html', {
         'activities': activities
     })
 
@@ -26,7 +26,7 @@ def add_activity(request):
 
         return redirect('activities_list')
 
-    return render(request, 'core/activities/add_activity.html', {
+    return render(request, 'core/admin_dashboard/activities/add_activity.html', {
         'applications': applications,
         'status_choices': Activity.STATUS_CHOICES
     })
@@ -35,7 +35,7 @@ def add_activity(request):
 def activity_details(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
 
-    return render(request, 'core/activities/activity_details.html', {
+    return render(request, 'core/admin_dashboard/activities/activity_details.html', {
         'activity': activity
     })
 
@@ -54,7 +54,7 @@ def edit_activity(request, activity_id):
 
         return redirect('activities_list')
 
-    return render(request, 'core/activities/edit_activity.html', {
+    return render(request, 'core/admin_dashboard/activities/edit_activity.html', {
         'activity': activity,
         'applications': applications,
         'status_choices': Activity.STATUS_CHOICES
@@ -68,6 +68,6 @@ def delete_activity(request, activity_id):
         activity.delete()
         return redirect('activities_list')
 
-    return render(request, 'core/activities/delete_activity.html', {
+    return render(request, 'core/admin_dashboard/activities/delete_activity.html', {
         'activity': activity
     })

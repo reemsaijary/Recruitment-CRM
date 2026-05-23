@@ -5,7 +5,7 @@ from core.models import Evaluation, Application
 def evaluations_list(request):
     evaluations = Evaluation.objects.all()
 
-    return render(request, 'core/evaluations/list_evaluations.html', {
+    return render(request, 'core/admin_dashboard/evaluations/list_evaluations.html', {
         'evaluations': evaluations
     })
 
@@ -25,7 +25,7 @@ def add_evaluation(request):
 
         return redirect('evaluations_list')
 
-    return render(request, 'core/evaluations/add_evaluation.html', {
+    return render(request, 'core/admin_dashboard/evaluations/add_evaluation.html', {
         'applications': applications,
         'recommendation_choices': Evaluation.RECOMMENDATION_CHOICES
     })
@@ -34,7 +34,7 @@ def add_evaluation(request):
 def evaluation_details(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
 
-    return render(request, 'core/evaluations/evaluation_details.html', {
+    return render(request, 'core/admin_dashboard/evaluations/evaluation_details.html', {
         'evaluation': evaluation
     })
 
@@ -52,7 +52,7 @@ def edit_evaluation(request, evaluation_id):
 
         return redirect('evaluations_list')
 
-    return render(request, 'core/evaluations/edit_evaluation.html', {
+    return render(request, 'core/admin_dashboard/evaluations/edit_evaluation.html', {
         'evaluation': evaluation,
         'applications': applications,
         'recommendation_choices': Evaluation.RECOMMENDATION_CHOICES
@@ -66,6 +66,6 @@ def delete_evaluation(request, evaluation_id):
         evaluation.delete()
         return redirect('evaluations_list')
 
-    return render(request, 'core/evaluations/delete_evaluation.html', {
+    return render(request, 'core/admin_dashboard/evaluations/delete_evaluation.html', {
         'evaluation': evaluation
     })

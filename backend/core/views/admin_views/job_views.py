@@ -5,7 +5,7 @@ from core.models import Job, Company
 def jobs_list(request):
     jobs = Job.objects.all()
 
-    return render(request, 'core/jobs/list_jobs.html', {
+    return render(request, 'core/admin_dashboard/jobs/list_jobs.html', {
         'jobs': jobs
     })
 
@@ -29,7 +29,7 @@ def add_job(request):
 
         return redirect('jobs_list')
 
-    return render(request, 'core/jobs/add_job.html', {
+    return render(request, 'core/admin_dashboard/jobs/add_job.html', {
         'companies': companies
     })
 
@@ -37,7 +37,7 @@ def add_job(request):
 def job_details(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 
-    return render(request, 'core/jobs/job_details.html', {
+    return render(request, 'core/admin_dashboard/jobs/job_details.html', {
         'job': job
     })
 
@@ -61,7 +61,7 @@ def edit_job(request, job_id):
 
         return redirect('jobs_list')
 
-    return render(request, 'core/jobs/edit_job.html', {
+    return render(request, 'core/admin_dashboard/jobs/edit_job.html', {
         'job': job,
         'companies': companies
     })
@@ -74,6 +74,6 @@ def delete_job(request, job_id):
         job.delete()
         return redirect('jobs_list')
 
-    return render(request, 'core/jobs/delete_job.html', {
+    return render(request, 'core/admin_dashboard/jobs/delete_job.html', {
         'job': job
     })

@@ -12,4 +12,4 @@ def dashboard(request):
         'activities_count': Activity.objects.count(),
     }
 
-    return render(request, 'core/dashboard.html', context)
+    return render(request, 'core/admin_dashboard/dashboard.html', context)

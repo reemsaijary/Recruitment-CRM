@@ -6,7 +6,7 @@ from core.models import Company
 def companies_list(request):
     companies = Company.objects.all()
 
-    return render(request, 'core/companies/list_companies.html', {
+    return render(request, 'core/admin_dashboard/companies//list_companies.html', {
         'companies': companies
     })
 
@@ -29,14 +29,14 @@ def add_company(request):
 
         return redirect('companies_list')
 
-    return render(request, 'core/companies/add_company.html')
+    return render(request, 'core/admin_dashboard/companies//add_company.html')
 
 
 # Show company details
 def company_details(request, company_id):
     company = get_object_or_404(Company, id=company_id)
 
-    return render(request, 'core/companies/company_details.html', {
+    return render(request, 'core/admin_dashboard/companies//company_details.html', {
         'company': company
     })
 
@@ -60,7 +60,7 @@ def edit_company(request, company_id):
 
         return redirect('companies_list')
 
-    return render(request, 'core/companies/edit_company.html', {
+    return render(request, 'core/admin_dashboard/companies//edit_company.html', {
         'company': company
     })
 
@@ -73,6 +73,6 @@ def delete_company(request, company_id):
         company.delete()
         return redirect('companies_list')
 
-    return render(request, 'core/companies/delete_company.html', {
+    return render(request, 'core/admin_dashboard/companies//delete_company.html', {
         'company': company
     })

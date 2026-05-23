@@ -5,9 +5,9 @@ from core.models import Candidate
 def candidates_list(request):
     candidates = Candidate.objects.all()
 
-    return render(request, 'core/candidates/list_candidates.html', {
-        'candidates': candidates
-    })
+    return render(request, 'core/admin_dashboard/candidates/list_candidates.html', {
+    'candidates': candidates
+})
 
 
 def add_candidate(request):
@@ -26,16 +26,15 @@ def add_candidate(request):
 
         return redirect('candidates_list')
 
-    return render(request, 'core/candidates/add_candidate.html')
+    return render(request, 'core/admin_dashboard/candidates/add_candidate.html')
 
 
 def candidate_details(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
 
-    return render(request, 'core/candidates/candidate_details.html', {
-        'candidate': candidate
-    })
-
+    return render(request, 'core/admin_dashboard/candidates/candidate_details.html', {
+    'candidate': candidate
+})
 
 def edit_candidate(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
@@ -54,9 +53,9 @@ def edit_candidate(request, candidate_id):
 
         return redirect('candidates_list')
 
-    return render(request, 'core/candidates/edit_candidate.html', {
-        'candidate': candidate
-    })
+    return render(request, 'core/admin_dashboard/candidates/edit_candidate.html', {
+    'candidate': candidate
+})
 
 
 def delete_candidate(request, candidate_id):
@@ -66,6 +65,6 @@ def delete_candidate(request, candidate_id):
         candidate.delete()
         return redirect('candidates_list')
 
-    return render(request, 'core/candidates/delete_candidate.html', {
-        'candidate': candidate
-    })
+    return render(request, 'core/admin_dashboard/candidates/delete_candidate.html', {
+    'candidate': candidate
+})

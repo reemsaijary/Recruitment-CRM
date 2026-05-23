@@ -1,5 +1,9 @@
 from django.urls import path
 
+from .views.auth_views import login_view, logout_view
+from .views.company_views.dashboard_views import company_dashboard
+from .views.candidate_views.dashboard_views import candidate_dashboard
+
 from .views.admin_views.dashboard_views import dashboard
 from .views.admin_views.candidate_views import *
 from .views.admin_views.company_views import *
@@ -10,6 +14,13 @@ from .views.admin_views.evaluation_views import *
 from .views.admin_views.activity_views import *
 
 urlpatterns = [
+
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+
+    path('company/dashboard/', company_dashboard, name='company_dashboard'),
+    path('candidate/dashboard/', candidate_dashboard, name='candidate_dashboard'),
+
     path('', dashboard, name='dashboard'),
 
     path('candidates/', candidates_list, name='candidates_list'),

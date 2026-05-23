@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Dashboard</title>
+</head>
+<body>
+    <h2>RecruitCRM - Company</h2>
+
+    <a href="{% url 'company_dashboard' %}">Dashboard</a>
+    <a href="{% url 'logout' %}">Logout</a>
+
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

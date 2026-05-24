@@ -17,11 +17,11 @@ urlpatterns = [
 
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-
+    path('', login_view, name='home'),
+    path('crm-admin/dashboard/', dashboard, name='dashboard'),
     path('company/dashboard/', company_dashboard, name='company_dashboard'),
     path('candidate/dashboard/', candidate_dashboard, name='candidate_dashboard'),
-
-    path('', dashboard, name='dashboard'),
+    
 
     path('candidates/', candidates_list, name='candidates_list'),
     path('candidates/add/', add_candidate, name='add_candidate'),

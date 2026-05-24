@@ -13,6 +13,7 @@ from .views.admin_views.interview_views import *
 from .views.admin_views.evaluation_views import *
 from .views.admin_views.activity_views import *
 
+from .views.company_views.job_views import *
 urlpatterns = [
 
     path('login/', login_view, name='login'),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('company/dashboard/', company_dashboard, name='company_dashboard'),
     path('candidate/dashboard/', candidate_dashboard, name='candidate_dashboard'),
     
-
+# admin dashboard
     path('candidates/', candidates_list, name='candidates_list'),
     path('candidates/add/', add_candidate, name='add_candidate'),
     path('candidates/<int:candidate_id>/', candidate_details, name='candidate_details'),
@@ -70,5 +71,10 @@ urlpatterns = [
     path('activities/<int:activity_id>/edit/',edit_activity, name='edit_activity'),
     path('activities/<int:activity_id>/delete/',delete_activity, name='delete_activity'),
 
-
+#Company dashboard
+    path('company/jobs/', company_jobs_list, name='company_jobs_list'),
+    path('company/jobs/add/', company_add_job, name='company_add_job'),
+    path('company/jobs/<int:job_id>/edit/', company_edit_job, name='company_edit_job'),
+    path('company/jobs/<int:job_id>/delete/', company_delete_job, name='company_delete_job'),
+    path('company/jobs/<int:job_id>/', company_job_details, name='company_job_details'),
 ]

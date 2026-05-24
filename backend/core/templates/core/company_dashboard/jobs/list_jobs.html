@@ -1,0 +1,51 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>My Jobs</h1>
+        <p>Manage jobs posted by your company.</p>
+    </div>
+
+    <a href="{% url 'company_add_job' %}" class="action-btn">
+        <i class="fa-solid fa-plus"></i>
+        Add Job
+    </a>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Job Title</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Min Salary</th>
+            <th>Max Salary</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.job_title }}</td>
+            <td>{{ job.job_type }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.status }}</td>
+            <td>${{ job.min_salary }}</td>
+            <td>${{ job.max_salary }}</td>
+            <td>
+            <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">View</a>
+            <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">Edit</a>
+            <a href="{% url 'company_delete_job' job.id %}" class="small-btn delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No jobs found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

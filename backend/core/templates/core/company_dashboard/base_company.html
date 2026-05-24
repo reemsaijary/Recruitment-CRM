@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -214,6 +214,96 @@
         .action-btn:hover {
             background: #1d4ed8;
         }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0f172a;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Forms */
+        form {
+            display: grid;
+            gap: 16px;
+        }
+
+        form label {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+            .small-btn {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 5px;
+            color: white;
+        }
+
+        .view-btn {
+            background: #2563eb;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+        .page-actions {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0 30px;
+    }
     </style>
 </head>
 
@@ -235,7 +325,7 @@
             <span class="sidebar-text">Dashboard</span>
         </a>
 
-        <a href="#">
+        <a href="{% url 'company_jobs_list' %}">
             <i class="fa-solid fa-briefcase"></i>
             <span class="sidebar-text">My Jobs</span>
         </a>
@@ -276,4 +366,4 @@
 </script>
 
 </body>
-</html>
+</html>          

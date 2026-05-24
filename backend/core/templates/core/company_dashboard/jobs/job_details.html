@@ -1,0 +1,23 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+{% block content %}
+
+<h1>Job Details</h1>
+
+<div class="page-actions">
+    <a href="{% url 'company_jobs_list' %}" class="small-btn view-btn">Back to Jobs</a>
+    <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">Edit Job</a>
+</div>
+
+<br><br>
+
+<div class="card">
+    <p><strong>Job Title:</strong> {{ job.job_title }}</p>
+    <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Status:</strong> {{ job.status }}</p>
+    <p><strong>Minimum Salary:</strong> {{ job.min_salary }}</p>
+    <p><strong>Maximum Salary:</strong> {{ job.max_salary }}</p>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+</div>
+
+{% endblock %}

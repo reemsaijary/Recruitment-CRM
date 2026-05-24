@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Company
 from core.decorators import role_required
+from django.contrib.auth.models import User
+from core.models import Profile
 
 # Display all companies
 @role_required(['admin'])
@@ -16,7 +18,38 @@ def companies_list(request):
 @role_required(['admin'])
 def add_company(request):
     if request.method == 'POST':
+
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # CHECK USERNAME
+        if User.objects.filter(username=username).exists():
+            return render(request,
+                'core/admin_dashboard/companies/add_company.html',
+                {'error': 'Username already exists'}
+            )
+
+        # CHECK EMAIL
+        if User.objects.filter(email=email).exists():
+            return render(request,
+                'core/admin_dashboard/companies/add_company.html',
+                {'error': 'Email already exists'}
+            )
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        Profile.objects.create(
+            user=user,
+            role='company'
+        )
+
         Company.objects.create(
+            user=user,
             company_name=request.POST.get('company_name'),
             contact_name=request.POST.get('contact_name'),
             phone=request.POST.get('phone'),
@@ -73,7 +106,11 @@ def delete_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
 
     if request.method == 'POST':
-        company.delete()
+        if company.user:
+            company.user.delete()
+        else:
+            company.delete()
+
         return redirect('companies_list')
 
     return render(request, 'core/admin_dashboard/companies/delete_company.html', {

@@ -6,11 +6,26 @@
 <a href="{% url 'companies_list' %}" class="btn">Back to Companies</a>
 
 <br><br>
-
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
 <div class="card">
     <form method="POST">
         {% csrf_token %}
+                <h3>Company Login Account</h3>
 
+        <label>Username</label>
+        <input type="text" name="username" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <hr>
+
+        <h3>Company Information</h3>
         <label>Company Name</label><br>
         <input type="text" name="company_name" required><br><br>
 

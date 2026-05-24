@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Candidate
+from core.decorators import role_required
 
-
+#list
+@role_required(['admin'])
 def candidates_list(request):
     candidates = Candidate.objects.all()
 
@@ -9,7 +11,8 @@ def candidates_list(request):
     'candidates': candidates
 })
 
-
+#add
+@role_required(['admin'])
 def add_candidate(request):
     if request.method == 'POST':
         Candidate.objects.create(
@@ -28,14 +31,16 @@ def add_candidate(request):
 
     return render(request, 'core/admin_dashboard/candidates/add_candidate.html')
 
-
+#show
+@role_required(['admin'])
 def candidate_details(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
 
     return render(request, 'core/admin_dashboard/candidates/candidate_details.html', {
     'candidate': candidate
 })
-
+#edit
+@role_required(['admin'])
 def edit_candidate(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
 
@@ -57,7 +62,8 @@ def edit_candidate(request, candidate_id):
     'candidate': candidate
 })
 
-
+#delete
+@role_required(['admin'])
 def delete_candidate(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
 

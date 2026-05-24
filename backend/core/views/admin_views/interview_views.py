@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Interview, Application
+from core.decorators import role_required
 
 # show interview list
+@role_required(['admin'])
 def interviews_list(request):
     interviews = Interview.objects.all()
 
@@ -10,6 +12,7 @@ def interviews_list(request):
     })
 
 # add interview
+@role_required(['admin'])
 def add_interview(request):
     applications = Application.objects.all()
 
@@ -32,6 +35,7 @@ def add_interview(request):
     })
 
 # view details
+@role_required(['admin'])
 def interview_details(request, interview_id):
     interview = get_object_or_404(Interview, id=interview_id)
 
@@ -40,6 +44,7 @@ def interview_details(request, interview_id):
     })
 
 #edit details
+@role_required(['admin'])
 def edit_interview(request, interview_id):
     interview = get_object_or_404(Interview, id=interview_id)
     applications = Application.objects.all()
@@ -61,6 +66,7 @@ def edit_interview(request, interview_id):
     })
 
 #delete interview
+@role_required(['admin'])
 def delete_interview(request, interview_id):
     interview = get_object_or_404(Interview, id=interview_id)
 

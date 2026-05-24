@@ -3,7 +3,10 @@ from core.models import Activity
 from django.utils import timezone
 from datetime import timedelta
 from core.models import Application, Candidate, Job, Activity, Interview
+from core.decorators import role_required
+
 # application list
+@role_required(['admin'])
 def applications_list(request):
     applications = Application.objects.all()
 
@@ -12,6 +15,7 @@ def applications_list(request):
     })
 
 # add
+@role_required(['admin'])
 def add_application(request):
     candidates = Candidate.objects.all()
     jobs = Job.objects.all()
@@ -36,6 +40,7 @@ def add_application(request):
     })
 
 # show details
+@role_required(['admin'])
 def application_details(request, application_id):
     application = get_object_or_404(Application, id=application_id)
 
@@ -44,6 +49,7 @@ def application_details(request, application_id):
     })
 
 # edit data
+@role_required(['admin'])
 def edit_application(request, application_id):
     application = get_object_or_404(Application, id=application_id)
     candidates = Candidate.objects.all()
@@ -66,6 +72,7 @@ def edit_application(request, application_id):
     })
 
 # delete data
+@role_required(['admin'])
 def delete_application(request, application_id):
     application = get_object_or_404(Application, id=application_id)
 
@@ -78,6 +85,7 @@ def delete_application(request, application_id):
     })
 
 #move next
+@role_required(['admin'])
 def move_application_next_stage(request, application_id):
     application = get_object_or_404(Application, id=application_id)
 

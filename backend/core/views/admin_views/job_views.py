@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Job, Company
+from core.decorators import role_required
 
 # job list
+@role_required(['admin'])
 def jobs_list(request):
     jobs = Job.objects.all()
 
@@ -10,6 +12,7 @@ def jobs_list(request):
     })
 
 # add job
+@role_required(['admin'])
 def add_job(request):
     companies = Company.objects.all()
 
@@ -34,6 +37,7 @@ def add_job(request):
     })
 
 # view job details
+@role_required(['admin'])
 def job_details(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 
@@ -42,6 +46,7 @@ def job_details(request, job_id):
     })
 
 # edit job
+@role_required(['admin'])
 def edit_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     companies = Company.objects.all()
@@ -67,6 +72,7 @@ def edit_job(request, job_id):
     })
 
 # delete job
+@role_required(['admin'])
 def delete_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 

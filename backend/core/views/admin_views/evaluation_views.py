@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Evaluation, Application
+from core.decorators import role_required
 
-#list 
+#list
+@role_required(['admin']) 
 def evaluations_list(request):
     evaluations = Evaluation.objects.all()
 
@@ -10,6 +12,7 @@ def evaluations_list(request):
     })
 
 # add
+@role_required(['admin'])
 def add_evaluation(request):
     applications = Application.objects.all()
 
@@ -31,6 +34,7 @@ def add_evaluation(request):
     })
 
 #details
+@role_required(['admin'])
 def evaluation_details(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
 
@@ -39,6 +43,7 @@ def evaluation_details(request, evaluation_id):
     })
 
 #edit
+@role_required(['admin'])
 def edit_evaluation(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
     applications = Application.objects.all()
@@ -59,6 +64,7 @@ def edit_evaluation(request, evaluation_id):
     })
 
 #delete
+@role_required(['admin'])
 def delete_evaluation(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
 

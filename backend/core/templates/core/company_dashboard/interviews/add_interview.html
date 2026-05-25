@@ -1,0 +1,52 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<h1>Schedule Interview</h1>
+
+<div class="page-actions">
+    <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+        Back to Application
+    </a>
+</div>
+
+<div class="card">
+    <p><strong>Candidate:</strong> {{ application.candidate.full_name }}</p>
+    <p><strong>Job:</strong> {{ application.job.job_title }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Interview Date</label>
+                <input type="datetime-local" name="interview_date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Interview Type</label>
+                <input type="text" name="interview_type" placeholder="Online / On-site" required>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Notes</label>
+                <textarea name="notes"></textarea>
+            </div>
+
+        </div>
+
+        <button type="submit" class="action-btn">Save Interview</button>
+    </form>
+</div>
+
+{% endblock %}

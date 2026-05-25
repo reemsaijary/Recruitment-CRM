@@ -1,0 +1,28 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<h1>Interview Details</h1>
+
+<div class="page-actions">
+    <a href="{% url 'company_interviews_list' %}" class="small-btn view-btn">Back to Interviews</a>
+</div>
+
+<div class="card">
+    <h3>Candidate Information</h3>
+    <p><strong>Name:</strong> {{ interview.application.candidate.full_name }}</p>
+    <p><strong>Phone:</strong> {{ interview.application.candidate.phone }}</p>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Interview Information</h3>
+    <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
+    <p><strong>Date:</strong> {{ interview.interview_date }}</p>
+    <p><strong>Type:</strong> {{ interview.interview_type }}</p>
+    <p><strong>Status:</strong> {{ interview.status }}</p>
+    <p><strong>Notes:</strong> {{ interview.notes }}</p>
+</div>
+
+{% endblock %}

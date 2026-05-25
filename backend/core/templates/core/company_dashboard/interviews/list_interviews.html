@@ -1,0 +1,42 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>Interviews</h1>
+        <p>Manage scheduled interviews for your job applications.</p>
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for interview in interviews %}
+        <tr>
+            <td>{{ interview.application.candidate.full_name }}</td>
+            <td>{{ interview.application.job.job_title }}</td>
+            <td>{{ interview.interview_date }}</td>
+            <td>{{ interview.interview_type }}</td>
+            <td>{{ interview.status }}</td>
+            <td>
+                <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No interviews scheduled yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

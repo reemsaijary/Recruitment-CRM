@@ -1,0 +1,42 @@
+{% extends 'core/candidate_dashboard/base_candidate.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>My Interviews</h1>
+        <p>View your scheduled interview details.</p>
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Job</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for interview in interviews %}
+        <tr>
+            <td>{{ interview.application.job.job_title }}</td>
+            <td>{{ interview.application.job.company.company_name }}</td>
+            <td>{{ interview.interview_date }}</td>
+            <td>{{ interview.interview_type }}</td>
+            <td>{{ interview.status }}</td>
+            <td>
+                <a href="{% url 'candidate_interview_details' interview.id %}" class="small-btn view-btn">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No interviews scheduled yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

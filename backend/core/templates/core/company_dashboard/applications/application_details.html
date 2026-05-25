@@ -16,6 +16,7 @@
     <p><strong>LinkedIn:</strong> {{ application.candidate.linkedin_url }}</p>
     <p><strong>Experience Years:</strong> {{ application.candidate.experience_years }}</p>
     <p><strong>Current Position:</strong> {{ application.candidate.current_position }}</p>
+    <p><strong>Application Status:</strong> {{ application.status }}</p>
 </div>
 
 <br>
@@ -26,7 +27,6 @@
     <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
     <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
     <p><strong>Location:</strong> {{ application.job.location }}</p>
-    <p><strong>Status:</strong> {{ application.job.status }}</p>
 </div>
 
 <br>
@@ -37,6 +37,26 @@
     <p><strong>Application Status:</strong> {{ application.status }}</p>
     <p><strong>Applied Date:</strong> {{ application.applied_date }}</p>
     <p><strong>Notes:</strong> {{ application.notes }}</p>
-</div>
 
+    <hr><br>
+
+    <h3>Update Application Status</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <select name="status">
+            <option value="Applied" {% if application.status == 'Applied' %}selected{% endif %}>Applied</option>
+            <option value="Screening" {% if application.status == 'Screening' %}selected{% endif %}>Screening</option>
+            <option value="Shortlisted" {% if application.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+            <option value="Interview Scheduled" {% if application.status == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
+            <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+            <option value="Hired" {% if application.status == 'Hired' %}selected{% endif %}>Hired</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit" class="action-btn">Update Status</button>
+    </form>
+</div>
 {% endblock %}

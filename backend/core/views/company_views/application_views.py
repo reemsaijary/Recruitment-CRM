@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from core.models import Company, Application
 from core.decorators import role_required
 
-
+#list
 @role_required(['company'])
 def company_applications_list(request):
     company = get_object_or_404(Company, user=request.user)
@@ -15,7 +15,7 @@ def company_applications_list(request):
         'applications': applications
     })
 
-
+#show details
 @role_required(['company'])
 def company_application_details(request, application_id):
     company = get_object_or_404(Company, user=request.user)
@@ -25,6 +25,11 @@ def company_application_details(request, application_id):
         id=application_id,
         job__company=company
     )
+
+    if request.method == "POST":
+        application.status = request.POST.get("status")
+        application.save()
+        return redirect('company_application_details', application_id=application.id)
 
     return render(request, 'core/company_dashboard/applications/application_details.html', {
         'application': application

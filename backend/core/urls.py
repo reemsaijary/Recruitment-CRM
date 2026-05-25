@@ -14,6 +14,9 @@ from .views.admin_views.evaluation_views import *
 from .views.admin_views.activity_views import *
 
 from .views.company_views.job_views import *
+from .views.company_views.application_views import *
+
+
 urlpatterns = [
 
     path('login/', login_view, name='login'),
@@ -77,4 +80,8 @@ urlpatterns = [
     path('company/jobs/<int:job_id>/edit/', company_edit_job, name='company_edit_job'),
     path('company/jobs/<int:job_id>/delete/', company_delete_job, name='company_delete_job'),
     path('company/jobs/<int:job_id>/', company_job_details, name='company_job_details'),
+    path('company/applications/', company_applications_list, name='company_applications_list'),
+    path('company/applications/<int:application_id>/', company_application_details, name='company_application_details'),
+
+
 ]

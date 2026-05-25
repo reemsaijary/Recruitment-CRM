@@ -1,0 +1,42 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>Applications</h1>
+        <p>Review candidates who applied to your company jobs.</p>
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Status</th>
+            <th>Applied Date</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for application in applications %}
+        <tr>
+            <td>{{ application.candidate.full_name }}</td>
+            <td>{{ application.job.job_title }}</td>
+            <td>{{ application.status }}</td>
+            <td>{{ application.applied_date }}</td>
+            <td>
+                <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+                    View
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No applications found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

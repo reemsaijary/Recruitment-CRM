@@ -15,7 +15,8 @@ from .views.admin_views.activity_views import *
 
 from .views.company_views.job_views import *
 from .views.company_views.application_views import *
-
+from .views.candidate_views.job_views import *
+from .views.candidate_views.application_views import *
 
 urlpatterns = [
 
@@ -82,6 +83,16 @@ urlpatterns = [
     path('company/jobs/<int:job_id>/', company_job_details, name='company_job_details'),
     path('company/applications/', company_applications_list, name='company_applications_list'),
     path('company/applications/<int:application_id>/', company_application_details, name='company_application_details'),
+
+
+
+
+#Candidate dashboard
+    path('candidate/jobs/', candidate_jobs_list, name='candidate_jobs_list'),
+    path('candidate/jobs/<int:job_id>/', candidate_job_details, name='candidate_job_details'),
+    path('candidate/jobs/<int:job_id>/apply/', apply_to_job, name='apply_to_job'),
+    path('candidate/applications/', candidate_applications_list, name='candidate_applications_list'),
+    path('candidate/applications/<int:application_id>/', candidate_application_details, name='candidate_application_details'),
 
 
 ]

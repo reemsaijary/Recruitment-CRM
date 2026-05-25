@@ -1,0 +1,42 @@
+{% extends 'core/candidate_dashboard/base_candidate.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>My Applications</h1>
+        <p>Track the jobs you applied for and their current status.</p>
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Applied Date</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for application in applications %}
+        <tr>
+            <td>{{ application.job.job_title }}</td>
+            <td>{{ application.job.company.company_name }}</td>
+            <td>{{ application.status }}</td>
+            <td>{{ application.applied_date }}</td>
+            <td>
+                <a href="{% url 'candidate_application_details' application.id %}" class="small-btn view-btn">
+                    View
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">You have not applied to any jobs yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

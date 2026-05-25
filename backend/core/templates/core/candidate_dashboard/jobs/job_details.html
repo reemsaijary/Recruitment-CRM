@@ -1,0 +1,22 @@
+{% extends 'core/candidate_dashboard/base_candidate.html' %}
+
+{% block content %}
+
+<h1>Job Details</h1>
+
+<div class="page-actions">
+    <a href="{% url 'candidate_jobs_list' %}" class="small-btn view-btn">Back to Jobs</a>
+    <a href="{% url 'apply_to_job' job.id %}" class="small-btn edit-btn">Apply Now</a>
+</div>
+
+<div class="card">
+    <p><strong>Job Title:</strong> {{ job.job_title }}</p>
+    <p><strong>Company:</strong> {{ job.company.company_name }}</p>
+    <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Minimum Salary:</strong> {{ job.min_salary }}</p>
+    <p><strong>Maximum Salary:</strong> {{ job.max_salary }}</p>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+</div>
+
+{% endblock %}

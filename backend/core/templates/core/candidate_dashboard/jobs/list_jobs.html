@@ -1,0 +1,37 @@
+{% extends 'core/candidate_dashboard/base_candidate.html' %}
+
+{% block content %}
+
+<h1>Available Jobs</h1>
+<p>Browse open jobs and apply.</p>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.job_title }}</td>
+            <td>{{ job.company.company_name }}</td>
+            <td>{{ job.location }}</td>
+            <td>{{ job.job_type }}</td>
+            <td>
+                <a href="{% url 'candidate_job_details' job.id %}" class="small-btn view-btn">View</a>
+                <a href="{% url 'apply_to_job' job.id %}" class="small-btn edit-btn">Apply</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No open jobs available.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

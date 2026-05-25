@@ -11,67 +11,94 @@
 
 <div class="stats-container">
 
-    <div class="stat-card">
+    <!-- Total Jobs -->
+    <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
+
         <div class="stat-icon">
             <i class="fa-solid fa-briefcase"></i>
         </div>
+
         <div>
             <h3>Total Jobs</h3>
-            <p>{{ jobs_count }}</p>
+            <p>{{ total_jobs }}</p>
         </div>
-    </div>
 
-    <div class="stat-card">
+    </a>
+
+    <!-- Applications -->
+    <a href="{% url 'company_applications_list' %}" class="stat-card stat-link">
+
         <div class="stat-icon">
             <i class="fa-solid fa-file-lines"></i>
         </div>
+
         <div>
             <h3>Total Applications</h3>
-            <p>{{ applications_count }}</p>
+            <p>{{ total_applications }}</p>
         </div>
-    </div>
 
-    <div class="stat-card">
+    </a>
+
+    <!-- Interviews -->
+    <a href="{% url 'company_interviews_list' %}" class="stat-card stat-link">
+
         <div class="stat-icon">
             <i class="fa-solid fa-calendar-check"></i>
         </div>
+
         <div>
             <h3>Total Interviews</h3>
-            <p>{{ interviews_count }}</p>
+            <p>{{ total_interviews }}</p>
         </div>
-    </div>
 
-    <div class="stat-card">
+    </a>
+
+    <!-- Active Jobs -->
+    <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
+
         <div class="stat-icon">
             <i class="fa-solid fa-circle-check"></i>
         </div>
+
         <div>
             <h3>Active Jobs</h3>
-            <p>{{ active_jobs_count }}</p>
+            <p>{{ active_jobs }}</p>
         </div>
-    </div>
+
+    </a>
 
 </div>
+      
+
 
 <div class="quick-actions">
+
     <h2>Quick Actions</h2>
 
     <div class="action-buttons">
-        <a href="#" class="action-btn">
+
+        <a href="{% url 'company_add_job' %}" class="action-btn">
             <i class="fa-solid fa-plus"></i>
             Post New Job
         </a>
 
-        <a href="#" class="action-btn">
+        <a href="{% url 'company_jobs_list' %}" class="action-btn">
             <i class="fa-solid fa-briefcase"></i>
             View My Jobs
         </a>
 
-        <a href="#" class="action-btn">
+        <a href="{% url 'company_applications_list' %}" class="action-btn">
             <i class="fa-solid fa-file-lines"></i>
             View Applications
         </a>
+
+        <a href="{% url 'company_interviews_list' %}" class="action-btn">
+            <i class="fa-solid fa-calendar-days"></i>
+            View Interviews
+        </a>
+
     </div>
+
 </div>
 
 {% endblock %}

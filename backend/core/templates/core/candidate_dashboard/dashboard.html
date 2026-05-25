@@ -1,6 +1,80 @@
 {% extends 'core/candidate_dashboard/base_candidate.html' %}
 
 {% block content %}
-<h1>Candidate Dashboard</h1>
-<p>Welcome to the candidate dashboard.</p>
+
+<div class="dashboard-header">
+    <div>
+        <h1>Candidate Dashboard</h1>
+        <p>Welcome, {{ candidate.full_name }}</p>
+    </div>
+</div>
+
+<div class="stats-container">
+
+    <!-- Available Jobs -->
+    <a href="{% url 'candidate_jobs_list' %}" class="stat-card stat-link">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div>
+            <h3>Available Jobs</h3>
+            <p>{{ available_jobs }}</p>
+        </div>
+
+    </a>
+
+    <!-- Applications -->
+    <a href="{% url 'candidate_applications_list' %}" class="stat-card stat-link">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+
+        <div>
+            <h3>My Applications</h3>
+            <p>{{ my_applications }}</p>
+        </div>
+
+    </a>
+
+    <!-- Interviews -->
+    <a href="{% url 'candidate_interviews_list' %}" class="stat-card stat-link">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+
+        <div>
+            <h3>Scheduled Interviews</h3>
+            <p>{{ scheduled_interviews }}</p>
+        </div>
+
+    </a>
+
+    <!-- Latest Status -->
+    <a href="{% url 'candidate_applications_list' %}" class="stat-card stat-link">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+        <div>
+            <h3>Latest Status</h3>
+
+            <p>
+                {% if latest_application %}
+                    {{ latest_application.status }}
+                {% else %}
+                    None
+                {% endif %}
+            </p>
+
+        </div>
+
+    </a>
+
+</div>
+
 {% endblock %}

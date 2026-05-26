@@ -2,43 +2,58 @@
 
 {% block content %}
 
-<h1>Application Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Application Details</h1>
+        <p class="page-subtitle">Review candidate, job, and application status information.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'company_applications_list' %}" class="small-btn view-btn">Back to Applications</a>
+    <a href="{% url 'company_applications_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
 </div>
 
-<div class="card">
-    <h3>Candidate Information</h3>
+<div class="details-grid">
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-user"></i> Candidate Information</h3>
 
-    <p><strong>Name:</strong> {{ application.candidate.full_name }}</p>
-    <p><strong>Phone:</strong> {{ application.candidate.phone }}</p>
-    <p><strong>LinkedIn:</strong> {{ application.candidate.linkedin_url }}</p>
-    <p><strong>Experience Years:</strong> {{ application.candidate.experience_years }}</p>
-    <p><strong>Current Position:</strong> {{ application.candidate.current_position }}</p>
-    <p><strong>Application Status:</strong> {{ application.status }}</p>
+        <p><strong>Name:</strong> {{ application.candidate.full_name }}</p>
+        <p><strong>Phone:</strong> {{ application.candidate.phone }}</p>
+        <p><strong>LinkedIn:</strong> {{ application.candidate.linkedin_url }}</p>
+        <p><strong>Experience:</strong> {{ application.candidate.experience_years }} years</p>
+        <p><strong>Current Position:</strong> {{ application.candidate.current_position }}</p>
+    </div>
+
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-briefcase"></i> Job Information</h3>
+
+        <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
+        <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
+        <p><strong>Location:</strong> {{ application.job.location }}</p>
+    </div>
 </div>
 
-<br>
+<div class="card info-section-card application-status-card">
+    <h3><i class="fa-solid fa-list-check"></i> Application Information</h3>
 
-<div class="card">
-    <h3>Job Information</h3>
+    <div class="job-info-grid">
+        <div class="info-box">
+            <span>Status</span>
+            <strong>{{ application.status }}</strong>
+        </div>
 
-    <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
-    <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
-    <p><strong>Location:</strong> {{ application.job.location }}</p>
-</div>
+        <div class="info-box">
+            <span>Applied Date</span>
+            <strong>{{ application.applied_date }}</strong>
+        </div>
 
-<br>
+        <div class="info-box">
+            <span>Notes</span>
+            <strong>{{ application.notes|default:"No notes" }}</strong>
+        </div>
+    </div>
 
-<div class="card">
-    <h3>Application Information</h3>
-
-    <p><strong>Application Status:</strong> {{ application.status }}</p>
-    <p><strong>Applied Date:</strong> {{ application.applied_date }}</p>
-    <p><strong>Notes:</strong> {{ application.notes }}</p>
-
-    <hr><br>
+    <hr class="section-line">
 
     <h3>Update Application Status</h3>
 
@@ -54,13 +69,16 @@
             <option value="Hired" {% if application.status == 'Hired' %}selected{% endif %}>Hired</option>
         </select>
 
-        <br><br>
+        <div class="form-footer">
+            <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Update Status
+            </button>
 
-        <button type="submit" class="action-btn">Update Status</button>
+            <a href="{% url 'company_add_interview' application.id %}" class="secondary-btn">
+                <i class="fa-solid fa-calendar-plus"></i> Schedule Interview
+            </a>
+        </div>
     </form>
-
-    <a href="{% url 'company_add_interview' application.id %}" class="small-btn edit-btn">
-    Schedule Interview
-    </a>
 </div>
+
 {% endblock %}

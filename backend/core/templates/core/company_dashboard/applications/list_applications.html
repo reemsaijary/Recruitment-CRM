@@ -10,33 +10,44 @@
 </div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Candidate</th>
-            <th>Job</th>
-            <th>Status</th>
-            <th>Applied Date</th>
-            <th>Actions</th>
-        </tr>
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Candidate</th>
+                <th>Job</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for application in applications %}
-        <tr>
-            <td>{{ application.candidate.full_name }}</td>
-            <td>{{ application.job.job_title }}</td>
-            <td>{{ application.status }}</td>
-            <td>{{ application.applied_date }}</td>
-            <td>
-                <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
-                    View
-                </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No applications found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.candidate.full_name }}</td>
+                <td>{{ application.job.job_title }}</td>
+                <td>
+                    <span class="status-pill">
+                        {{ application.status }}
+                    </span>
+                </td>
+                <td>{{ application.applied_date }}</td>
+                <td>
+                    <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i> View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+
+            <h2>No applications yet</h2>
+            <p>Applications will appear here when candidates apply to your jobs.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

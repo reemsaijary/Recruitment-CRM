@@ -2,9 +2,12 @@
 
 {% block content %}
 
-<h1>Candidates</h1>
-
-<p>Search and review available candidates.</p>
+<div class="dashboard-header">
+    <div>
+        <h1>Candidates</h1>
+        <p>Search and review available candidates.</p>
+    </div>
+</div>
 
 <div class="card search-card">
     <form method="GET" class="search-form">
@@ -22,54 +25,51 @@
     </form>
 </div>
 
-<br>
-
 <div class="card">
+    {% if candidates %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Current Position</th>
+                    <th>Experience</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-    <table>
+            <tbody>
+                {% for candidate in candidates %}
+                <tr>
+                    <td>
+                        <strong>{{ candidate.full_name }}</strong>
+                    </td>
+                    <td>{{ candidate.phone }}</td>
+                    <td>{{ candidate.current_position|default:"No position added" }}</td>
+                    <td>
+                        <span class="status-pill">
+                            {{ candidate.experience_years }} Years
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'company_candidate_details' candidate.id %}" class="small-btn view-btn">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Current Position</th>
-                <th>Experience</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% for candidate in candidates %}
-
-            <tr>
-
-                <td>{{ candidate.full_name }}</td>
-                <td>{{ candidate.phone }}</td>
-                <td>{{ candidate.current_position }}</td>
-                <td>{{ candidate.experience_years }} Years</td>
-
-                <td>
-                    <a href="{% url 'company_candidate_details' candidate.id %}"
-                       class="small-btn view-btn">
-                        View
-                    </a>
-                </td>
-
-            </tr>
-
-            {% empty %}
-
-            <tr>
-                <td colspan="5">No candidates found.</td>
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-    </table>
-
+            <h2>No candidates found</h2>
+            <p>Try searching with another candidate name.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

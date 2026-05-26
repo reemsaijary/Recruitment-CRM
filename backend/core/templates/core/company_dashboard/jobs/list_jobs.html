@@ -15,37 +15,64 @@
 </div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Job Title</th>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Min Salary</th>
-            <th>Max Salary</th>
-            <th>Actions</th>
-        </tr>
+    {% if jobs %}
+        <table>
+            <tr>
+                <th>Job Title</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Min Salary</th>
+                <th>Max Salary</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for job in jobs %}
-        <tr>
-            <td>{{ job.job_title }}</td>
-            <td>{{ job.job_type }}</td>
-            <td>{{ job.location }}</td>
-            <td>{{ job.status }}</td>
-            <td>${{ job.min_salary }}</td>
-            <td>${{ job.max_salary }}</td>
-            <td>
-            <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">View</a>
-            <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">Edit</a>
-            <a href="{% url 'company_delete_job' job.id %}" class="small-btn delete-btn">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">No jobs found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.job_title }}</td>
+                <td>{{ job.job_type }}</td>
+                <td>{{ job.location }}</td>
+
+                <td>
+                    <span class="{% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+                        {{ job.status }}
+                    </span>
+                </td>
+
+                <td>${{ job.min_salary }}</td>
+                <td>${{ job.max_salary }}</td>
+
+                <td>
+                    <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i> View
+                    </a>
+
+                    <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </a>
+
+                    <a href="{% url 'company_delete_job' job.id %}" class="small-btn delete-btn">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+
+            <h2>No jobs posted yet</h2>
+            <p>Start by adding your first job opening for candidates.</p>
+
+            <a href="{% url 'company_add_job' %}" class="action-btn">
+                <i class="fa-solid fa-plus"></i>
+                Add First Job
+            </a>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

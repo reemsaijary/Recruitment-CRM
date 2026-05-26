@@ -82,11 +82,15 @@ urlpatterns = [
     path('company/jobs/add/', company_add_job, name='company_add_job'),
     path('company/jobs/<int:job_id>/edit/', company_edit_job, name='company_edit_job'),
     path('company/jobs/<int:job_id>/delete/', company_delete_job, name='company_delete_job'),
+   
     path('company/jobs/<int:job_id>/', company_job_details, name='company_job_details'),
     path('company/applications/', company_applications_list, name='company_applications_list'),
     path('company/applications/<int:application_id>/', company_application_details, name='company_application_details'),
-    path('company/interviews/', company_interviews_list, name='company_interviews_list'),
     path('company/applications/<int:application_id>/schedule-interview/', company_add_interview, name='company_add_interview'),
+
+    path('company/interviews/', company_interviews_list, name='company_interviews_list'),
+    path('company/interviews/<int:interview_id>/edit/', company_edit_interview, name='company_edit_interview'),
+    path('company/interviews/<int:interview_id>/delete/', company_delete_interview, name='company_delete_interview'),   
     path('company/interviews/<int:interview_id>/', company_interview_details, name='company_interview_details'),
 
 

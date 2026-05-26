@@ -28,7 +28,9 @@
             <td>{{ interview.interview_type }}</td>
             <td>{{ interview.status }}</td>
             <td>
-                <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">View</a>
+            <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">View</a>
+            <a href="{% url 'company_edit_interview' interview.id %}" class="small-btn edit-btn">Edit</a>
+            <a href="{% url 'company_delete_interview' interview.id %}" class="small-btn delete-btn">Delete</a>
             </td>
         </tr>
         {% empty %}

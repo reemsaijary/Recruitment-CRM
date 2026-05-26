@@ -1,0 +1,21 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<h1>Delete Interview</h1>
+
+<div class="card">
+    <p>
+        Are you sure you want to delete the interview for
+        <strong>{{ interview.application.candidate.full_name }}</strong>?
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <button type="submit" class="small-btn delete-btn">Yes, Delete</button>
+        <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

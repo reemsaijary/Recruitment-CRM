@@ -1,0 +1,47 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<h1>Edit Interview</h1>
+
+<div class="page-actions">
+    <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">Back to Interview</a>
+</div>
+
+<div class="card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Interview Date</label>
+                <input type="datetime-local" name="interview_date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Interview Type</label>
+                <input type="text" name="interview_type" value="{{ interview.interview_type }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Scheduled" {% if interview.status == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+                    <option value="Completed" {% if interview.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Cancelled" {% if interview.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Notes</label>
+                <textarea name="notes">{{ interview.notes }}</textarea>
+            </div>
+
+        </div>
+
+        <button type="submit" class="action-btn">Update Interview</button>
+    </form>
+</div>
+
+{% endblock %}

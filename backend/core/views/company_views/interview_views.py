@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.models import Company, Application, Interview
 from core.decorators import role_required
 
-#list
+#list 
 @role_required(['company'])
 def company_interviews_list(request):
     company = get_object_or_404(Company, user=request.user)
@@ -57,5 +57,49 @@ def company_interview_details(request, interview_id):
     )
 
     return render(request, 'core/company_dashboard/interviews/interview_details.html', {
+        'interview': interview
+    })
+
+#edit 
+@role_required(['company'])
+def company_edit_interview(request, interview_id):
+    company = get_object_or_404(Company, user=request.user)
+
+    interview = get_object_or_404(
+        Interview,
+        id=interview_id,
+        application__job__company=company
+    )
+
+    if request.method == "POST":
+        interview.interview_date = request.POST.get('interview_date')
+        interview.interview_type = request.POST.get('interview_type')
+        interview.status = request.POST.get('status')
+        interview.notes = request.POST.get('notes')
+        interview.save()
+
+        return redirect('company_interview_details', interview_id=interview.id)
+
+    return render(request, 'core/company_dashboard/interviews/edit_interview.html', {
+        'interview': interview,
+        'status_choices': Interview.STATUS_CHOICES
+    })
+
+#delete
+@role_required(['company'])
+def company_delete_interview(request, interview_id):
+    company = get_object_or_404(Company, user=request.user)
+
+    interview = get_object_or_404(
+        Interview,
+        id=interview_id,
+        application__job__company=company
+    )
+
+    if request.method == "POST":
+        interview.delete()
+        return redirect('company_interviews_list')
+
+    return render(request, 'core/company_dashboard/interviews/delete_interview.html', {
         'interview': interview
     })

@@ -1,0 +1,59 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Candidate Details</h1>
+        <p>Review candidate profile information.</p>
+    </div>
+
+    <a href="{% url 'company_candidates_list' %}" class="action-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Candidates
+    </a>
+</div>
+
+<div class="card profile-card">
+
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div>
+            <h2>{{ candidate.full_name }}</h2>
+            <p>{{ candidate.current_position|default:"No position added" }}</p>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <div>
+            <strong>Phone</strong>
+            <p>{{ candidate.phone }}</p>
+        </div>
+
+        <div>
+            <strong>Email</strong>
+            <p>{{ candidate.user.email|default:"No email added" }}</p>
+        </div>
+
+        <div>
+            <strong>Experience</strong>
+            <p>{{ candidate.experience_years }} Years</p>
+        </div>
+
+        <div>
+            <strong>LinkedIn</strong>
+            <p>{{ candidate.linkedin_url|default:"No LinkedIn added" }}</p>
+        </div>
+
+        <div class="full-width">
+            <strong>Notes</strong>
+            <p>{{ candidate.notes|default:"No notes added" }}</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

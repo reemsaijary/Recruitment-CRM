@@ -1,0 +1,75 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<h1>Candidates</h1>
+
+<p>Search and review available candidates.</p>
+
+<div class="card search-card">
+    <form method="GET" class="search-form">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by candidate name..."
+            value="{{ search_query }}"
+        >
+
+        <button type="submit" class="small-btn view-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+    </form>
+</div>
+
+<br>
+
+<div class="card">
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Current Position</th>
+                <th>Experience</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for candidate in candidates %}
+
+            <tr>
+
+                <td>{{ candidate.full_name }}</td>
+                <td>{{ candidate.phone }}</td>
+                <td>{{ candidate.current_position }}</td>
+                <td>{{ candidate.experience_years }} Years</td>
+
+                <td>
+                    <a href="{% url 'company_candidate_details' candidate.id %}"
+                       class="small-btn view-btn">
+                        View
+                    </a>
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">No candidates found.</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

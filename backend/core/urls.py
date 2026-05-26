@@ -19,6 +19,7 @@ from .views.candidate_views.job_views import *
 from .views.candidate_views.application_views import *
 from .views.candidate_views.interview_views import *
 from .views.company_views.interview_views import *
+from .views.company_views.candidate_views import *
 
 urlpatterns = [
 
@@ -93,6 +94,8 @@ urlpatterns = [
     path('company/interviews/<int:interview_id>/delete/', company_delete_interview, name='company_delete_interview'),   
     path('company/interviews/<int:interview_id>/', company_interview_details, name='company_interview_details'),
 
+    path('company/candidates/',company_candidates_list,name='company_candidates_list'),  
+    path('company/candidates/<int:candidate_id>/',company_candidate_details, name='company_candidate_details'),
 
 #Candidate dashboard
     path('candidate/jobs/', candidate_jobs_list, name='candidate_jobs_list'),

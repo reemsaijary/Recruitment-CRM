@@ -37,6 +37,7 @@ def company_application_details(request, application_id):
 
 #kanbaan
 def company_applications_kanban(request):
+
     company = Company.objects.get(user=request.user)
 
     applications = Application.objects.filter(
@@ -61,3 +62,25 @@ def company_applications_kanban(request):
         'kanban_data': kanban_data,
         'statuses': statuses,
     })
+
+#update kanbaan status
+def update_application_status_from_kanban(request, application_id, new_status):
+    company = Company.objects.get(user=request.user)
+    application = get_object_or_404(
+        Application,
+        id=application_id,
+        job__company=company
+    )
+    allowed_statuses = [
+        'Applied',
+        'Screening',
+        'Shortlisted',
+        'Interview Scheduled',
+        'Rejected',
+        'Hired',
+    ]
+    if new_status in allowed_statuses:
+        application.status = new_status
+        application.save()
+
+    return redirect('company_applications_kanban')

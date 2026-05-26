@@ -37,11 +37,44 @@
                 <i class="fa-solid fa-calendar"></i>
                 {{ application.applied_date }}
             </p>
+    <div class="kanban-card-actions">
 
-            <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+            <a href="{% url 'company_application_details' application.id %}" class="kanban-action-btn view-action">
                 <i class="fa-solid fa-eye"></i>
                 View
             </a>
+
+            {% if status != 'Screening' %}
+            <a href="{% url 'company_update_application_status_kanban' application.id 'Screening' %}" class="kanban-action-btn screening-action">
+                Screening
+            </a>
+            {% endif %}
+
+            {% if status != 'Shortlisted' %}
+            <a href="{% url 'company_update_application_status_kanban' application.id 'Shortlisted' %}" class="kanban-action-btn shortlist-action">
+                Shortlist
+            </a>
+            {% endif %}
+
+            {% if status != 'Interview Scheduled' %}
+            <a href="{% url 'company_update_application_status_kanban' application.id 'Interview Scheduled' %}" class="kanban-action-btn interview-action">
+                Interview
+            </a>
+            {% endif %}
+
+            {% if status != 'Hired' %}
+            <a href="{% url 'company_update_application_status_kanban' application.id 'Hired' %}" class="kanban-action-btn hired-action">
+                Hired
+            </a>
+            {% endif %}
+
+            {% if status != 'Rejected' %}
+            <a href="{% url 'company_update_application_status_kanban' application.id 'Rejected' %}" class="kanban-action-btn reject-action">
+                Reject
+            </a>
+            {% endif %}
+
+        </div>
         </div>
         {% empty %}
         <div class="kanban-empty">

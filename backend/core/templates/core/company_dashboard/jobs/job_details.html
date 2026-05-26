@@ -1,23 +1,59 @@
 {% extends 'core/company_dashboard/base_company.html' %}
 {% block content %}
 
-<h1>Job Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Job Details</h1>
+        <p class="page-subtitle">View complete information about this job opening.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'company_jobs_list' %}" class="small-btn view-btn">Back to Jobs</a>
-    <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">Edit Job</a>
+    <div class="header-actions">
+        <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+
+        <a href="{% url 'company_edit_job' job.id %}" class="primary-btn">
+            <i class="fa-solid fa-pen"></i> Edit Job
+        </a>
+    </div>
 </div>
 
-<br><br>
+<div class="job-details-card">
+    <div class="job-details-top">
+        <div>
+            <h2>{{ job.job_title }}</h2>
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ job.location }}
+            </p>
+        </div>
 
-<div class="card">
-    <p><strong>Job Title:</strong> {{ job.job_title }}</p>
-    <p><strong>Job Type:</strong> {{ job.job_type }}</p>
-    <p><strong>Location:</strong> {{ job.location }}</p>
-    <p><strong>Status:</strong> {{ job.status }}</p>
-    <p><strong>Minimum Salary:</strong> {{ job.min_salary }}</p>
-    <p><strong>Maximum Salary:</strong> {{ job.max_salary }}</p>
-    <p><strong>Description:</strong> {{ job.description }}</p>
+        <span class="status-badge {% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+            {{ job.status }}
+        </span>
+    </div>
+
+    <div class="job-info-grid">
+        <div class="info-box">
+            <span>Job Type</span>
+            <strong>{{ job.job_type }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Minimum Salary</span>
+            <strong>${{ job.min_salary }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Maximum Salary</span>
+            <strong>${{ job.max_salary }}</strong>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Job Description</h3>
+        <p>{{ job.description }}</p>
+    </div>
 </div>
 
 {% endblock %}

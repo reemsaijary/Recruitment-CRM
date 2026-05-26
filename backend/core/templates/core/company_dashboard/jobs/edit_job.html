@@ -1,93 +1,66 @@
 {% extends 'core/company_dashboard/base_company.html' %}
-
 {% block content %}
 
-<h1>Edit Job</h1>
+<div class="page-header">
+    <div>
+        <h1>Edit Job</h1>
+        <p class="page-subtitle">Update job details, salary range, status, and description.</p>
+    </div>
 
-<a href="{% url 'company_jobs_list' %}" class="action-btn">
-    Back to Jobs
-</a>
+    <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Jobs
+    </a>
+</div>
 
-<br><br>
-
-<div class="card">
+<div class="card job-form-card">
     <form method="POST">
         {% csrf_token %}
 
         <div class="form-grid">
-
             <div class="form-group">
                 <label>Job Title</label>
-                <input type="text"
-                       name="job_title"
-                       value="{{ job.job_title }}"
-                       required>
+                <input type="text" name="job_title" value="{{ job.job_title }}" required>
             </div>
 
             <div class="form-group">
                 <label>Job Type</label>
-                <input type="text"
-                       name="job_type"
-                       value="{{ job.job_type }}"
-                       placeholder="Full-time, Part-time, Remote">
+                <input type="text" name="job_type" value="{{ job.job_type }}" placeholder="Full-time, Part-time, Remote">
             </div>
 
             <div class="form-group">
                 <label>Location</label>
-                <input type="text"
-                       name="location"
-                       value="{{ job.location }}"
-                       required>
+                <input type="text" name="location" value="{{ job.location }}" required>
             </div>
 
             <div class="form-group">
                 <label>Status</label>
-
                 <select name="status">
-
-                    <option value="Open"
-                        {% if job.status == 'Open' %}
-                            selected
-                        {% endif %}>
-                        Open
-                    </option>
-
-                    <option value="Closed"
-                        {% if job.status == 'Closed' %}
-                            selected
-                        {% endif %}>
-                        Closed
-                    </option>
-
+                    <option value="Open" {% if job.status == 'Open' %}selected{% endif %}>Open</option>
+                    <option value="Closed" {% if job.status == 'Closed' %}selected{% endif %}>Closed</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Minimum Salary</label>
-                <input type="number"
-                       name="min_salary"
-                       value="{{ job.min_salary }}">
+                <input type="number" name="min_salary" value="{{ job.min_salary }}">
             </div>
 
             <div class="form-group">
                 <label>Maximum Salary</label>
-                <input type="number"
-                       name="max_salary"
-                       value="{{ job.max_salary }}">
+                <input type="number" name="max_salary" value="{{ job.max_salary }}">
             </div>
 
             <div class="form-group full-width">
                 <label>Description</label>
-
                 <textarea name="description">{{ job.description }}</textarea>
             </div>
-
         </div>
 
-        <button type="submit" class="action-btn">
-            Update Job
-        </button>
-
+        <div class="form-footer">
+            <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Update Job
+            </button>
+        </div>
     </form>
 </div>
 

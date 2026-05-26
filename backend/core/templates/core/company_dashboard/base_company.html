@@ -400,6 +400,189 @@
             grid-column: 1 / -1;
         }
 
+        .page-subtitle {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .danger-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 10px;
+            padding: 11px 18px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #0f172a;
+            border: 1px solid #dbe3ef;
+        }
+
+        .danger-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .job-form-card {
+            padding: 28px;
+        }
+
+        .form-footer {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .job-details-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .job-details-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 22px;
+        }
+
+        .job-details-top h2 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .job-details-top p {
+            color: #64748b;
+        }
+
+        .status-badge {
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .status-open {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-closed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .job-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .info-box span {
+            display: block;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-box strong {
+            color: #0f172a;
+            font-size: 17px;
+        }
+
+        .description-box {
+            margin-top: 26px;
+        }
+
+        .description-box h3 {
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .description-box p {
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        .delete-wrapper {
+            min-height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .delete-card {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 20px;
+            padding: 34px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .delete-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #fee2e2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin: 0 auto 18px;
+        }
+
+        .delete-card h1 {
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .delete-card p {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .delete-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 26px;
+        }
+
+
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {

@@ -1,22 +1,25 @@
 {% extends 'core/company_dashboard/base_company.html' %}
-
 {% block content %}
 
-<h1>Add Job</h1>
+<div class="page-header">
+    <div>
+        <h1>Add New Job</h1>
+        <p class="page-subtitle">Create a new job opening for candidates to apply.</p>
+    </div>
 
-<a href="{% url 'company_jobs_list' %}" class="action-btn">Back to Jobs</a>
+    <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Jobs
+    </a>
+</div>
 
-<br><br>
-
-<div class="card">
+<div class="card job-form-card">
     <form method="POST">
         {% csrf_token %}
 
         <div class="form-grid">
-
             <div class="form-group">
                 <label>Job Title</label>
-                <input type="text" name="job_title" required>
+                <input type="text" name="job_title" placeholder="e.g. Backend Developer" required>
             </div>
 
             <div class="form-group">
@@ -26,7 +29,7 @@
 
             <div class="form-group">
                 <label>Location</label>
-                <input type="text" name="location" required>
+                <input type="text" name="location" placeholder="e.g. Lebanon" required>
             </div>
 
             <div class="form-group">
@@ -39,22 +42,25 @@
 
             <div class="form-group">
                 <label>Minimum Salary</label>
-                <input type="number" name="min_salary">
+                <input type="number" name="min_salary" placeholder="600">
             </div>
 
             <div class="form-group">
                 <label>Maximum Salary</label>
-                <input type="number" name="max_salary">
+                <input type="number" name="max_salary" placeholder="1000">
             </div>
 
             <div class="form-group full-width">
                 <label>Description</label>
-                <textarea name="description"></textarea>
+                <textarea name="description" placeholder="Write the job responsibilities, requirements, and needed skills..."></textarea>
             </div>
-
         </div>
 
-        <button type="submit" class="action-btn">Save Job</button>
+        <div class="form-footer">
+            <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-plus"></i> Save Job
+            </button>
+        </div>
     </form>
 </div>
 

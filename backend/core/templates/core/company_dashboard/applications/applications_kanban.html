@@ -1,0 +1,57 @@
+{% extends 'core/company_dashboard/base_company.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Applications Kanban</h1>
+        <p class="page-subtitle">Track candidates through the hiring pipeline.</p>
+    </div>
+
+    <a href="{% url 'company_applications_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Applications
+    </a>
+</div>
+
+<div class="kanban-board">
+
+    {% for status, applications in kanban_data.items %}
+    <div class="kanban-column">
+
+        <div class="kanban-column-header">
+            <h3>{{ status }}</h3>
+            <span>{{ applications.count }}</span>
+        </div>
+
+        {% for application in applications %}
+        <div class="kanban-card">
+            <h4>{{ application.candidate.full_name }}</h4>
+
+            <p>
+                <i class="fa-solid fa-briefcase"></i>
+                {{ application.job.job_title }}
+            </p>
+
+            <p>
+                <i class="fa-solid fa-calendar"></i>
+                {{ application.applied_date }}
+            </p>
+
+            <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+                <i class="fa-solid fa-eye"></i>
+                View
+            </a>
+        </div>
+        {% empty %}
+        <div class="kanban-empty">
+            No applications
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

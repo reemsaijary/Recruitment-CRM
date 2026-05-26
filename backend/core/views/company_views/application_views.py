@@ -34,3 +34,30 @@ def company_application_details(request, application_id):
     return render(request, 'core/company_dashboard/applications/application_details.html', {
         'application': application
     })
+
+#kanbaan
+def company_applications_kanban(request):
+    company = Company.objects.get(user=request.user)
+
+    applications = Application.objects.filter(
+        job__company=company
+    ).select_related('candidate', 'job')
+
+    statuses = [
+        'Applied',
+        'Screening',
+        'Shortlisted',
+        'Interview Scheduled',
+        'Rejected',
+        'Hired',
+    ]
+
+    kanban_data = {}
+
+    for status in statuses:
+        kanban_data[status] = applications.filter(status=status)
+
+    return render(request, 'core/company_dashboard/applications/applications_kanban.html', {
+        'kanban_data': kanban_data,
+        'statuses': statuses,
+    })

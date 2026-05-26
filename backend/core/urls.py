@@ -20,6 +20,9 @@ from .views.candidate_views.application_views import *
 from .views.candidate_views.interview_views import *
 from .views.company_views.interview_views import *
 from .views.company_views.candidate_views import *
+from core.views.company_views.application_views import company_applications_kanban
+
+
 
 urlpatterns = [
 
@@ -88,7 +91,8 @@ urlpatterns = [
     path('company/applications/', company_applications_list, name='company_applications_list'),
     path('company/applications/<int:application_id>/', company_application_details, name='company_application_details'),
     path('company/applications/<int:application_id>/schedule-interview/', company_add_interview, name='company_add_interview'),
-
+    path('company/applications/kanban/', company_applications_kanban, name='company_applications_kanban'),
+    
     path('company/interviews/', company_interviews_list, name='company_interviews_list'),
     path('company/interviews/<int:interview_id>/edit/', company_edit_interview, name='company_edit_interview'),
     path('company/interviews/<int:interview_id>/delete/', company_delete_interview, name='company_delete_interview'),   

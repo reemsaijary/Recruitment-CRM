@@ -90,8 +90,9 @@
         }
 
         /* Main Layout */
-        .main {
+       .main {
             flex: 1;
+            min-width: 0;
         }
 
         .navbar {
@@ -670,6 +671,81 @@
             border-top: 1px solid #e2e8f0;
             margin: 28px 0;
         }
+
+        /* Kanbaan View */
+         
+        .kanban-board {
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            padding-bottom: 14px;
+            max-width: 100%;
+        }
+
+        .kanban-column {
+            flex: 0 0 240px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 420px;
+        }
+
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .kanban-column-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #0f172a;
+        }
+
+        .kanban-column-header span {
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .kanban-card {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+        }
+
+        .kanban-card h4 {
+            margin: 0 0 10px;
+            color: #0f172a;
+        }
+
+        .kanban-card p {
+            margin: 8px 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .kanban-card i {
+            color: #2563eb;
+            margin-right: 6px;
+        }
+
+        .kanban-empty {
+            text-align: center;
+            color: #94a3b8;
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 14px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {

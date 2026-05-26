@@ -2,23 +2,32 @@
 
 {% block content %}
 
-<h1>Schedule Interview</h1>
+<div class="page-header">
+    <div>
+        <h1>Schedule Interview</h1>
+        <p class="page-subtitle">Create an interview for this candidate application.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+    <a href="{% url 'company_application_details' application.id %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
         Back to Application
     </a>
 </div>
 
-<div class="card">
+<div class="card info-section-card">
+    <h3><i class="fa-solid fa-circle-info"></i> Application Summary</h3>
+
     <p><strong>Candidate:</strong> {{ application.candidate.full_name }}</p>
     <p><strong>Job:</strong> {{ application.job.job_title }}</p>
+</div>
 
+<br>
+
+<div class="card job-form-card">
     <form method="POST">
         {% csrf_token %}
 
         <div class="form-grid">
-
             <div class="form-group">
                 <label>Interview Date</label>
                 <input type="datetime-local" name="interview_date" required>
@@ -40,12 +49,16 @@
 
             <div class="form-group full-width">
                 <label>Notes</label>
-                <textarea name="notes"></textarea>
+                <textarea name="notes" placeholder="Add interview notes or instructions..."></textarea>
             </div>
-
         </div>
 
-        <button type="submit" class="action-btn">Save Interview</button>
+        <div class="form-footer">
+            <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-calendar-plus"></i>
+                Save Interview
+            </button>
+        </div>
     </form>
 </div>
 

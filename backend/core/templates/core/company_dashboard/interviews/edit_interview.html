@@ -2,18 +2,23 @@
 
 {% block content %}
 
-<h1>Edit Interview</h1>
+<div class="page-header">
+    <div>
+        <h1>Edit Interview</h1>
+        <p class="page-subtitle">Update interview date, type, status, and notes.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">Back to Interview</a>
+    <a href="{% url 'company_interview_details' interview.id %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Interview
+    </a>
 </div>
 
-<div class="card">
+<div class="card job-form-card">
     <form method="POST">
         {% csrf_token %}
 
         <div class="form-grid">
-
             <div class="form-group">
                 <label>Interview Date</label>
                 <input type="datetime-local" name="interview_date" required>
@@ -37,10 +42,14 @@
                 <label>Notes</label>
                 <textarea name="notes">{{ interview.notes }}</textarea>
             </div>
-
         </div>
 
-        <button type="submit" class="action-btn">Update Interview</button>
+        <div class="form-footer">
+            <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i>
+                Update Interview
+            </button>
+        </div>
     </form>
 </div>
 

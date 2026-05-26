@@ -2,27 +2,65 @@
 
 {% block content %}
 
-<h1>Interview Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Interview Details</h1>
+        <p class="page-subtitle">Review candidate and interview information.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'company_interviews_list' %}" class="small-btn view-btn">Back to Interviews</a>
+    <div class="header-actions">
+        <a href="{% url 'company_interviews_list' %}" class="secondary-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </a>
+
+        <a href="{% url 'company_edit_interview' interview.id %}" class="primary-btn">
+            <i class="fa-solid fa-pen"></i>
+            Edit Interview
+        </a>
+    </div>
 </div>
 
-<div class="card">
-    <h3>Candidate Information</h3>
-    <p><strong>Name:</strong> {{ interview.application.candidate.full_name }}</p>
-    <p><strong>Phone:</strong> {{ interview.application.candidate.phone }}</p>
+<div class="details-grid">
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-user"></i> Candidate Information</h3>
+
+        <p><strong>Name:</strong> {{ interview.application.candidate.full_name }}</p>
+        <p><strong>Phone:</strong> {{ interview.application.candidate.phone }}</p>
+    </div>
+
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-briefcase"></i> Job Information</h3>
+
+        <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
+        <p><strong>Application Status:</strong> {{ interview.application.status }}</p>
+    </div>
 </div>
 
-<br>
+<div class="card info-section-card application-status-card">
+    <h3><i class="fa-solid fa-calendar-check"></i> Interview Information</h3>
 
-<div class="card">
-    <h3>Interview Information</h3>
-    <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
-    <p><strong>Date:</strong> {{ interview.interview_date }}</p>
-    <p><strong>Type:</strong> {{ interview.interview_type }}</p>
-    <p><strong>Status:</strong> {{ interview.status }}</p>
-    <p><strong>Notes:</strong> {{ interview.notes }}</p>
+    <div class="job-info-grid">
+        <div class="info-box">
+            <span>Date</span>
+            <strong>{{ interview.interview_date }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Type</span>
+            <strong>{{ interview.interview_type }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Status</span>
+            <strong>{{ interview.status }}</strong>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Notes</h3>
+        <p>{{ interview.notes|default:"No notes added" }}</p>
+    </div>
 </div>
 
 {% endblock %}

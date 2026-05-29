@@ -1,0 +1,83 @@
+{% extends 'core/candidate_dashboard/base_candidate.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Profile</h1>
+        <p class="page-subtitle">Update your profile information and upload your CV.</p>
+    </div>
+
+    <a href="{% url 'candidate_profile' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+    </a>
+</div>
+
+<div class="card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="{{ candidate.full_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ candidate.phone }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="location" value="{{ candidate.location|default:'' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Current Position</label>
+                <input type="text" name="current_position" value="{{ candidate.current_position|default:'' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Experience Years</label>
+                <input type="number" name="experience_years" value="{{ candidate.experience_years }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>LinkedIn URL</label>
+                <input type="url" name="linkedin_url" value="{{ candidate.linkedin_url|default:'' }}">
+            </div>
+
+            <div class="form-group full-width">
+                <label>Skills</label>
+                <textarea name="skills" placeholder="Example: Python, Django, Laravel, SQL">{{ candidate.skills }}</textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Upload CV</label>
+                <input type="file" name="cv">
+
+                {% if candidate.cv %}
+                    <p>Current CV:
+                        <a href="{{ candidate.cv.url }}" target="_blank">View uploaded CV</a>
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="form-group full-width">
+                <label>About / Notes</label>
+                <textarea name="notes">{{ candidate.notes }}</textarea>
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit" class="primary-btn">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save Changes
+        </button>
+    </form>
+</div>
+
+{% endblock %}

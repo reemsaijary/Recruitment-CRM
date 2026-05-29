@@ -23,6 +23,7 @@ from .views.company_views.candidate_views import *
 from core.views.company_views.application_views import company_applications_kanban
 from core.views.company_views.application_views import update_application_status_from_kanban
 
+from core.views.candidate_views.profile_views import candidate_profile, edit_candidate_profile
 
 urlpatterns = [
 
@@ -110,5 +111,7 @@ urlpatterns = [
     path('candidate/applications/<int:application_id>/', candidate_application_details, name='candidate_application_details'),
     path('candidate/interviews/', candidate_interviews_list, name='candidate_interviews_list'),
     path('candidate/interviews/<int:interview_id>/', candidate_interview_details, name='candidate_interview_details'),
+    path('candidate/profile/', candidate_profile, name='candidate_profile'),
+    path('candidate/profile/edit/', edit_candidate_profile, name='edit_candidate_profile'),
 
 ]

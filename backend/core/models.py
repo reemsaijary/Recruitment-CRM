@@ -39,6 +39,11 @@ class Candidate(models.Model):
     phone = models.CharField(max_length=50)
     linkedin_url = models.URLField(blank=True, null=True)
     experience_years = models.IntegerField()
+    
+    cv = models.FileField(upload_to='candidate_cvs/', blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    skills = models.TextField(blank=True, null=True)
+
     current_position = models.CharField(max_length=200, blank=True, null=True)
     source = models.CharField(max_length=100, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)

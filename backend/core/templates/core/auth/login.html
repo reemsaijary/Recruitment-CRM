@@ -118,6 +118,24 @@
             <input type="password" name="password" placeholder="Enter your password" required>
 
             <button type="submit">Login</button>
+
+            <div style="margin-top:15px;">
+                <a href="{% url 'google_login' %}"
+                style="
+                display:block;
+                text-align:center;
+                background:#fff;
+                color:#444;
+                padding:12px;
+                border-radius:8px;
+                text-decoration:none;
+                border:1px solid #ddd;
+                font-weight:bold;">
+                
+                Continue with Google
+                </a>
+            </div>
+
         </form>
 
         <div class="footer-text">

@@ -5,15 +5,13 @@
 <div class="dashboard-header">
     <div>
         <h1>Candidate Dashboard</h1>
-        <p>Welcome, {{ candidate.full_name }}</p>
+        <p>Welcome back, <strong>{{ candidate.full_name }}</strong></p>
     </div>
 </div>
 
 <div class="stats-container">
 
-    <!-- Available Jobs -->
     <a href="{% url 'candidate_jobs_list' %}" class="stat-card stat-link">
-
         <div class="stat-icon">
             <i class="fa-solid fa-briefcase"></i>
         </div>
@@ -22,12 +20,9 @@
             <h3>Available Jobs</h3>
             <p>{{ available_jobs }}</p>
         </div>
-
     </a>
 
-    <!-- Applications -->
     <a href="{% url 'candidate_applications_list' %}" class="stat-card stat-link">
-
         <div class="stat-icon">
             <i class="fa-solid fa-file-lines"></i>
         </div>
@@ -36,12 +31,9 @@
             <h3>My Applications</h3>
             <p>{{ my_applications }}</p>
         </div>
-
     </a>
 
-    <!-- Interviews -->
     <a href="{% url 'candidate_interviews_list' %}" class="stat-card stat-link">
-
         <div class="stat-icon">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
@@ -50,19 +42,15 @@
             <h3>Scheduled Interviews</h3>
             <p>{{ scheduled_interviews }}</p>
         </div>
-
     </a>
 
-    <!-- Latest Status -->
     <a href="{% url 'candidate_applications_list' %}" class="stat-card stat-link">
-
         <div class="stat-icon">
             <i class="fa-solid fa-chart-line"></i>
         </div>
 
         <div>
             <h3>Latest Status</h3>
-
             <p>
                 {% if latest_application %}
                     {{ latest_application.status }}
@@ -70,11 +58,30 @@
                     None
                 {% endif %}
             </p>
-
         </div>
-
     </a>
 
+</div>
+
+<div class="quick-actions">
+    <h2>Quick Actions</h2>
+
+    <div class="action-buttons">
+        <a href="{% url 'candidate_jobs_list' %}" class="action-btn">
+            <i class="fa-solid fa-briefcase"></i>
+            Browse Jobs
+        </a>
+
+        <a href="{% url 'candidate_applications_list' %}" class="action-btn">
+            <i class="fa-solid fa-file-lines"></i>
+            Track Applications
+        </a>
+
+        <a href="{% url 'candidate_interviews_list' %}" class="action-btn">
+            <i class="fa-solid fa-calendar-days"></i>
+            View Interviews
+        </a>
+    </div>
 </div>
 
 {% endblock %}

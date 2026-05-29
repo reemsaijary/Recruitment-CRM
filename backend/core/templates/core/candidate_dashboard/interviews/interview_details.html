@@ -2,27 +2,64 @@
 
 {% block content %}
 
-<h1>Interview Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Interview Details</h1>
+        <p class="page-subtitle">View your scheduled interview information.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'candidate_interviews_list' %}" class="small-btn view-btn">Back to Interviews</a>
+    <a href="{% url 'candidate_interviews_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+    </a>
 </div>
 
-<div class="card">
-    <h3>Job Information</h3>
-    <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
-    <p><strong>Company:</strong> {{ interview.application.job.company.company_name }}</p>
-    <p><strong>Location:</strong> {{ interview.application.job.location }}</p>
+<div class="details-grid">
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
+
+        <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
+        <p><strong>Company:</strong> {{ interview.application.job.company.company_name }}</p>
+        <p><strong>Location:</strong> {{ interview.application.job.location }}</p>
+    </div>
+
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-calendar-check"></i>
+            Interview Information
+        </h3>
+
+        <div class="info-box">
+            <span>Date</span>
+            <strong>{{ interview.interview_date }}</strong>
+        </div>
+
+        <br>
+
+        <div class="info-box">
+            <span>Type</span>
+            <strong>{{ interview.interview_type }}</strong>
+        </div>
+
+        <br>
+
+        <div class="info-box">
+            <span>Status</span>
+            <strong>{{ interview.status }}</strong>
+        </div>
+    </div>
 </div>
 
-<br>
+<div class="card info-section-card" style="margin-top: 20px;">
+    <h3>
+        <i class="fa-solid fa-note-sticky"></i>
+        Notes
+    </h3>
 
-<div class="card">
-    <h3>Interview Information</h3>
-    <p><strong>Date:</strong> {{ interview.interview_date }}</p>
-    <p><strong>Type:</strong> {{ interview.interview_type }}</p>
-    <p><strong>Status:</strong> {{ interview.status }}</p>
-    <p><strong>Notes:</strong> {{ interview.notes }}</p>
+    <p>{{ interview.notes|default:"No notes added." }}</p>
 </div>
 
 {% endblock %}

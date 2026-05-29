@@ -2,29 +2,58 @@
 
 {% block content %}
 
-<h1>Application Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Application Details</h1>
+        <p class="page-subtitle">View your application and current hiring status.</p>
+    </div>
 
-<div class="page-actions">
-    <a href="{% url 'candidate_applications_list' %}" class="small-btn view-btn">Back to Applications</a>
+    <a href="{% url 'candidate_applications_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+    </a>
 </div>
 
-<div class="card">
-    <h3>Job Information</h3>
+<div class="details-grid">
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
 
-    <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
-    <p><strong>Company:</strong> {{ application.job.company.company_name }}</p>
-    <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
-    <p><strong>Location:</strong> {{ application.job.location }}</p>
+        <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
+        <p><strong>Company:</strong> {{ application.job.company.company_name }}</p>
+        <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
+        <p><strong>Location:</strong> {{ application.job.location }}</p>
+    </div>
+
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-list-check"></i>
+            Application Status
+        </h3>
+
+        <div class="info-box">
+            <span>Status</span>
+            <strong>{{ application.status }}</strong>
+        </div>
+
+        <br>
+
+        <div class="info-box">
+            <span>Applied Date</span>
+            <strong>{{ application.applied_date }}</strong>
+        </div>
+    </div>
 </div>
 
-<br>
+<div class="card info-section-card" style="margin-top: 20px;">
+    <h3>
+        <i class="fa-solid fa-note-sticky"></i>
+        Notes
+    </h3>
 
-<div class="card">
-    <h3>Application Status</h3>
-
-    <p><strong>Status:</strong> {{ application.status }}</p>
-    <p><strong>Applied Date:</strong> {{ application.applied_date }}</p>
-    <p><strong>Notes:</strong> {{ application.notes }}</p>
+    <p>{{ application.notes|default:"No notes added." }}</p>
 </div>
 
 {% endblock %}

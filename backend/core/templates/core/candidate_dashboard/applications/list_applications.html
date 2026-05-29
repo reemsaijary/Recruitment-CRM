@@ -10,33 +10,50 @@
 </div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>Status</th>
-            <th>Applied Date</th>
-            <th>Actions</th>
-        </tr>
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for application in applications %}
-        <tr>
-            <td>{{ application.job.job_title }}</td>
-            <td>{{ application.job.company.company_name }}</td>
-            <td>{{ application.status }}</td>
-            <td>{{ application.applied_date }}</td>
-            <td>
-                <a href="{% url 'candidate_application_details' application.id %}" class="small-btn view-btn">
-                    View
-                </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">You have not applied to any jobs yet.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for application in applications %}
+            <tr>
+                <td><strong>{{ application.job.job_title }}</strong></td>
+                <td>{{ application.job.company.company_name }}</td>
+                <td>
+                    <span class="status-pill">
+                        {{ application.status }}
+                    </span>
+                </td>
+                <td>{{ application.applied_date }}</td>
+                <td>
+                    <a href="{% url 'candidate_application_details' application.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+
+            <h2>No applications yet</h2>
+            <p>Apply to available jobs and your applications will appear here.</p>
+
+            <a href="{% url 'candidate_jobs_list' %}" class="action-btn">
+                <i class="fa-solid fa-briefcase"></i>
+                Browse Jobs
+            </a>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

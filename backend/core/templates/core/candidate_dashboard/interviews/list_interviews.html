@@ -10,33 +10,47 @@
 </div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Job</th>
-            <th>Company</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
+    {% if interviews %}
+        <table>
+            <tr>
+                <th>Job</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for interview in interviews %}
-        <tr>
-            <td>{{ interview.application.job.job_title }}</td>
-            <td>{{ interview.application.job.company.company_name }}</td>
-            <td>{{ interview.interview_date }}</td>
-            <td>{{ interview.interview_type }}</td>
-            <td>{{ interview.status }}</td>
-            <td>
-                <a href="{% url 'candidate_interview_details' interview.id %}" class="small-btn view-btn">View</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">No interviews scheduled yet.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for interview in interviews %}
+            <tr>
+                <td><strong>{{ interview.application.job.job_title }}</strong></td>
+                <td>{{ interview.application.job.company.company_name }}</td>
+                <td>{{ interview.interview_date }}</td>
+                <td>{{ interview.interview_type }}</td>
+                <td>
+                    <span class="status-pill">
+                        {{ interview.status }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'candidate_interview_details' interview.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+
+            <h2>No interviews scheduled yet</h2>
+            <p>Your interview invitations will appear here once a company schedules them.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

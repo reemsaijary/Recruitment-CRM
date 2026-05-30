@@ -9,9 +9,9 @@ from django.contrib.auth.models import User
 from core.models import Profile
 
 demo_users = [
-    ("admin_demo", "Admin", True, True),
-    ("company_demo", "Company", False, False),
-    ("candidate_demo", "Candidate", False, False),
+    ("admin_demo", "admin", True, True),
+    ("company_demo", "company", False, False),
+    ("candidate_demo", "candidate", False, False),
 ]
 
 for username, role, is_staff, is_superuser in demo_users:
@@ -26,5 +26,5 @@ for username, role, is_staff, is_superuser in demo_users:
     profile.role = role
     profile.save()
 
-print("Demo users created successfully.")
+print("Demo users with roles created successfully.")
 END

@@ -31,11 +31,11 @@ for username, role, is_staff, is_superuser in demo_users:
             user=user,
             defaults={
                 "full_name": "Candidate Demo",
-                "email": user.email,
                 "phone": "00000000",
                 "linkedin_url": "",
-                "skills": "Python, Django, SQL",
                 "experience_years": 1,
+                "location": "Lebanon",
+                "skills": "Python, Django, SQL",
                 "current_position": "Junior Developer",
                 "source": "Demo",
                 "notes": "Demo candidate account"
@@ -48,7 +48,6 @@ for username, role, is_staff, is_superuser in demo_users:
             defaults={
                 "company_name": "Demo Company",
                 "contact_name": "Company Demo",
-                "email": user.email,
                 "phone": "00000000",
                 "website": "",
                 "linkedin_url": "",

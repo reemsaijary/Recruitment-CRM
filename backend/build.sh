@@ -6,7 +6,7 @@ python manage.py migrate
 
 python manage.py shell << END
 from django.contrib.auth.models import User
-from core.models import Profile
+from core.models import Profile, Candidate, Company
 
 demo_users = [
     ("admin_demo", "admin", True, True),
@@ -26,5 +26,38 @@ for username, role, is_staff, is_superuser in demo_users:
     profile.role = role
     profile.save()
 
-print("Demo users with roles created successfully.")
+    if role == "candidate":
+        Candidate.objects.get_or_create(
+            user=user,
+            defaults={
+                "full_name": "Candidate Demo",
+                "email": user.email,
+                "phone": "00000000",
+                "linkedin_url": "",
+                "skills": "Python, Django, SQL",
+                "experience_years": 1,
+                "current_position": "Junior Developer",
+                "source": "Demo",
+                "notes": "Demo candidate account"
+            }
+        )
+
+    if role == "company":
+        Company.objects.get_or_create(
+            user=user,
+            defaults={
+                "company_name": "Demo Company",
+                "contact_name": "Company Demo",
+                "email": user.email,
+                "phone": "00000000",
+                "website": "",
+                "linkedin_url": "",
+                "industry": "Recruitment",
+                "country": "Lebanon",
+                "company_size": "10-50",
+                "notes": "Demo company account"
+            }
+        )
+
+print("Demo users, profiles, candidate, and company records created successfully.")
 END

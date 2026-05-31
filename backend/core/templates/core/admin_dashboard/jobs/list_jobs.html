@@ -2,43 +2,183 @@
 
 {% block content %}
 
-<h1>Jobs</h1>
+<div class="page-header">
+    <div>
+        <h1>Jobs Management</h1>
+        <p class="page-subtitle">Review all jobs posted by companies.</p>
+    </div>
 
-<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
-<a href="{% url 'add_job' %}" class="btn">Add Job</a>
+    <a href="{% url 'dashboard' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div>
+            <span>Total Jobs</span>
+            <strong>{{ total_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <span>Open Jobs</span>
+            <strong>{{ open_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </div>
+        <div>
+            <span>Closed Jobs</span>
+            <strong>{{ closed_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+        <div>
+            <span>Applications</span>
+            <strong>{{ total_applications }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card filter-card">
+    <form method="GET" class="filter-form">
+
+        <div class="filter-group">
+            <label>Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   placeholder="Search job, company, location...">
+        </div>
+
+        <div class="filter-group">
+            <label>Company</label>
+            <select name="company">
+                <option value="">All Companies</option>
+                {% for company in companies %}
+                    <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
+                        {{ company.company_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Status</label>
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Open" {% if status_filter == "Open" %}selected{% endif %}>Open</option>
+                <option value="Closed" {% if status_filter == "Closed" %}selected{% endif %}>Closed</option>
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Apply
+            </button>
+
+            <a href="{% url 'jobs_list' %}" class="secondary-btn">
+                Clear
+            </a>
+        </div>
+
+    </form>
+</div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Job Type</th>
-            <th>Actions</th>
-        </tr>
+    {% if jobs %}
+        <table>
+            <tr>
+                <th>Job</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Applications</th>
+                <th>Interviews</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for job in jobs %}
-        <tr>
-            <td>{{ job.job_title }}</td>
-            <td>{{ job.company.company_name }}</td>
-            <td>{{ job.location }}</td>
-            <td>{{ job.status }}</td>
-            <td>{{ job.job_type }}</td>
-            <td>
-                <a href="{% url 'job_details' job.id %}">View</a> |
-                <a href="{% url 'edit_job' job.id %}">Edit</a> |
-                <a href="{% url 'delete_job' job.id %}">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7">No jobs found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for job in jobs %}
+            <tr>
+                <td>
+                    <strong>{{ job.job_title }}</strong>
+                    <span style="display:block; color:#64748b; font-size:13px; margin-top:4px;">
+                        Posted {{ job.created_at|date:"M d, Y" }}
+                    </span>
+                </td>
+
+                <td>{{ job.company.company_name }}</td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.job_type|default:"No type" }}</td>
+
+                <td>
+                    {% if job.status == "Open" %}
+                        <span class="exp-pill exp-high">{{ job.status }}</span>
+                    {% else %}
+                        <span class="exp-pill exp-low">{{ job.status }}</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ job.applications_count }}</span>
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ job.interviews_count }}</span>
+                </td>
+
+                <td>
+                    <a href="{% url 'job_details' job.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="pagination">
+            {% if jobs.has_previous %}
+                <a href="?page=1&search={{ search_query }}&company={{ company_filter }}&status={{ status_filter }}&job_type={{ type_filter }}">First</a>
+                <a href="?page={{ jobs.previous_page_number }}&search={{ search_query }}&company={{ company_filter }}&status={{ status_filter }}&job_type={{ type_filter }}">Previous</a>
+            {% endif %}
+
+            <span>Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}</span>
+
+            {% if jobs.has_next %}
+                <a href="?page={{ jobs.next_page_number }}&search={{ search_query }}&company={{ company_filter }}&status={{ status_filter }}&job_type={{ type_filter }}">Next</a>
+                <a href="?page={{ jobs.paginator.num_pages }}&search={{ search_query }}&company={{ company_filter }}&status={{ status_filter }}&job_type={{ type_filter }}">Last</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+
+            <h2>No jobs found</h2>
+            <p>Try changing the search or filter values.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

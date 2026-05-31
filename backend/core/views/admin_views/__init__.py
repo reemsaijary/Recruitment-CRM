@@ -16,10 +16,7 @@ from .company_views import (
 # job logic
 from .job_views import (
     jobs_list,
-    add_job,
     job_details,
-    edit_job,
-    delete_job,
 )
 #applications logic
 from .application_views import (

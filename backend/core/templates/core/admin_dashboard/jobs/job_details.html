@@ -2,23 +2,195 @@
 
 {% block content %}
 
-<h1>Job Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Job Details</h1>
+        <p class="page-subtitle">Read-only job overview and recruitment activity.</p>
+    </div>
 
-<a href="{% url 'jobs_list' %}" class="btn">Back to Jobs</a>
-<a href="{% url 'edit_job' job.id %}" class="btn">Edit Job</a>
+    <a href="{% url 'jobs_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Jobs
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+        <div>
+            <span>Applications</span>
+            <strong>{{ applications_count }}</strong>
+        </div>
+    </div>
 
-<div class="card">
-    <p><strong>Job Title:</strong> {{ job.job_title }}</p>
-    <p><strong>Company:</strong> {{ job.company.company_name }}</p>
-    <p><strong>Location:</strong> {{ job.location }}</p>
-    <p><strong>Status:</strong> {{ job.status }}</p>
-    <p><strong>Job Type:</strong> {{ job.job_type }}</p>
-    <p><strong>Max Salary</strong> {{ job.salary_range }}</p>
-    <p><strong>Min Salary</strong> {{ job.salary_range }}</p>
-    <p><strong>Description:</strong> {{ job.description }}</p>
-    <p><strong>Created At:</strong> {{ job.created_at }}</p>
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div>
+            <span>Interviews</span>
+            <strong>{{ interviews_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-star"></i>
+        </div>
+        <div>
+            <span>Shortlisted</span>
+            <strong>{{ shortlisted_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-user-check"></i>
+        </div>
+        <div>
+            <span>Hired</span>
+            <strong>{{ hired_count }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-briefcase"></i>
+        Job Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Job Title</span>
+            <strong>{{ job.job_title }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Status</span>
+            {% if job.status == "Open" %}
+                <strong class="exp-pill exp-high">{{ job.status }}</strong>
+            {% else %}
+                <strong class="exp-pill exp-low">{{ job.status }}</strong>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <span>Location</span>
+            <strong>{{ job.location }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Job Type</span>
+            <strong>{{ job.job_type|default:"No type added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Minimum Salary</span>
+            <strong>{{ job.min_salary|default:"Not added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Maximum Salary</span>
+            <strong>{{ job.max_salary|default:"Not added" }}</strong>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Description</h3>
+        <p>{{ job.description|default:"No description added." }}</p>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-building"></i>
+        Company Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Company</span>
+            <strong>{{ job.company.company_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Contact Person</span>
+            <strong>{{ job.company.contact_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Industry</span>
+            <strong>{{ job.company.industry|default:"No industry added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Country</span>
+            <strong>{{ job.company.country|default:"No country added" }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-file-lines"></i>
+        Applications
+    </h3>
+
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Candidate</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+            </tr>
+
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.candidate.full_name }}</td>
+                <td>
+                    <span class="status-pill">{{ application.status }}</span>
+                </td>
+                <td>{{ application.applied_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No applications for this job yet.</p>
+    {% endif %}
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-calendar-days"></i>
+        Interviews
+    </h3>
+
+    {% if interviews %}
+        <table>
+            <tr>
+                <th>Candidate</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+
+            {% for interview in interviews %}
+            <tr>
+                <td>{{ interview.application.candidate.full_name }}</td>
+                <td>{{ interview.interview_date }}</td>
+                <td>{{ interview.interview_type }}</td>
+                <td>
+                    <span class="status-pill">{{ interview.status }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No interviews for this job yet.</p>
+    {% endif %}
 </div>
 
 {% endblock %}

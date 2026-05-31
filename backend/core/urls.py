@@ -45,10 +45,7 @@ urlpatterns = [
     path('companies/<int:company_id>/delete/', delete_company, name='delete_company'),
 
     path('jobs/', jobs_list, name='jobs_list'),
-    path('jobs/add/', add_job, name='add_job'),
     path('jobs/<int:job_id>/', job_details, name='job_details'),
-    path('jobs/<int:job_id>/edit/', edit_job, name='edit_job'),
-    path('jobs/<int:job_id>/delete/', delete_job, name='delete_job'),
 
     path('applications/', applications_list, name='applications_list'),
     path('applications/add/', add_application, name='add_application'),

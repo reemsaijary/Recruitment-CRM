@@ -1,16 +1,43 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+
 {% block content %}
 
-<h1>Delete Company</h1>
+<div class="delete-wrapper">
+    <div class="card delete-card">
 
-<div class="card">
-    <p>Are you sure you want to delete <strong>{{ company.company_name }}</strong>?</p>
+        <div class="warning-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn">Yes, Delete</button>
-        <a href="{% url 'companies_list' %}" class="btn">Cancel</a>
-    </form>
+        <h1>Delete Company</h1>
+
+        <p class="delete-message">
+            Are you sure you want to delete
+            <strong>{{ company.company_name }}</strong>?
+        </p>
+
+        <p class="delete-warning">
+            This action will remove the company and its linked login account.
+            This cannot be undone.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="delete-actions">
+                <a href="{% url 'companies_list' %}" class="secondary-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Cancel
+                </a>
+
+                <button type="submit" class="danger-btn">
+                    <i class="fa-solid fa-trash"></i>
+                    Yes, Delete Company
+                </button>
+            </div>
+        </form>
+
+    </div>
 </div>
 
 {% endblock %}

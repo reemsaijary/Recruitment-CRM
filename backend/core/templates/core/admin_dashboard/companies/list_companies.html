@@ -2,60 +2,214 @@
 
 {% block content %}
 
-<h1>Companies</h1>
+<div class="page-header">
+    <div>
+        <h1>Companies Management</h1>
+        <p class="page-subtitle">Search, filter, and manage company accounts.</p>
+    </div>
 
-<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
-<a href="{% url 'add_company' %}" class="btn">Add Company</a>
+    <div class="page-actions">
+        <a href="{% url 'dashboard' %}" class="secondary-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </a>
 
-<br><br>
+        <a href="{% url 'add_company' %}" class="btn">
+            <i class="fa-solid fa-plus"></i>
+            Add Company
+        </a>
+    </div>
+</div>
+
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-building"></i>
+        </div>
+        <div>
+            <span>Companies</span>
+            <strong>{{ total_companies }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div>
+            <span>Jobs</span>
+            <strong>{{ total_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+        <div>
+            <span>Applications</span>
+            <strong>{{ total_applications }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div>
+            <span>Interviews</span>
+            <strong>{{ total_interviews }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card filter-card">
+    <form method="GET" class="filter-form">
+
+        <div class="filter-group">
+            <label>Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   placeholder="Search company, email, industry, country...">
+        </div>
+
+        <div class="filter-group">
+            <label>Country</label>
+            <select name="country">
+                <option value="">All Countries</option>
+
+                {% for country in countries %}
+                    <option value="{{ country }}" {% if country_filter == country %}selected{% endif %}>
+                        {{ country }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Industry</label>
+            <select name="industry">
+                <option value="">All Industries</option>
+
+                {% for industry in industries %}
+                    <option value="{{ industry }}" {% if industry_filter == industry %}selected{% endif %}>
+                        {{ industry }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Apply
+            </button>
+
+            <a href="{% url 'companies_list' %}" class="secondary-btn">
+                Clear
+            </a>
+        </div>
+
+    </form>
+</div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Company Name</th>
-            <th>Contact Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Industry</th>
-            <th>Country</th>
-            <th>Actions</th>
-        </tr>
+    {% if companies %}
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Industry</th>
+                <th>Country</th>
+                <th>Jobs</th>
+                <th>Applications</th>
+                <th>Interviews</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for company in companies %}
-        <tr>
-            <td>{{ company.company_name }}</td>
-            <td>{{ company.contact_name }}</td>
-            <td>
-                {% if company.user %}
-                    {{ company.user.username }}
-                {% else %}
-                    No Account
-                {% endif %}
-            </td>
+            {% for company in companies %}
+            <tr>
+                <td>
+                    <div class="candidate-cell">
+                        <div class="candidate-avatar">
+                            {{ company.company_name|slice:":1" }}
+                        </div>
 
-            <td>
-                {% if company.user %}
-                    {{ company.user.email }}
-                {% else %}
-                    No Email
-                {% endif %}
-            </td>
-            <td>{{ company.phone }}</td>
-            <td>{{ company.industry }}</td>
-            <td>{{ company.country }}</td>
-            <td>
-                <a href="{% url 'company_details' company.id %}">View</a> |
-                <a href="{% url 'edit_company' company.id %}">Edit</a> |
-                <a href="{% url 'delete_company' company.id %}">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="8">No companies found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+                        <div>
+                            <strong>{{ company.company_name }}</strong>
+                            <span>
+                                {{ company.contact_name }}
+                                {% if company.user %}
+                                    • {{ company.user.email }}
+                                {% else %}
+                                    • No account
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </td>
+
+                <td>{{ company.industry|default:"No industry" }}</td>
+                <td>{{ company.country|default:"No country" }}</td>
+
+                <td>
+                    <span class="count-pill">{{ company.jobs_count }}</span>
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ company.applications_count }}</span>
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ company.interviews_count }}</span>
+                </td>
+
+                <td>
+                    <div class="table-actions">
+                        <a href="{% url 'company_details' company.id %}" class="small-btn view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </a>
+
+                        <a href="{% url 'edit_company' company.id %}" class="small-btn edit-btn">
+                            <i class="fa-solid fa-pen"></i>
+                            Edit
+                        </a>
+
+                        <a href="{% url 'delete_company' company.id %}" class="small-btn delete-btn">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="pagination">
+            {% if companies.has_previous %}
+                <a href="?page=1&search={{ search_query }}&country={{ country_filter }}&industry={{ industry_filter }}">First</a>
+                <a href="?page={{ companies.previous_page_number }}&search={{ search_query }}&country={{ country_filter }}&industry={{ industry_filter }}">Previous</a>
+            {% endif %}
+
+            <span>Page {{ companies.number }} of {{ companies.paginator.num_pages }}</span>
+
+            {% if companies.has_next %}
+                <a href="?page={{ companies.next_page_number }}&search={{ search_query }}&country={{ country_filter }}&industry={{ industry_filter }}">Next</a>
+                <a href="?page={{ companies.paginator.num_pages }}&search={{ search_query }}&country={{ country_filter }}&industry={{ industry_filter }}">Last</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <h2>No companies found</h2>
+            <p>Try changing the search or filter values.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

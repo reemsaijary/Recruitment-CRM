@@ -2,44 +2,189 @@
 
 {% block content %}
 
-<h1>Candidates</h1>
+<div class="page-header">
+    <div>
+        <h1>Candidates Management</h1>
+    </div>
 
-<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
-<a href="{% url 'add_candidate' %}" class="btn">Add Candidate</a>
+    <a href="{% url 'dashboard' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Dashboard
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+            <span>Candidates</span>
+            <strong>{{ total_candidates }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+        <div>
+            <span>Applications</span>
+            <strong>{{ total_applications }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div>
+            <span>Interviews</span>
+            <strong>{{ total_interviews }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div>
+            <span>Avg. Experience</span>
+            <strong>{{ average_experience }} Years</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card filter-card">
+    <form method="GET" class="filter-form">
+
+        <div class="filter-group">
+            <label>Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   placeholder="Search name, email, skills, position...">
+        </div>
+
+        <div class="filter-group">
+            <label>Location</label>
+            <select name="location">
+                <option value="">All Locations</option>
+                {% for location in locations %}
+                    <option value="{{ location }}" {% if location_filter == location %}selected{% endif %}>
+                        {{ location }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Experience</label>
+            <select name="experience">
+                <option value="">All Experience</option>
+                <option value="0" {% if experience_filter == "0" %}selected{% endif %}>0 Years</option>
+                <option value="1" {% if experience_filter == "1" %}selected{% endif %}>1 Year</option>
+                <option value="2" {% if experience_filter == "2" %}selected{% endif %}>2 Years</option>
+                <option value="3" {% if experience_filter == "3" %}selected{% endif %}>3 Years</option>
+                <option value="4" {% if experience_filter == "4" %}selected{% endif %}>4 Years</option>
+                <option value="5" {% if experience_filter == "5" %}selected{% endif %}>5+ Years</option>
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Apply
+            </button>
+
+            <a href="{% url 'candidates_list' %}" class="secondary-btn">
+                Clear
+            </a>
+        </div>
+
+    </form>
+</div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Full Name</th>
-            <th>Phone</th>
-            
-            <th>Experience Years</th>
-            <th>Source</th>
-            <th>Actions</th>
-        </tr>
+    {% if candidates %}
+        <table>
+            <tr>
+                <th>Candidate</th>
+                <th>Position</th>
+                <th>Experience</th>
+                <th>Applications</th>
+                <th>Interviews</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for candidate in candidates %}
-        <tr>
-            <td>{{ candidate.full_name }}</td>
-            
-            <td>{{ candidate.phone }}</td>
-          
-            <td>{{ candidate.experience_years }}</td>
-            <td>{{ candidate.source }}</td>
-            <td>
-                <a href="{% url 'candidate_details' candidate.id %}">View</a> |
-                <a href="{% url 'edit_candidate' candidate.id %}">Edit</a> |
-                <a href="{% url 'delete_candidate' candidate.id %}">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7">No candidates found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for candidate in candidates %}
+            <tr>
+                <td>
+                    <div class="candidate-cell">
+                        <div class="candidate-avatar">
+                            {{ candidate.full_name|slice:":1" }}
+                        </div>
+                        <div>
+                            <strong>{{ candidate.full_name }}</strong>
+                            <span>{{ candidate.user.email|default:"No email" }}</span>
+                        </div>
+                    </div>
+                </td>
+
+                <td>{{ candidate.current_position|default:"No position" }}</td>
+
+                <td>
+                    {% if candidate.experience_years <= 1 %}
+                        <span class="exp-pill exp-low">{{ candidate.experience_years }} Years</span>
+                    {% elif candidate.experience_years <= 3 %}
+                        <span class="exp-pill exp-mid">{{ candidate.experience_years }} Years</span>
+                    {% else %}
+                        <span class="exp-pill exp-high">{{ candidate.experience_years }} Years</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ candidate.applications_count }}</span>
+                </td>
+
+                <td>
+                    <span class="count-pill">{{ candidate.interviews_count }}</span>
+                </td>
+
+                <td>
+                    <a href="{% url 'candidate_details' candidate.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View Profile
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="pagination">
+            {% if candidates.has_previous %}
+                <a href="?page=1&search={{ search_query }}&location={{ location_filter }}&experience={{ experience_filter }}">First</a>
+                <a href="?page={{ candidates.previous_page_number }}&search={{ search_query }}&location={{ location_filter }}&experience={{ experience_filter }}">Previous</a>
+            {% endif %}
+
+            <span>Page {{ candidates.number }} of {{ candidates.paginator.num_pages }}</span>
+
+            {% if candidates.has_next %}
+                <a href="?page={{ candidates.next_page_number }}&search={{ search_query }}&location={{ location_filter }}&experience={{ experience_filter }}">Next</a>
+                <a href="?page={{ candidates.paginator.num_pages }}&search={{ search_query }}&location={{ location_filter }}&experience={{ experience_filter }}">Last</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <h2>No candidates found</h2>
+            <p>Try changing the search or filter values.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

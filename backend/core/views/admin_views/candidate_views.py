@@ -1,76 +1,86 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Candidate
+from django.core.paginator import Paginator
+from django.db.models import Count, Avg, Q
+from django.shortcuts import render, get_object_or_404
+
+from core.models import Candidate, Application, Interview
 from core.decorators import role_required
 
 #list
 @role_required(['admin'])
 def candidates_list(request):
-    candidates = Candidate.objects.all()
+    candidates = Candidate.objects.all().select_related('user').annotate(
+        applications_count=Count('application', distinct=True),
+        interviews_count=Count('application__interview', distinct=True)
+    ).order_by('-created_at')
 
-    return render(request, 'core/admin_dashboard/candidates/list_candidates.html', {
-    'candidates': candidates
-})
+    search_query = request.GET.get('search', '')
+    location_filter = request.GET.get('location', '')
+    experience_filter = request.GET.get('experience', '')
 
-#add
-@role_required(['admin'])
-def add_candidate(request):
-    if request.method == 'POST':
-        Candidate.objects.create(
-            full_name=request.POST.get('full_name'),
-          
-            phone=request.POST.get('phone'),
-            linkedin_url=request.POST.get('linkedin_url'),
-          
-            experience_years=request.POST.get('experience_years'),
-            current_position=request.POST.get('current_position'),
-            source=request.POST.get('source'),
-            notes=request.POST.get('notes')
+    if search_query:
+        candidates = candidates.filter(
+            Q(full_name__icontains=search_query) |
+            Q(user__email__icontains=search_query) |
+            Q(current_position__icontains=search_query) |
+            Q(skills__icontains=search_query) |
+            Q(location__icontains=search_query)
         )
 
-        return redirect('candidates_list')
+    if location_filter:
+        candidates = candidates.filter(location__icontains=location_filter)
 
-    return render(request, 'core/admin_dashboard/candidates/add_candidate.html')
+    if experience_filter:
+        candidates = candidates.filter(experience_years=experience_filter)
 
-#show
+    total_candidates = Candidate.objects.count()
+    total_applications = Application.objects.count()
+    total_interviews = Interview.objects.count()
+    average_experience = Candidate.objects.aggregate(
+        avg_exp=Avg('experience_years')
+    )['avg_exp'] or 0
+
+    locations = Candidate.objects.exclude(
+        location__isnull=True
+    ).exclude(
+        location=''
+    ).values_list('location', flat=True).distinct()
+
+    paginator = Paginator(candidates, 8)
+    page_number = request.GET.get('page')
+    candidates_page = paginator.get_page(page_number)
+
+    return render(request, 'core/admin_dashboard/candidates/list_candidates.html', {
+        'candidates': candidates_page,
+        'search_query': search_query,
+        'location_filter': location_filter,
+        'experience_filter': experience_filter,
+        'locations': locations,
+        'total_candidates': total_candidates,
+        'total_applications': total_applications,
+        'total_interviews': total_interviews,
+        'average_experience': round(average_experience, 1),
+    })
+
+#view
 @role_required(['admin'])
 def candidate_details(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
 
+    applications = Application.objects.filter(
+        candidate=candidate
+    ).select_related('job', 'job__company')
+
+    interviews = Interview.objects.filter(
+        application__candidate=candidate
+    ).select_related('application', 'application__job')
+
+    skills_count = 0
+    if candidate.skills:
+        skills_count = len([skill for skill in candidate.skills.split(',') if skill.strip()])
+
     return render(request, 'core/admin_dashboard/candidates/candidate_details.html', {
-    'candidate': candidate
-})
-#edit
-@role_required(['admin'])
-def edit_candidate(request, candidate_id):
-    candidate = get_object_or_404(Candidate, id=candidate_id)
-
-    if request.method == 'POST':
-        candidate.full_name = request.POST.get('full_name')
-       
-        candidate.phone = request.POST.get('phone')
-        candidate.linkedin_url = request.POST.get('linkedin_url')
-       
-        candidate.experience_years = request.POST.get('experience_years')
-        candidate.current_position = request.POST.get('current_position')
-        candidate.source = request.POST.get('source')
-        candidate.notes = request.POST.get('notes')
-        candidate.save()
-
-        return redirect('candidates_list')
-
-    return render(request, 'core/admin_dashboard/candidates/edit_candidate.html', {
-    'candidate': candidate
-})
-
-#delete
-@role_required(['admin'])
-def delete_candidate(request, candidate_id):
-    candidate = get_object_or_404(Candidate, id=candidate_id)
-
-    if request.method == 'POST':
-        candidate.delete()
-        return redirect('candidates_list')
-
-    return render(request, 'core/admin_dashboard/candidates/delete_candidate.html', {
-    'candidate': candidate
-})
+        'candidate': candidate,
+        'applications': applications,
+        'interviews': interviews,
+        'skills_count': skills_count,
+    })

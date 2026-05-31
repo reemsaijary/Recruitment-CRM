@@ -2,22 +2,158 @@
 
 {% block content %}
 
-<h1>Candidate Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Candidate Profile</h1>
+        <p class="page-subtitle">Read-only candidate profile overview.</p>
+    </div>
 
-<a href="{% url 'candidates_list' %}" class="btn">Back to Candidates</a>
-<a href="{% url 'edit_candidate' candidate.id %}" class="btn">Edit Candidate</a>
+    <a href="{% url 'candidates_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Candidates
+    </a>
+</div>
 
-<br><br>
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-user"></i>
+        Personal Information
+    </h3>
 
-<div class="card">
-    <p><strong>Full Name:</strong> {{ candidate.full_name }}</p>
-    <p><strong>Phone:</strong> {{ candidate.phone }}</p>
-    <p><strong>LinkedIn:</strong> {{ candidate.linkedin_url }}</p>
-    <p><strong>Experience Years:</strong> {{ candidate.experience_years }}</p>
-    <p><strong>Current Position:</strong> {{ candidate.current_position }}</p>
-    <p><strong>Source:</strong> {{ candidate.source }}</p>
-    <p><strong>Notes:</strong> {{ candidate.notes }}</p>
-    <p><strong>Created At:</strong> {{ candidate.created_at }}</p>
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Full Name</span>
+            <strong>{{ candidate.full_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Email</span>
+            <strong>{{ candidate.user.email|default:"No email added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Phone</span>
+            <strong>{{ candidate.phone|default:"No phone added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Location</span>
+            <strong>{{ candidate.location|default:"No location added" }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-briefcase"></i>
+        Professional Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Current Position</span>
+            <strong>{{ candidate.current_position|default:"No position added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Experience</span>
+            <strong>{{ candidate.experience_years }} Years</strong>
+        </div>
+
+        <div class="info-box">
+            <span>LinkedIn</span>
+            <strong>{{ candidate.linkedin_url|default:"No LinkedIn added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>CV / Resume</span>
+
+            {% if candidate.cv %}
+                <a href="{{ candidate.cv.url }}" target="_blank" class="small-btn view-btn">
+                    <i class="fa-solid fa-file"></i>
+                    View CV
+                </a>
+            {% else %}
+                <strong>No CV uploaded</strong>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Skills</h3>
+        <p>{{ candidate.skills|default:"No skills added." }}</p>
+    </div>
+
+    <div class="description-box">
+        <h3>Notes</h3>
+        <p>{{ candidate.notes|default:"No notes added." }}</p>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-file-lines"></i>
+        Applications
+    </h3>
+
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Job</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+            </tr>
+
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.job.job_title }}</td>
+                <td>{{ application.job.company.company_name }}</td>
+                <td>
+                    <span class="status-pill">
+                        {{ application.status }}
+                    </span>
+                </td>
+                <td>{{ application.applied_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No applications found for this candidate.</p>
+    {% endif %}
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-calendar-days"></i>
+        Interviews
+    </h3>
+
+    {% if interviews %}
+        <table>
+            <tr>
+                <th>Job</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+
+            {% for interview in interviews %}
+            <tr>
+                <td>{{ interview.application.job.job_title }}</td>
+                <td>{{ interview.interview_date }}</td>
+                <td>{{ interview.interview_type }}</td>
+                <td>
+                    <span class="status-pill">
+                        {{ interview.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No interviews found for this candidate.</p>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <title>Recruitment CRM</title>
 
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        /* Global Reset */
         * {
             box-sizing: border-box;
         }
 
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #f8fafc;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
             color: #0f172a;
         }
 
@@ -25,7 +25,9 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* 
+           Sidebar
+         */
         .sidebar {
             width: 260px;
             background: linear-gradient(180deg, #020617, #1e293b);
@@ -46,13 +48,13 @@
         }
 
         .logo {
+            margin: 0;
             font-size: 22px;
             font-weight: bold;
-            margin: 0;
         }
 
         .toggle-btn {
-            background-color: #2563eb;
+            background: #2563eb;
             color: white;
             border: none;
             padding: 9px 11px;
@@ -73,14 +75,11 @@
             transition: 0.2s;
         }
 
-        .sidebar-menu a:hover {
-            background-color: #2563eb;
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #2563eb;
             color: white;
         }
-        .sidebar-menu a.active {
-    background-color: #2563eb;
-    color: white;
-}
 
         .icon {
             width: 22px;
@@ -93,24 +92,23 @@
             display: none;
         }
 
-        .sidebar.closed .sidebar-header {
-            justify-content: center;
-        }
-
+        .sidebar.closed .sidebar-header,
         .sidebar.closed .sidebar-menu a {
             justify-content: center;
         }
 
-        /* Main */
+        /* 
+           Main Layout
+         */
         .main {
             flex: 1;
         }
 
         .navbar {
-            background-color: white;
+            background: white;
             padding: 22px 35px;
             border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
 
         .navbar h2 {
@@ -122,12 +120,15 @@
             padding: 35px;
         }
 
-        /* Reusable UI */
+        /* 
+           Reusable Components
+         */
         .card,
-        .stat-card {
-            background-color: white;
+        .stat-card,
+        .mini-stat-card {
+            background: white;
             border-radius: 14px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .card {
@@ -135,27 +136,90 @@
             margin-bottom: 20px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 16px;
-            background-color: #2563eb;
-            color: white;
+        .btn,
+        .secondary-btn,
+        .small-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             text-decoration: none;
-            border-radius: 8px;
             border: none;
             cursor: pointer;
+            font-weight: 600;
         }
 
-        .btn:hover {
-            background-color: #1d4ed8;
+        .btn {
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
         }
 
-        /* Dashboard Cards */
-        .stats-container {
+        .btn:hover,
+        .pagination a:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #0f172a;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            padding: 11px 18px;
+            font-size: 14px;
+        }
+
+        .small-btn {
+            padding: 7px 11px;
+            border-radius: 7px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .view-btn {
+            background: #2563eb;
+        }
+
+        /* 
+           Page Header
+         */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .page-subtitle {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* 
+           Dashboard Stats
+         */
+        .stats-container,
+        .admin-stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 22px;
             margin-top: 20px;
+        }
+
+        .stats-container {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .admin-stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
         }
 
         .stat-card {
@@ -169,20 +233,53 @@
         }
 
         .stat-card p {
-            font-size: 30px;
             margin: 12px 0 0;
+            font-size: 30px;
             font-weight: bold;
         }
 
-        /* Tables */
+        .mini-stat-card {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mini-stat-icon {
+            width: 52px;
+            height: 52px;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .mini-stat-card span {
+            display: block;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .mini-stat-card strong {
+            color: #0f172a;
+            font-size: 24px;
+        }
+
+        /* 
+           Tables
+         */
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: white;
+            background: white;
         }
 
         th {
-            background-color: #0f172a;
+            background: #0f172a;
             color: white;
         }
 
@@ -194,10 +291,17 @@
         }
 
         tr:hover {
-            background-color: #f1f5f9;
+            background: #f1f5f9;
         }
 
-                form input,
+        /* 
+           Forms and Filters
+         */
+        form label {
+            font-weight: bold;
+        }
+
+        form input,
         form textarea,
         form select {
             width: 100%;
@@ -208,8 +312,208 @@
             border-radius: 8px;
         }
 
-        form label {
-            font-weight: bold;
+        .filter-card {
+            margin-bottom: 22px;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 6px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 
+           Candidate UI
+         */
+        .candidate-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .candidate-cell span {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .candidate-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* 
+           Pills and Badges
+         */
+        .status-pill,
+        .exp-pill,
+        .count-pill {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-pill,
+        .exp-mid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .exp-low {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .exp-high {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .count-pill {
+            background: #f8fafc;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 
+           Details Page
+         */
+        .info-section-card {
+            margin-bottom: 20px;
+        }
+
+        .info-section-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .info-section-card h3 i {
+            color: #2563eb;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .info-box span {
+            display: block;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-box strong {
+            color: #0f172a;
+            font-size: 17px;
+        }
+
+        .description-box {
+            margin-top: 24px;
+        }
+
+        .description-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .description-box p {
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        /* 
+           Empty State and Pagination
+         */
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 30px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 9px 13px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .pagination a {
+            background: #2563eb;
+            color: white;
+        }
+
+        .pagination span {
+            background: #f1f5f9;
+            color: #334155;
         }
     </style>
 </head>
@@ -218,11 +522,10 @@
 
 <div class="layout">
 
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-
         <div class="sidebar-header">
             <h2 class="logo">RecruitCRM</h2>
+
             <button onclick="toggleSidebar()" class="toggle-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -268,17 +571,15 @@
                 <i class="fa-solid fa-list-check icon"></i>
                 <span class="sidebar-text">Activities</span>
             </a>
+
             <a href="{% url 'logout' %}">
                 <i class="fa-solid fa-right-from-bracket icon"></i>
                 <span class="sidebar-text">Logout</span>
             </a>
         </nav>
-
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
-
         <header class="navbar">
             <h2>Recruitment CRM System</h2>
         </header>
@@ -287,7 +588,6 @@
             {% block content %}
             {% endblock %}
         </section>
-
     </main>
 
 </div>

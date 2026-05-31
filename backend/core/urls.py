@@ -36,10 +36,7 @@ urlpatterns = [
     
 # admin dashboard
     path('candidates/', candidates_list, name='candidates_list'),
-    path('candidates/add/', add_candidate, name='add_candidate'),
     path('candidates/<int:candidate_id>/', candidate_details, name='candidate_details'),
-    path('candidates/<int:candidate_id>/edit/', edit_candidate, name='edit_candidate'),
-    path('candidates/<int:candidate_id>/delete/', delete_candidate, name='delete_candidate'),
 
     path('companies/', companies_list, name='companies_list'),
     path('companies/add/', add_company, name='add_company'),

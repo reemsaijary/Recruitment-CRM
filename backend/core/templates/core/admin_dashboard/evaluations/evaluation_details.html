@@ -2,20 +2,162 @@
 
 {% block content %}
 
-<h1>Evaluation Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Evaluation Details</h1>
+        <p class="page-subtitle">Read-only evaluation overview for admin monitoring.</p>
+    </div>
 
-<a href="{% url 'evaluations_list' %}" class="btn">Back to Evaluations</a>
-<a href="{% url 'edit_evaluation' evaluation.id %}" class="btn">Edit Evaluation</a>
+    <a href="{% url 'evaluations_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Evaluations
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+            <span>Candidate</span>
+            <strong>{{ evaluation.application.candidate.full_name }}</strong>
+        </div>
+    </div>
 
-<div class="card">
-    <p><strong>Candidate:</strong> {{ evaluation.application.candidate.full_name }}</p>
-    <p><strong>Job:</strong> {{ evaluation.application.job.job_title }}</p>
-    <p><strong>Company:</strong> {{ evaluation.application.job.company.company_name }}</p>
-    <p><strong>Score:</strong> {{ evaluation.score }}</p>
-    <p><strong>Recommendation:</strong> {{ evaluation.recommendation }}</p>
-    <p><strong>Feedback:</strong> {{ evaluation.feedback }}</p>
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div>
+            <span>Job</span>
+            <strong>{{ evaluation.application.job.job_title }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-building"></i>
+        </div>
+        <div>
+            <span>Company</span>
+            <strong>{{ evaluation.application.job.company.company_name }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-star"></i>
+        </div>
+        <div>
+            <span>Score</span>
+            <strong>{{ evaluation.score }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-star"></i>
+        Evaluation Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Score</span>
+            <strong>{{ evaluation.score }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Recommendation</span>
+            <strong>
+                {% if evaluation.recommendation == "Hire" %}
+                    <span class="pipeline-badge status-hired">{{ evaluation.recommendation }}</span>
+                {% elif evaluation.recommendation == "Reject" %}
+                    <span class="pipeline-badge status-rejected">{{ evaluation.recommendation }}</span>
+                {% else %}
+                    <span class="pipeline-badge status-evaluated">{{ evaluation.recommendation }}</span>
+                {% endif %}
+            </strong>
+        </div>
+
+        <div class="info-box">
+            <span>Application Status</span>
+            <strong>
+                <span class="pipeline-badge status-{{ evaluation.application.status|slugify }}">
+                    {{ evaluation.application.status }}
+                </span>
+            </strong>
+        </div>
+
+        <div class="info-box">
+            <span>Applied Date</span>
+            <strong>{{ evaluation.application.applied_date }}</strong>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Feedback</h3>
+        <p>{{ evaluation.feedback|default:"No feedback added." }}</p>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-user"></i>
+        Candidate Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Full Name</span>
+            <strong>{{ evaluation.application.candidate.full_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Phone</span>
+            <strong>{{ evaluation.application.candidate.phone|default:"No phone added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Location</span>
+            <strong>{{ evaluation.application.candidate.location|default:"No location added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Experience</span>
+            <strong>{{ evaluation.application.candidate.experience_years }} Years</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-briefcase"></i>
+        Job Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Job Title</span>
+            <strong>{{ evaluation.application.job.job_title }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Company</span>
+            <strong>{{ evaluation.application.job.company.company_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Location</span>
+            <strong>{{ evaluation.application.job.location }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Job Type</span>
+            <strong>{{ evaluation.application.job.job_type|default:"No type added" }}</strong>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

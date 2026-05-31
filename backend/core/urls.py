@@ -54,10 +54,7 @@ urlpatterns = [
     path('interviews/<int:interview_id>/',interview_details, name='interview_details'),
 
     path('evaluations/',evaluations_list, name='evaluations_list'),
-    path('evaluations/add/',add_evaluation, name='add_evaluation'),
     path('evaluations/<int:evaluation_id>/',evaluation_details, name='evaluation_details'),
-    path('evaluations/<int:evaluation_id>/edit/',edit_evaluation, name='edit_evaluation'),
-    path('evaluations/<int:evaluation_id>/delete/',delete_evaluation, name='delete_evaluation'),
 
     path('activities/',activities_list, name='activities_list'),
     path('activities/add/',add_activity, name='add_activity'),

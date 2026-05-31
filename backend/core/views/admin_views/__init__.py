@@ -32,10 +32,7 @@ from .interview_views import (
 #evaluation logic
 from .evaluation_views import (
     evaluations_list,
-    add_evaluation,
     evaluation_details,
-    edit_evaluation,
-    delete_evaluation,
 )
 #activity logic
 from .activity_views import (

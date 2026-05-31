@@ -1,41 +1,188 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+
 {% block content %}
 
-<h1>Evaluations</h1>
+<div class="page-header">
+    <div>
+        <h1>Evaluations Overview</h1>
+        <p class="page-subtitle">Review candidate evaluations submitted for applications.</p>
+    </div>
 
-<a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
-<a href="{% url 'add_evaluation' %}" class="btn">Add Evaluation</a>
+    <a href="{% url 'dashboard' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-star"></i>
+        </div>
+        <div>
+            <span>Total Evaluations</span>
+            <strong>{{ total_evaluations }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-user-check"></i>
+        </div>
+        <div>
+            <span>Hire</span>
+            <strong>{{ hire_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-circle-question"></i>
+        </div>
+        <div>
+            <span>Maybe</span>
+            <strong>{{ maybe_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-user-xmark"></i>
+        </div>
+        <div>
+            <span>Reject</span>
+            <strong>{{ reject_count }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card filter-card">
+    <form method="GET" class="filter-form">
+
+        <div class="filter-group">
+            <label>Search</label>
+            <input type="text"
+                   name="search"
+                   value="{{ search_query }}"
+                   placeholder="Search candidate, job, company, feedback...">
+        </div>
+
+        <div class="filter-group">
+            <label>Recommendation</label>
+            <select name="recommendation">
+                <option value="">All Recommendations</option>
+                {% for value, label in recommendation_choices %}
+                    <option value="{{ value }}" {% if recommendation_filter == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Company</label>
+            <select name="company">
+                <option value="">All Companies</option>
+                {% for company in companies %}
+                    <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
+                        {{ company.company_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Apply
+            </button>
+
+            <a href="{% url 'evaluations_list' %}" class="secondary-btn">
+                Clear
+            </a>
+        </div>
+
+    </form>
+</div>
 
 <div class="card">
-    <table>
-        <tr>
-            <th>Candidate</th>
-            <th>Job</th>
-            <th>Score</th>
-            <th>Recommendation</th>
-            <th>Actions</th>
-        </tr>
+    {% if evaluations %}
+        <table>
+            <tr>
+                <th>Candidate</th>
+                <th>Job</th>
+                <th>Company</th>
+                <th>Score</th>
+                <th>Recommendation</th>
+                <th>Actions</th>
+            </tr>
 
-        {% for evaluation in evaluations %}
-        <tr>
-            <td>{{ evaluation.application.candidate.full_name }}</td>
-            <td>{{ evaluation.application.job.job_title }}</td>
-            <td>{{ evaluation.score }}</td>
-            <td>{{ evaluation.recommendation }}</td>
-            <td>
-                <a href="{% url 'evaluation_details' evaluation.id %}">View</a> |
-                <a href="{% url 'edit_evaluation' evaluation.id %}">Edit</a> |
-                <a href="{% url 'delete_evaluation' evaluation.id %}">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No evaluations found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for evaluation in evaluations %}
+            <tr>
+                <td>
+                    <div class="candidate-cell">
+                        <div class="candidate-avatar">
+                            {{ evaluation.application.candidate.full_name|slice:":1" }}
+                        </div>
+
+                        <div>
+                            <strong>{{ evaluation.application.candidate.full_name }}</strong>
+                            <span>{{ evaluation.application.candidate.phone|default:"No phone" }}</span>
+                        </div>
+                    </div>
+                </td>
+
+                <td>{{ evaluation.application.job.job_title }}</td>
+                <td>{{ evaluation.application.job.company.company_name }}</td>
+
+                <td>
+                    <span class="count-pill">{{ evaluation.score }}</span>
+                </td>
+
+                <td>
+                    {% if evaluation.recommendation == "Hire" %}
+                        <span class="pipeline-badge status-hired">{{ evaluation.recommendation }}</span>
+                    {% elif evaluation.recommendation == "Reject" %}
+                        <span class="pipeline-badge status-rejected">{{ evaluation.recommendation }}</span>
+                    {% else %}
+                        <span class="pipeline-badge status-evaluated">{{ evaluation.recommendation }}</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'evaluation_details' evaluation.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="pagination">
+            {% if evaluations.has_previous %}
+                <a href="?page=1&search={{ search_query }}&recommendation={{ recommendation_filter }}&company={{ company_filter }}">First</a>
+                <a href="?page={{ evaluations.previous_page_number }}&search={{ search_query }}&recommendation={{ recommendation_filter }}&company={{ company_filter }}">Previous</a>
+            {% endif %}
+
+            <span>Page {{ evaluations.number }} of {{ evaluations.paginator.num_pages }}</span>
+
+            {% if evaluations.has_next %}
+                <a href="?page={{ evaluations.next_page_number }}&search={{ search_query }}&recommendation={{ recommendation_filter }}&company={{ company_filter }}">Next</a>
+                <a href="?page={{ evaluations.paginator.num_pages }}&search={{ search_query }}&recommendation={{ recommendation_filter }}&company={{ company_filter }}">Last</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <h2>No evaluations found</h2>
+            <p>Try changing the search or filter values.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

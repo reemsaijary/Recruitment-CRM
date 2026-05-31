@@ -21,10 +21,8 @@ from .job_views import (
 #applications logic
 from .application_views import (
     applications_list,
-    add_application,
     application_details,
-    edit_application,
-    delete_application,
+   
 )
 # interview logic
 from .interview_views import (

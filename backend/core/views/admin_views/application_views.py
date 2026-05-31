@@ -1,133 +1,84 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Activity
-from django.utils import timezone
-from datetime import timedelta
-from core.models import Application, Candidate, Job, Activity, Interview
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+
+from core.models import Application, Company, Activity, Interview
 from core.decorators import role_required
 
-# application list
+#list
 @role_required(['admin'])
 def applications_list(request):
-    applications = Application.objects.all()
+    applications = Application.objects.all().select_related(
+        'candidate',
+        'job',
+        'job__company'
+    ).order_by('-updated_at')
 
-    return render(request, 'core/admin_dashboard/applications/list_applications.html', {
-        'applications': applications
-    })
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+    company_filter = request.GET.get('company', '')
 
-# add
-@role_required(['admin'])
-def add_application(request):
-    candidates = Candidate.objects.all()
-    jobs = Job.objects.all()
-
-    if request.method == 'POST':
-        candidate = get_object_or_404(Candidate, id=request.POST.get('candidate'))
-        job = get_object_or_404(Job, id=request.POST.get('job'))
-
-        Application.objects.create(
-            candidate=candidate,
-            job=job,
-            status=request.POST.get('status'),
-            notes=request.POST.get('notes')
+    if search_query:
+        applications = applications.filter(
+            Q(candidate__full_name__icontains=search_query) |
+            Q(job__job_title__icontains=search_query) |
+            Q(job__company__company_name__icontains=search_query)
         )
 
-        return redirect('applications_list')
+    if status_filter:
+        applications = applications.filter(status=status_filter)
 
-    return render(request, 'core/admin_dashboard/applications/add_application.html', {
-        'candidates': candidates,
-        'jobs': jobs,
-        'status_choices': Application.STATUS_CHOICES
+    if company_filter:
+        applications = applications.filter(job__company_id=company_filter)
+
+    total_applications = Application.objects.count()
+    applied_count = Application.objects.filter(status='Applied').count()
+    screening_count = Application.objects.filter(status='Screening').count()
+    interview_count = Application.objects.filter(
+        status__in=['Interview Scheduled', 'Interview Done']
+    ).count()
+    hired_count = Application.objects.filter(status='Hired').count()
+    rejected_count = Application.objects.filter(status='Rejected').count()
+
+    companies = Company.objects.all().order_by('company_name')
+
+    paginator = Paginator(applications, 8)
+    page_number = request.GET.get('page')
+    applications_page = paginator.get_page(page_number)
+
+    return render(request, 'core/admin_dashboard/applications/list_applications.html', {
+        'applications': applications_page,
+        'search_query': search_query,
+        'status_filter': status_filter,
+        'company_filter': company_filter,
+        'companies': companies,
+        'status_choices': Application.STATUS_CHOICES,
+        'total_applications': total_applications,
+        'applied_count': applied_count,
+        'screening_count': screening_count,
+        'interview_count': interview_count,
+        'hired_count': hired_count,
+        'rejected_count': rejected_count,
     })
 
-# show details
+#view
 @role_required(['admin'])
 def application_details(request, application_id):
-    application = get_object_or_404(Application, id=application_id)
+    application = get_object_or_404(
+        Application.objects.select_related('candidate', 'job', 'job__company'),
+        id=application_id
+    )
+
+    interviews = Interview.objects.filter(
+        application=application
+    ).order_by('-interview_date')
+
+    activities = Activity.objects.filter(
+        application=application
+    ).order_by('-due_date')
 
     return render(request, 'core/admin_dashboard/applications/application_details.html', {
-        'application': application
-    })
-
-# edit data
-@role_required(['admin'])
-def edit_application(request, application_id):
-    application = get_object_or_404(Application, id=application_id)
-    candidates = Candidate.objects.all()
-    jobs = Job.objects.all()
-
-    if request.method == 'POST':
-        application.candidate = get_object_or_404(Candidate, id=request.POST.get('candidate'))
-        application.job = get_object_or_404(Job, id=request.POST.get('job'))
-        application.status = request.POST.get('status')
-        application.notes = request.POST.get('notes')
-        application.save()
-
-        return redirect('applications_list')
-
-    return render(request, 'core/admin_dashboard/applications/edit_application.html', {
         'application': application,
-        'candidates': candidates,
-        'jobs': jobs,
-        'status_choices': Application.STATUS_CHOICES
+        'interviews': interviews,
+        'activities': activities,
     })
-
-# delete data
-@role_required(['admin'])
-def delete_application(request, application_id):
-    application = get_object_or_404(Application, id=application_id)
-
-    if request.method == 'POST':
-        application.delete()
-        return redirect('applications_list')
-
-    return render(request, 'core/admin_dashboard/applications/delete_application.html', {
-        'application': application
-    })
-
-#move next
-@role_required(['admin'])
-def move_application_next_stage(request, application_id):
-    application = get_object_or_404(Application, id=application_id)
-
-    pipeline = [
-        'Applied',
-        'Screening',
-        'Shortlisted',
-        'Interview Scheduled',
-        'Interview Done',
-        'Evaluated',
-        'Offer Sent',
-        'Hired',
-    ]
-
-    if application.status in pipeline:
-        current_index = pipeline.index(application.status)
-
-        if current_index < len(pipeline) - 1:
-            new_status = pipeline[current_index + 1]
-
-            application.status = new_status
-            application.save()
-
-           # AUTOMATION
-        if new_status == 'Interview Scheduled':
-
-         # Create interview automatically
-            Interview.objects.create(
-                application=application,
-                interview_date=timezone.now() + timedelta(days=2),
-                interview_type='Online',
-                status='Scheduled',
-                notes='Automatically scheduled by CRM workflow'
-          )
-
-            # Create activity automatically
-            Activity.objects.create(
-                application=application,
-                activity_type='Prepare Interview',
-                due_date=timezone.now() + timedelta(days=1),
-                status='Pending',
-                notes='Automatically created by CRM workflow'
-            )
-    
-    return redirect('applications_list')

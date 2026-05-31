@@ -1,79 +1,75 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Interview, Application
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+
+from core.models import Interview, Company
 from core.decorators import role_required
 
-# show interview list
+
 @role_required(['admin'])
 def interviews_list(request):
-    interviews = Interview.objects.all()
+    interviews = Interview.objects.all().select_related(
+        'application',
+        'application__candidate',
+        'application__job',
+        'application__job__company'
+    ).order_by('-interview_date')
 
-    return render(request, 'core/admin_dashboard/interviews/list_interviews.html', {
-        'interviews': interviews
-    })
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+    company_filter = request.GET.get('company', '')
 
-# add interview
-@role_required(['admin'])
-def add_interview(request):
-    applications = Application.objects.all()
-
-    if request.method == 'POST':
-        application = get_object_or_404(Application, id=request.POST.get('application'))
-
-        Interview.objects.create(
-            application=application,
-            interview_date=request.POST.get('interview_date'),
-            interview_type=request.POST.get('interview_type'),
-            status=request.POST.get('status'),
-            notes=request.POST.get('notes')
+    if search_query:
+        interviews = interviews.filter(
+            Q(application__candidate__full_name__icontains=search_query) |
+            Q(application__job__job_title__icontains=search_query) |
+            Q(application__job__company__company_name__icontains=search_query) |
+            Q(interview_type__icontains=search_query)
         )
 
-        return redirect('interviews_list')
+    if status_filter:
+        interviews = interviews.filter(status=status_filter)
 
-    return render(request, 'core/admin_dashboard/interviews/add_interview.html', {
-        'applications': applications,
-        'status_choices': Interview.STATUS_CHOICES
+    if company_filter:
+        interviews = interviews.filter(application__job__company_id=company_filter)
+
+    total_interviews = Interview.objects.count()
+    scheduled_interviews = Interview.objects.filter(status='Scheduled').count()
+    completed_interviews = Interview.objects.filter(status='Completed').count()
+    cancelled_interviews = Interview.objects.filter(status='Cancelled').count()
+
+    companies = Company.objects.all().order_by('company_name')
+
+    paginator = Paginator(interviews, 8)
+    page_number = request.GET.get('page')
+    interviews_page = paginator.get_page(page_number)
+
+    return render(request, 'core/admin_dashboard/interviews/list_interviews.html', {
+        'interviews': interviews_page,
+        'search_query': search_query,
+        'status_filter': status_filter,
+        'company_filter': company_filter,
+        'companies': companies,
+        'status_choices': Interview.STATUS_CHOICES,
+        'total_interviews': total_interviews,
+        'scheduled_interviews': scheduled_interviews,
+        'completed_interviews': completed_interviews,
+        'cancelled_interviews': cancelled_interviews,
     })
 
-# view details
+
 @role_required(['admin'])
 def interview_details(request, interview_id):
-    interview = get_object_or_404(Interview, id=interview_id)
+    interview = get_object_or_404(
+        Interview.objects.select_related(
+            'application',
+            'application__candidate',
+            'application__job',
+            'application__job__company'
+        ),
+        id=interview_id
+    )
 
     return render(request, 'core/admin_dashboard/interviews/interview_details.html', {
-        'interview': interview
-    })
-
-#edit details
-@role_required(['admin'])
-def edit_interview(request, interview_id):
-    interview = get_object_or_404(Interview, id=interview_id)
-    applications = Application.objects.all()
-
-    if request.method == 'POST':
-        interview.application = get_object_or_404(Application, id=request.POST.get('application'))
-        interview.interview_date = request.POST.get('interview_date')
-        interview.interview_type = request.POST.get('interview_type')
-        interview.status = request.POST.get('status')
-        interview.notes = request.POST.get('notes')
-        interview.save()
-
-        return redirect('interviews_list')
-
-    return render(request, 'core/admin_dashboard/interviews/edit_interview.html', {
-        'interview': interview,
-        'applications': applications,
-        'status_choices': Interview.STATUS_CHOICES
-    })
-
-#delete interview
-@role_required(['admin'])
-def delete_interview(request, interview_id):
-    interview = get_object_or_404(Interview, id=interview_id)
-
-    if request.method == 'POST':
-        interview.delete()
-        return redirect('interviews_list')
-
-    return render(request, 'core/admin_dashboard/interviews/delete_interview.html', {
         'interview': interview
     })

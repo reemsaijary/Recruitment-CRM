@@ -51,10 +51,7 @@ urlpatterns = [
     path('applications/<int:application_id>/', application_details, name='application_details'),
     
     path('interviews/',interviews_list, name='interviews_list'),
-    path('interviews/add/',add_interview, name='add_interview'),
     path('interviews/<int:interview_id>/',interview_details, name='interview_details'),
-    path('interviews/<int:interview_id>/edit/',edit_interview, name='edit_interview'),
-    path('interviews/<int:interview_id>/delete/',delete_interview, name='delete_interview'),
 
     path('evaluations/',evaluations_list, name='evaluations_list'),
     path('evaluations/add/',add_evaluation, name='add_evaluation'),

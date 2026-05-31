@@ -27,10 +27,7 @@ from .application_views import (
 # interview logic
 from .interview_views import (
     interviews_list,
-    add_interview,
     interview_details,
-    edit_interview,
-    delete_interview,
 )
 #evaluation logic
 from .evaluation_views import (

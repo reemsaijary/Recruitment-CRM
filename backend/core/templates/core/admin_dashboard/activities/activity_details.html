@@ -2,27 +2,164 @@
 
 {% block content %}
 
-<h1>Activity Details</h1>
+<div class="page-header">
+    <div>
+        <h1>Activity Details</h1>
+        <p class="page-subtitle">Read-only activity overview for admin monitoring.</p>
+    </div>
 
-<a href="{% url 'activities_list' %}" class="btn">Back to Activities</a>
-<a href="{% url 'edit_activity' activity.id %}" class="btn">Edit Activity</a>
+    <a href="{% url 'activities_list' %}" class="secondary-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Activities
+    </a>
+</div>
 
-<br><br>
+<div class="admin-stats-grid">
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+            <span>Candidate</span>
+            <strong>{{ activity.application.candidate.full_name }}</strong>
+        </div>
+    </div>
 
-<div class="card">
-    <p><strong>Candidate:</strong> {{ activity.application.candidate.full_name }}</p>
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div>
+            <span>Job</span>
+            <strong>{{ activity.application.job.job_title }}</strong>
+        </div>
+    </div>
 
-    <p><strong>Job:</strong> {{ activity.application.job.job_title }}</p>
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-building"></i>
+        </div>
+        <div>
+            <span>Company</span>
+            <strong>{{ activity.application.job.company.company_name }}</strong>
+        </div>
+    </div>
 
-    <p><strong>Company:</strong> {{ activity.application.job.company.company_name }}</p>
+    <div class="mini-stat-card">
+        <div class="mini-stat-icon">
+            <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div>
+            <span>Status</span>
+            <strong>{{ activity.status }}</strong>
+        </div>
+    </div>
+</div>
 
-    <p><strong>Activity Type:</strong> {{ activity.activity_type }}</p>
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-list-check"></i>
+        Activity Information
+    </h3>
 
-    <p><strong>Due Date:</strong> {{ activity.due_date }}</p>
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Activity Type</span>
+            <strong>{{ activity.activity_type }}</strong>
+        </div>
 
-    <p><strong>Status:</strong> {{ activity.status }}</p>
+        <div class="info-box">
+            <span>Due Date</span>
+            <strong>{{ activity.due_date|date:"M d, Y, h:i A" }}</strong>
+        </div>
 
-    <p><strong>Notes:</strong> {{ activity.notes }}</p>
+        <div class="info-box">
+            <span>Status</span>
+            <strong>
+                {% if activity.status == "Pending" %}
+                    <span class="pipeline-badge status-interview-scheduled">{{ activity.status }}</span>
+                {% elif activity.status == "Completed" %}
+                    <span class="pipeline-badge status-hired">{{ activity.status }}</span>
+                {% elif activity.status == "Cancelled" %}
+                    <span class="pipeline-badge status-rejected">{{ activity.status }}</span>
+                {% else %}
+                    <span class="status-pill">{{ activity.status }}</span>
+                {% endif %}
+            </strong>
+        </div>
+
+        <div class="info-box">
+            <span>Application Status</span>
+            <strong>
+                <span class="pipeline-badge status-{{ activity.application.status|slugify }}">
+                    {{ activity.application.status }}
+                </span>
+            </strong>
+        </div>
+    </div>
+
+    <div class="description-box">
+        <h3>Notes</h3>
+        <p>{{ activity.notes|default:"No notes added." }}</p>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-user"></i>
+        Candidate Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Full Name</span>
+            <strong>{{ activity.application.candidate.full_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Phone</span>
+            <strong>{{ activity.application.candidate.phone|default:"No phone added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Location</span>
+            <strong>{{ activity.application.candidate.location|default:"No location added" }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Current Position</span>
+            <strong>{{ activity.application.candidate.current_position|default:"No position added" }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-briefcase"></i>
+        Job Information
+    </h3>
+
+    <div class="details-grid">
+        <div class="info-box">
+            <span>Job Title</span>
+            <strong>{{ activity.application.job.job_title }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Company</span>
+            <strong>{{ activity.application.job.company.company_name }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Job Location</span>
+            <strong>{{ activity.application.job.location }}</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Job Type</span>
+            <strong>{{ activity.application.job.job_type|default:"No type added" }}</strong>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

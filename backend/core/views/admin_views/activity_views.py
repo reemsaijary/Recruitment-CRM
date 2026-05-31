@@ -1,79 +1,76 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Activity, Application
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+
+from core.models import Activity, Company
 from core.decorators import role_required
 
 #list
 @role_required(['admin'])
 def activities_list(request):
-    activities = Activity.objects.all()
+    activities = Activity.objects.all().select_related(
+        'application',
+        'application__candidate',
+        'application__job',
+        'application__job__company'
+    ).order_by('-due_date')
 
-    return render(request, 'core/admin_dashboard/activities/list_activities.html', {
-        'activities': activities
-    })
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+    company_filter = request.GET.get('company', '')
 
-#add
-@role_required(['admin'])
-def add_activity(request):
-    applications = Application.objects.all()
-
-    if request.method == 'POST':
-        application = get_object_or_404(Application, id=request.POST.get('application'))
-
-        Activity.objects.create(
-            application=application,
-            activity_type=request.POST.get('activity_type'),
-            due_date=request.POST.get('due_date'),
-            status=request.POST.get('status'),
-            notes=request.POST.get('notes')
+    if search_query:
+        activities = activities.filter(
+            Q(application__candidate__full_name__icontains=search_query) |
+            Q(application__job__job_title__icontains=search_query) |
+            Q(application__job__company__company_name__icontains=search_query) |
+            Q(activity_type__icontains=search_query) |
+            Q(notes__icontains=search_query)
         )
 
-        return redirect('activities_list')
+    if status_filter:
+        activities = activities.filter(status=status_filter)
 
-    return render(request, 'core/admin_dashboard/activities/add_activity.html', {
-        'applications': applications,
-        'status_choices': Activity.STATUS_CHOICES
+    if company_filter:
+        activities = activities.filter(application__job__company_id=company_filter)
+
+    total_activities = Activity.objects.count()
+    pending_count = Activity.objects.filter(status='Pending').count()
+    completed_count = Activity.objects.filter(status='Completed').count()
+    cancelled_count = Activity.objects.filter(status='Cancelled').count()
+
+    companies = Company.objects.all().order_by('company_name')
+
+    paginator = Paginator(activities, 8)
+    page_number = request.GET.get('page')
+    activities_page = paginator.get_page(page_number)
+
+    return render(request, 'core/admin_dashboard/activities/list_activities.html', {
+        'activities': activities_page,
+        'search_query': search_query,
+        'status_filter': status_filter,
+        'company_filter': company_filter,
+        'companies': companies,
+        'status_choices': Activity.STATUS_CHOICES,
+        'total_activities': total_activities,
+        'pending_count': pending_count,
+        'completed_count': completed_count,
+        'cancelled_count': cancelled_count,
     })
 
-#details
+#view
 @role_required(['admin'])
 def activity_details(request, activity_id):
-    activity = get_object_or_404(Activity, id=activity_id)
+    activity = get_object_or_404(
+        Activity.objects.select_related(
+            'application',
+            'application__candidate',
+            'application__job',
+            'application__job__company'
+        ),
+        id=activity_id
+    )
 
     return render(request, 'core/admin_dashboard/activities/activity_details.html', {
-        'activity': activity
-    })
-
-#edit
-@role_required(['admin'])
-def edit_activity(request, activity_id):
-    activity = get_object_or_404(Activity, id=activity_id)
-    applications = Application.objects.all()
-
-    if request.method == 'POST':
-        activity.application = get_object_or_404(Application, id=request.POST.get('application'))
-        activity.activity_type = request.POST.get('activity_type')
-        activity.due_date = request.POST.get('due_date')
-        activity.status = request.POST.get('status')
-        activity.notes = request.POST.get('notes')
-        activity.save()
-
-        return redirect('activities_list')
-
-    return render(request, 'core/admin_dashboard/activities/edit_activity.html', {
-        'activity': activity,
-        'applications': applications,
-        'status_choices': Activity.STATUS_CHOICES
-    })
-
-#delete
-@role_required(['admin'])
-def delete_activity(request, activity_id):
-    activity = get_object_or_404(Activity, id=activity_id)
-
-    if request.method == 'POST':
-        activity.delete()
-        return redirect('activities_list')
-
-    return render(request, 'core/admin_dashboard/activities/delete_activity.html', {
         'activity': activity
     })

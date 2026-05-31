@@ -37,8 +37,5 @@ from .evaluation_views import (
 #activity logic
 from .activity_views import (
     activities_list,
-    add_activity,
     activity_details,
-    edit_activity,
-    delete_activity,
 )

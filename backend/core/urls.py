@@ -57,10 +57,7 @@ urlpatterns = [
     path('evaluations/<int:evaluation_id>/',evaluation_details, name='evaluation_details'),
 
     path('activities/',activities_list, name='activities_list'),
-    path('activities/add/',add_activity, name='add_activity'),
     path('activities/<int:activity_id>/',activity_details, name='activity_details'),
-    path('activities/<int:activity_id>/edit/',edit_activity, name='edit_activity'),
-    path('activities/<int:activity_id>/delete/',delete_activity, name='delete_activity'),
 
 #Company dashboard
     path('company/jobs/', company_jobs_list, name='company_jobs_list'),

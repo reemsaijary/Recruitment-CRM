@@ -5,7 +5,7 @@
 <div class="page-header">
     <div>
         <h1>My Profile</h1>
-        <p class="page-subtitle">Manage your personal and professional information.</p>
+        <p class="page-subtitle">Manage your personal information, skills, CV, and career profile.</p>
     </div>
 
     <a href="{% url 'edit_candidate_profile' %}" class="primary-btn">
@@ -14,81 +14,129 @@
     </a>
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-user"></i>
-        Personal Information
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Full Name</span>
-            <strong>{{ candidate.full_name }}</strong>
+<div class="candidate-profile-hero">
+    <div class="candidate-profile-main">
+        <div class="candidate-large-avatar">
+            {{ candidate.full_name|first }}
         </div>
 
-        <div class="info-box">
-            <span>Email</span>
-            <strong>{{ request.user.email|default:"No email added" }}</strong>
-        </div>
+        <div>
+            <span class="hero-badge">
+                <i class="fa-solid fa-user"></i>
+                Candidate Profile
+            </span>
 
-        <div class="info-box">
-            <span>Phone</span>
-            <strong>{{ candidate.phone }}</strong>
-        </div>
+            <h1>{{ candidate.full_name }}</h1>
+            <p>{{ candidate.current_position|default:"No position added" }}</p>
 
-        <div class="info-box">
-            <span>Location</span>
-            <strong>{{ candidate.location|default:"No location added" }}</strong>
+            <div class="candidate-job-tags">
+                <span><i class="fa-solid fa-location-dot"></i> {{ candidate.location|default:"No location added" }}</span>
+                <span><i class="fa-solid fa-briefcase"></i> {{ candidate.experience_years }} Years Experience</span>
+                <span><i class="fa-solid fa-phone"></i> {{ candidate.phone }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% if candidate.cv %}
+        <a href="{{ candidate.cv.url }}" target="_blank" class="profile-cv-btn">
+            <i class="fa-solid fa-file-pdf"></i>
+            View CV
+        </a>
+    {% endif %}
+</div>
+
+<div class="profile-grid">
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-address-card"></i>
+            Personal Information
+        </h3>
+
+        <div class="clean-info-list">
+            <div>
+                <span>Full Name</span>
+                <strong>{{ candidate.full_name }}</strong>
+            </div>
+
+            <div>
+                <span>Email</span>
+                <strong>{{ request.user.email|default:"No email added" }}</strong>
+            </div>
+
+            <div>
+                <span>Phone</span>
+                <strong>{{ candidate.phone }}</strong>
+            </div>
+
+            <div>
+                <span>Location</span>
+                <strong>{{ candidate.location|default:"No location added" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="card info-section-card">
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Professional Information
+        </h3>
+
+        <div class="clean-info-list">
+            <div>
+                <span>Current Position</span>
+                <strong>{{ candidate.current_position|default:"No position added" }}</strong>
+            </div>
+
+            <div>
+                <span>Experience</span>
+                <strong>{{ candidate.experience_years }} Years</strong>
+            </div>
+
+            <div>
+                <span>LinkedIn</span>
+                {% if candidate.linkedin_url %}
+                    <a href="{{ candidate.linkedin_url }}" target="_blank" class="profile-link">
+                        View LinkedIn Profile
+                    </a>
+                {% else %}
+                    <strong>No LinkedIn added</strong>
+                {% endif %}
+            </div>
+
+            <div>
+                <span>CV / Resume</span>
+                {% if candidate.cv %}
+                    <a href="{{ candidate.cv.url }}" target="_blank" class="small-btn view-btn">
+                        <i class="fa-solid fa-file"></i>
+                        View CV
+                    </a>
+                {% else %}
+                    <strong>No CV uploaded</strong>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
 
-<br>
+<div class="card info-section-card">
+    <h3>
+        <i class="fa-solid fa-code"></i>
+        Skills
+    </h3>
+
+    <div class="skills-box">
+        {{ candidate.skills|default:"No skills added." }}
+    </div>
+</div>
 
 <div class="card info-section-card">
     <h3>
-        <i class="fa-solid fa-briefcase"></i>
-        Professional Information
+        <i class="fa-solid fa-note-sticky"></i>
+        About / Notes
     </h3>
 
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Current Position</span>
-            <strong>{{ candidate.current_position|default:"No position added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Experience</span>
-            <strong>{{ candidate.experience_years }} Years</strong>
-        </div>
-
-        <div class="info-box">
-            <span>LinkedIn</span>
-            <strong>{{ candidate.linkedin_url|default:"No LinkedIn added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>CV / Resume</span>
-
-            {% if candidate.cv %}
-                <a href="{{ candidate.cv.url }}" target="_blank" class="small-btn view-btn">
-                    <i class="fa-solid fa-file"></i>
-                    View CV
-                </a>
-            {% else %}
-                <strong>No CV uploaded</strong>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="description-box">
-        <h3>Skills</h3>
-        <p>{{ candidate.skills|default:"No skills added." }}</p>
-    </div>
-
-    <div class="description-box">
-        <h3>About / Notes</h3>
-        <p>{{ candidate.notes|default:"No notes added." }}</p>
+    <div class="skills-box">
+        {{ candidate.notes|default:"No notes added." }}
     </div>
 </div>
 

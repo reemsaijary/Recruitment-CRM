@@ -916,8 +916,192 @@ form textarea {
     margin-top: 0;
 }
 /* 
-  RESPONSIVE DESIGN
+   CANDIDATE PROFILE PAGE
 */
+/* 
+   CANDIDATE PROFILE HERO
+*/
+.candidate-profile-hero {
+    background: linear-gradient(135deg, #2563eb, #0f172a);
+    color: white;
+    border-radius: 22px;
+    padding: 34px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 28px;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+}
+
+.candidate-profile-main {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+.candidate-large-avatar {
+    width: 82px;
+    height: 82px;
+    background: white;
+    color: #2563eb;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 38px;
+    text-transform: uppercase;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+}
+
+.profile-title-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.candidate-profile-hero h1 {
+    font-size: 36px;
+    margin: 12px 0 6px;
+    line-height: 1.1;
+}
+
+.profile-position {
+    color: #dbeafe;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.profile-cv-btn {
+    background: white;
+    color: #2563eb;
+    padding: 13px 20px;
+    border-radius: 14px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+}
+
+.profile-cv-btn:hover {
+    background: #eff6ff;
+}
+
+.candidate-profile-main {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.candidate-large-avatar {
+    width: 88px;
+    height: 88px;
+    background: white;
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 36px;
+    text-transform: uppercase;
+}
+
+.candidate-profile-hero h1 {
+    font-size: 34px;
+    margin: 14px 0 8px;
+}
+
+.candidate-profile-hero p {
+    color: #dbeafe;
+    margin: 0 0 16px;
+}
+
+.profile-cv-btn {
+    background: white;
+    color: #2563eb;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.profile-link {
+    display: inline-flex;
+    color: #2563eb;
+    font-weight: 800;
+}
+
+.skills-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 18px;
+    border-radius: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+/* 
+   CANDIDATE PROFILE EDIT PAGE
+*/
+.profile-edit-card {
+    padding: 28px;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 10px 0 20px;
+}
+
+.form-section-title i {
+    color: #2563eb;
+}
+
+.file-upload-box {
+    border: 1px dashed #93c5fd;
+    background: #eff6ff;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.file-upload-box p {
+    margin-bottom: 0;
+    color: #334155;
+}
+
+.file-upload-box a {
+    color: #2563eb;
+    font-weight: 800;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.full-save-btn {
+    width: auto;
+    min-width: 180px;
+}
 /* 
   RESPONSIVE DESIGN
 */
@@ -1022,6 +1206,22 @@ form textarea {
         grid-template-columns: 1fr;
     }
 }
+@media (max-width: 900px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .candidate-profile-hero,
+        .candidate-profile-main {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .profile-cv-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        }
 </style>
 
 </head>

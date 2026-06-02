@@ -2,101 +2,132 @@
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="company-hero">
     <div>
-        <h1>Company Dashboard</h1>
-        <p>Welcome back, <strong>{{ company.company_name }}</strong></p>
+        <span class="hero-badge">
+            <i class="fa-solid fa-building"></i>
+            Company Workspace
+        </span>
+
+        <h1>Welcome back, {{ company.company_name }}</h1>
+        <p>Manage your jobs, review candidates, track applications, and schedule interviews from one place.</p>
     </div>
+
+    <a href="{% url 'company_add_job' %}" class="primary-btn">
+        <i class="fa-solid fa-plus"></i>
+        Post New Job
+    </a>
 </div>
 
 <div class="stats-container">
 
-    <!-- Total Jobs -->
     <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
-
-        <div class="stat-icon">
-            <i class="fa-solid fa-briefcase"></i>
-        </div>
-
+        <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
         <div>
             <h3>Total Jobs</h3>
             <p>{{ total_jobs }}</p>
+            <span>All jobs posted by your company</span>
         </div>
-
     </a>
 
-    <!-- Applications -->
     <a href="{% url 'company_applications_list' %}" class="stat-card stat-link">
-
-        <div class="stat-icon">
-            <i class="fa-solid fa-file-lines"></i>
-        </div>
-
+        <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
         <div>
             <h3>Total Applications</h3>
             <p>{{ total_applications }}</p>
+            <span>Candidates applied to your jobs</span>
         </div>
-
     </a>
 
-    <!-- Interviews -->
     <a href="{% url 'company_interviews_list' %}" class="stat-card stat-link">
-
-        <div class="stat-icon">
-            <i class="fa-solid fa-calendar-check"></i>
-        </div>
-
+        <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
         <div>
             <h3>Total Interviews</h3>
             <p>{{ total_interviews }}</p>
+            <span>Scheduled candidate interviews</span>
         </div>
-
     </a>
 
-    <!-- Active Jobs -->
     <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
-
-        <div class="stat-icon">
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-
+        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
         <div>
             <h3>Active Jobs</h3>
             <p>{{ active_jobs }}</p>
+            <span>Currently open job posts</span>
         </div>
-
     </a>
 
 </div>
-      
 
+<div class="dashboard-grid">
 
-<div class="quick-actions">
+    <div class="card dashboard-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Quick Actions</h2>
+                <p>Fast access to common company tasks.</p>
+            </div>
+        </div>
 
-    <h2>Quick Actions</h2>
+        <div class="action-list">
+            <a href="{% url 'company_add_job' %}" class="dashboard-action">
+                <i class="fa-solid fa-plus"></i>
+                <div>
+                    <strong>Post New Job</strong>
+                    <span>Create a new job opportunity</span>
+                </div>
+            </a>
 
-    <div class="action-buttons">
+            <a href="{% url 'company_candidates_list' %}" class="dashboard-action">
+                <i class="fa-solid fa-users"></i>
+                <div>
+                    <strong>Search Candidates</strong>
+                    <span>Find candidates by skills and experience</span>
+                </div>
+            </a>
 
-        <a href="{% url 'company_add_job' %}" class="action-btn">
-            <i class="fa-solid fa-plus"></i>
-            Post New Job
-        </a>
+            <a href="{% url 'company_applications_list' %}" class="dashboard-action">
+                <i class="fa-solid fa-table-columns"></i>
+                <div>
+                    <strong>Application Pipeline</strong>
+                    <span>Review and update application status</span>
+                </div>
+            </a>
 
-        <a href="{% url 'company_jobs_list' %}" class="action-btn">
-            <i class="fa-solid fa-briefcase"></i>
-            View My Jobs
-        </a>
+            <a href="{% url 'company_interviews_list' %}" class="dashboard-action">
+                <i class="fa-solid fa-calendar-days"></i>
+                <div>
+                    <strong>View Interviews</strong>
+                    <span>Manage scheduled interviews</span>
+                </div>
+            </a>
+        </div>
+    </div>
 
-        <a href="{% url 'company_applications_list' %}" class="action-btn">
-            <i class="fa-solid fa-file-lines"></i>
-            View Applications
-        </a>
+    <div class="card dashboard-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Recruitment Summary</h2>
+                <p>Your current hiring activity.</p>
+            </div>
+        </div>
 
-        <a href="{% url 'company_interviews_list' %}" class="action-btn">
-            <i class="fa-solid fa-calendar-days"></i>
-            View Interviews
-        </a>
+        <div class="summary-list">
+            <div class="summary-item">
+                <span>Open Jobs</span>
+                <strong>{{ active_jobs }}</strong>
+            </div>
 
+            <div class="summary-item">
+                <span>Total Applications</span>
+                <strong>{{ total_applications }}</strong>
+            </div>
+
+            <div class="summary-item">
+                <span>Scheduled Interviews</span>
+                <strong>{{ total_interviews }}</strong>
+            </div>
+        </div>
     </div>
 
 </div>

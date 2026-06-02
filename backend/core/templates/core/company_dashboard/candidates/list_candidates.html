@@ -2,10 +2,44 @@
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="page-header">
     <div>
         <h1>Candidates</h1>
-        <p>Search and review available candidates.</p>
+        <p class="page-subtitle">Search, filter, and review available candidates.</p>
+    </div>
+</div>
+
+<div class="candidate-stats-grid">
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-users"></i>
+        <div>
+            <span>Total Candidates</span>
+            <strong>{{ total_candidates }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-seedling"></i>
+        <div>
+            <span>Junior</span>
+            <strong>{{ junior_candidates }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-user-tie"></i>
+        <div>
+            <span>Mid-Level</span>
+            <strong>{{ mid_candidates }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-star"></i>
+        <div>
+            <span>Senior</span>
+            <strong>{{ senior_candidates }}</strong>
+        </div>
     </div>
 </div>
 
@@ -14,14 +48,25 @@
         <input
             type="text"
             name="search"
-            placeholder="Search by candidate name..."
+            placeholder="Search by name, position, skills, or location..."
             value="{{ search_query }}"
         >
 
-        <button type="submit" class="small-btn view-btn">
+        <select name="experience">
+            <option value="">All Experience</option>
+            <option value="junior" {% if experience_filter == 'junior' %}selected{% endif %}>Junior 0-2 years</option>
+            <option value="mid" {% if experience_filter == 'mid' %}selected{% endif %}>Mid-Level 3-5 years</option>
+            <option value="senior" {% if experience_filter == 'senior' %}selected{% endif %}>Senior 6+ years</option>
+        </select>
+
+        <button type="submit" class="primary-btn">
             <i class="fa-solid fa-magnifying-glass"></i>
             Search
         </button>
+
+        <a href="{% url 'company_candidates_list' %}" class="secondary-btn">
+            Reset
+        </a>
     </form>
 </div>
 
@@ -30,9 +75,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Candidate</th>
                     <th>Phone</th>
-                    <th>Current Position</th>
+                    <th>Position</th>
+                    <th>Location</th>
                     <th>Experience</th>
                     <th>Actions</th>
                 </tr>
@@ -42,24 +88,57 @@
                 {% for candidate in candidates %}
                 <tr>
                     <td>
-                        <strong>{{ candidate.full_name }}</strong>
+                        <div class="candidate-cell">
+                            <div class="candidate-avatar">
+                                {{ candidate.full_name|first }}
+                            </div>
+
+                            <div>
+                                <strong>{{ candidate.full_name }}</strong>
+                                <span>{{ candidate.skills|default:"No skills added"|truncatechars:45 }}</span>
+                            </div>
+                        </div>
                     </td>
+
                     <td>{{ candidate.phone }}</td>
+
                     <td>{{ candidate.current_position|default:"No position added" }}</td>
+
+                    <td>{{ candidate.location|default:"Not specified" }}</td>
+
                     <td>
-                        <span class="status-pill">
+                        <span class="experience-pill">
                             {{ candidate.experience_years }} Years
                         </span>
                     </td>
+
                     <td>
                         <a href="{% url 'company_candidate_details' candidate.id %}" class="small-btn view-btn">
-                            <i class="fa-solid fa-eye"></i> View
+                            <i class="fa-solid fa-eye"></i>
+                            View
                         </a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <div class="pagination">
+            {% if candidates.has_previous %}
+                <a href="?page=1&search={{ search_query }}&experience={{ experience_filter }}">First</a>
+                <a href="?page={{ candidates.previous_page_number }}&search={{ search_query }}&experience={{ experience_filter }}">Previous</a>
+            {% endif %}
+
+            <span>
+                Page {{ candidates.number }} of {{ candidates.paginator.num_pages }}
+            </span>
+
+            {% if candidates.has_next %}
+                <a href="?page={{ candidates.next_page_number }}&search={{ search_query }}&experience={{ experience_filter }}">Next</a>
+                <a href="?page={{ candidates.paginator.num_pages }}&search={{ search_query }}&experience={{ experience_filter }}">Last</a>
+            {% endif %}
+        </div>
+
     {% else %}
         <div class="empty-state">
             <div class="empty-icon">
@@ -67,7 +146,7 @@
             </div>
 
             <h2>No candidates found</h2>
-            <p>Try searching with another candidate name.</p>
+            <p>Try searching by another name, skill, position, or experience level.</p>
         </div>
     {% endif %}
 </div>

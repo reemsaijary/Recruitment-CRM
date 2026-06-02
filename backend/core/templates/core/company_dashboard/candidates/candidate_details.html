@@ -4,56 +4,136 @@
 
 <div class="page-header">
     <div>
-        <h1>Candidate Details</h1>
-        <p>Review candidate profile information.</p>
+        <h1>Candidate Profile</h1>
+        <p class="page-subtitle">Review candidate information, skills, CV, and applications.</p>
     </div>
 
     <a href="{% url 'company_candidates_list' %}" class="secondary-btn">
-            <i class="fa-solid fa-arrow-left"></i>
-            Back to Candidates
-        </a>
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Candidates
+    </a>
 </div>
 
-<div class="card profile-card">
-
-    <div class="profile-header">
-        <div class="profile-avatar">
-            <i class="fa-solid fa-user"></i>
+<div class="candidate-profile-hero">
+    <div class="candidate-profile-main">
+        <div class="candidate-large-avatar">
+            {{ candidate.full_name|first }}
         </div>
 
         <div>
             <h2>{{ candidate.full_name }}</h2>
             <p>{{ candidate.current_position|default:"No position added" }}</p>
+
+            <div class="candidate-profile-tags">
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ candidate.experience_years }} Years Experience
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ candidate.location|default:"Location not added" }}
+                </span>
+            </div>
         </div>
     </div>
 
-    <div class="details-grid">
-        <div>
-            <strong>Phone</strong>
-            <p>{{ candidate.phone }}</p>
-        </div>
+    {% if candidate.cv %}
+        <a href="{{ candidate.cv.url }}" target="_blank" class="primary-btn">
+            <i class="fa-solid fa-file-pdf"></i>
+            View CV
+        </a>
+    {% endif %}
+</div>
 
-        <div>
-            <strong>Email</strong>
-            <p>{{ candidate.user.email|default:"No email added" }}</p>
-        </div>
+<div class="details-grid">
 
-        <div>
-            <strong>Experience</strong>
-            <p>{{ candidate.experience_years }} Years</p>
-        </div>
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-address-card"></i> Contact Information</h3>
 
-        <div>
-            <strong>LinkedIn</strong>
-            <p>{{ candidate.linkedin_url|default:"No LinkedIn added" }}</p>
-        </div>
+        <p><strong>Phone:</strong> {{ candidate.phone }}</p>
+        <p><strong>Email:</strong> {{ candidate.user.email|default:"No email added" }}</p>
 
-        <div class="full-width">
-            <strong>Notes</strong>
-            <p>{{ candidate.notes|default:"No notes added" }}</p>
-        </div>
+        <p>
+            <strong>LinkedIn:</strong>
+            {% if candidate.linkedin_url %}
+                <a href="{{ candidate.linkedin_url }}" target="_blank">{{ candidate.linkedin_url }}</a>
+            {% else %}
+                No LinkedIn added
+            {% endif %}
+        </p>
     </div>
 
+    <div class="card info-section-card">
+        <h3><i class="fa-solid fa-user-tie"></i> Professional Information</h3>
+
+        <p><strong>Current Position:</strong> {{ candidate.current_position|default:"No position added" }}</p>
+        <p><strong>Experience:</strong> {{ candidate.experience_years }} Years</p>
+        <p><strong>Source:</strong> {{ candidate.source|default:"Not specified" }}</p>
+    </div>
+
+</div>
+
+<div class="card info-section-card application-status-card">
+    <h3><i class="fa-solid fa-code"></i> Skills</h3>
+
+    <div class="skills-box">
+        {% if candidate.skills %}
+            {{ candidate.skills }}
+        {% else %}
+            No skills added
+        {% endif %}
+    </div>
+</div>
+
+<div class="card info-section-card application-status-card">
+    <h3><i class="fa-solid fa-note-sticky"></i> Notes</h3>
+    <p>{{ candidate.notes|default:"No notes added" }}</p>
+</div>
+
+<div class="card info-section-card application-status-card">
+    <h3><i class="fa-solid fa-file-lines"></i> Applications With Your Company</h3>
+
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Job</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Action</th>
+            </tr>
+
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.job.job_title }}</td>
+
+                <td>
+                    <span class="app-status-badge status-{{ application.status|slugify }}">
+                        {{ application.status }}
+                    </span>
+                </td>
+
+                <td>{{ application.applied_date }}</td>
+
+                <td>
+                    <a href="{% url 'company_application_details' application.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-file-circle-xmark"></i>
+            </div>
+
+            <h2>No applications with your company</h2>
+            <p>This candidate has not applied to any of your jobs yet.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -444,6 +444,240 @@
             margin: 0 auto 18px;
             font-size: 30px;
         }
+        /* =====================================================
+   CANDIDATE JOBS PAGE
+===================================================== */
+.candidate-job-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.mini-stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.mini-stat-card i {
+    width: 48px;
+    height: 48px;
+    background: #dbeafe;
+    color: #2563eb;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.mini-stat-card span {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.mini-stat-card strong {
+    display: block;
+    font-size: 26px;
+    color: #0f172a;
+    margin-top: 4px;
+}
+
+.search-card {
+    padding: 18px 25px;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-form input {
+    flex: 1;
+}
+
+.search-form select {
+    max-width: 180px;
+}
+
+.candidate-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.candidate-job-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e2e8f0;
+    transition: 0.2s ease;
+}
+
+.candidate-job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.job-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.job-card-top h3 {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 22px;
+}
+
+.job-card-top p {
+    color: #64748b;
+    margin: 0;
+}
+
+.job-card-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.job-card-info span {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.job-card-info i {
+    color: #2563eb;
+    margin-right: 5px;
+}
+
+.job-card-description {
+    color: #475569;
+    line-height: 1.6;
+    min-height: 65px;
+}
+
+.job-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.already-applied-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #dcfce7;
+    color: #166534;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.candidate-job-hero {
+    background: linear-gradient(135deg, #2563eb, #0f172a);
+    color: white;
+    border-radius: 22px;
+    padding: 32px;
+    margin-bottom: 26px;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+}
+
+.candidate-job-hero h1 {
+    font-size: 34px;
+    margin: 14px 0 8px;
+}
+
+.candidate-job-hero p {
+    color: #dbeafe;
+    margin: 0 0 16px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.candidate-job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.candidate-job-tags span {
+    background: rgba(255,255,255,0.15);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.pagination {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination a {
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.pagination span {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+@media (max-width: 1000px) {
+    .candidate-jobs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .candidate-job-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form select {
+        max-width: 100%;
+    }
+}
     </style>
 </head>
 

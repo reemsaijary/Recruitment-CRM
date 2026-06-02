@@ -2,54 +2,160 @@
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="page-header">
     <div>
         <h1>Available Jobs</h1>
-        <p>Browse open jobs and apply to opportunities.</p>
+        <p class="page-subtitle">Browse open jobs, filter opportunities, and apply directly.</p>
     </div>
 </div>
 
-<div class="card">
-    {% if jobs %}
-        <table>
-            <tr>
-                <th>Job Title</th>
-                <th>Company</th>
-                <th>Location</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
-
-            {% for job in jobs %}
-            <tr>
-                <td><strong>{{ job.job_title }}</strong></td>
-                <td>{{ job.company.company_name }}</td>
-                <td>{{ job.location }}</td>
-                <td>
-                    <span class="status-pill">{{ job.job_type }}</span>
-                </td>
-                <td>
-                    <a href="{% url 'candidate_job_details' job.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i> View
-                    </a>
-
-                    <a href="{% url 'apply_to_job' job.id %}" class="small-btn edit-btn">
-                        <i class="fa-solid fa-paper-plane"></i> Apply
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fa-solid fa-briefcase"></i>
-            </div>
-
-            <h2>No open jobs available</h2>
-            <p>Please check again later for new opportunities.</p>
+<div class="candidate-job-stats-grid">
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-briefcase"></i>
+        <div>
+            <span>Open Jobs</span>
+            <strong>{{ total_open_jobs }}</strong>
         </div>
-    {% endif %}
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-laptop-house"></i>
+        <div>
+            <span>Remote Jobs</span>
+            <strong>{{ remote_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-paper-plane"></i>
+        <div>
+            <span>My Applications</span>
+            <strong>{{ applied_jobs }}</strong>
+        </div>
+    </div>
 </div>
+
+<div class="card search-card">
+    <form method="GET" class="search-form">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by job title, company, or description..."
+            value="{{ search }}"
+        >
+
+        <input
+            type="text"
+            name="location"
+            placeholder="Location..."
+            value="{{ location }}"
+        >
+
+        <select name="job_type">
+            <option value="">All Types</option>
+            <option value="Full-time" {% if job_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+            <option value="Part-time" {% if job_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+            <option value="Remote" {% if job_type == 'Remote' %}selected{% endif %}>Remote</option>
+            <option value="Hybrid" {% if job_type == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+        </select>
+
+        <button type="submit" class="primary-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+
+        <a href="{% url 'candidate_jobs_list' %}" class="secondary-btn">
+            Reset
+        </a>
+    </form>
+</div>
+
+{% if jobs %}
+    <div class="candidate-jobs-grid">
+        {% for job in jobs %}
+            <div class="candidate-job-card">
+
+                <div class="job-card-top">
+                    <div>
+                        <h3>{{ job.job_title }}</h3>
+                        <p>
+                            <i class="fa-solid fa-building"></i>
+                            {{ job.company.company_name }}
+                        </p>
+                    </div>
+
+                    <span class="status-pill">
+                        {{ job.job_type|default:"Not specified" }}
+                    </span>
+                </div>
+
+                <div class="job-card-info">
+                    <span>
+                        <i class="fa-solid fa-location-dot"></i>
+                        {{ job.location }}
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        {% if job.min_salary and job.max_salary %}
+                            ${{ job.min_salary }} - ${{ job.max_salary }}
+                        {% else %}
+                            Salary not specified
+                        {% endif %}
+                    </span>
+                </div>
+
+                <p class="job-card-description">
+                    {{ job.description|default:"No description added."|truncatechars:130 }}
+                </p>
+
+                <div class="job-card-actions">
+                    <a href="{% url 'candidate_job_details' job.id %}" class="small-btn view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
+
+                    {% if job.id in applied_job_ids %}
+                        <span class="already-applied-btn">
+                            <i class="fa-solid fa-check"></i>
+                            Applied
+                        </span>
+                    {% else %}
+                        <a href="{% url 'apply_to_job' job.id %}" class="small-btn edit-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Apply
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if jobs.has_previous %}
+            <a href="?page=1&search={{ search }}&location={{ location }}&job_type={{ job_type }}">First</a>
+            <a href="?page={{ jobs.previous_page_number }}&search={{ search }}&location={{ location }}&job_type={{ job_type }}">Previous</a>
+        {% endif %}
+
+        <span>
+            Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+        </span>
+
+        {% if jobs.has_next %}
+            <a href="?page={{ jobs.next_page_number }}&search={{ search }}&location={{ location }}&job_type={{ job_type }}">Next</a>
+            <a href="?page={{ jobs.paginator.num_pages }}&search={{ search }}&location={{ location }}&job_type={{ job_type }}">Last</a>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="card empty-state">
+        <div class="empty-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <h2>No open jobs found</h2>
+        <p>Try changing your search/filter or check again later for new opportunities.</p>
+    </div>
+{% endif %}
 
 {% endblock %}

@@ -5,13 +5,46 @@
 <div class="page-header">
     <div>
         <h1>Application Details</h1>
-        <p class="page-subtitle">View your application and current hiring status.</p>
+        <p class="page-subtitle">View your application, job information, and current hiring status.</p>
     </div>
 
     <a href="{% url 'candidate_applications_list' %}" class="secondary-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+</div>
+
+<div class="candidate-application-hero">
+    <div>
+        <span class="hero-badge">
+            <i class="fa-solid fa-file-lines"></i>
+            Application Status
+        </span>
+
+        <h1>{{ application.job.job_title }}</h1>
+        <p>{{ application.job.company.company_name }}</p>
+
+        <div class="candidate-job-tags">
+            <span>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ application.job.location }}
+            </span>
+
+            <span>
+                <i class="fa-solid fa-clock"></i>
+                {{ application.job.job_type|default:"Not specified" }}
+            </span>
+
+            <span>
+                <i class="fa-solid fa-calendar"></i>
+                Applied on {{ application.applied_date }}
+            </span>
+        </div>
+    </div>
+
+    <span class="app-status-badge status-{{ application.status|slugify }}">
+        {{ application.status }}
+    </span>
 </div>
 
 <div class="details-grid">
@@ -23,31 +56,86 @@
 
         <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
         <p><strong>Company:</strong> {{ application.job.company.company_name }}</p>
-        <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
+        <p><strong>Job Type:</strong> {{ application.job.job_type|default:"Not specified" }}</p>
         <p><strong>Location:</strong> {{ application.job.location }}</p>
+
+        <p>
+            <strong>Salary:</strong>
+            {% if application.job.min_salary and application.job.max_salary %}
+                ${{ application.job.min_salary }} - ${{ application.job.max_salary }}
+            {% else %}
+                Not specified
+            {% endif %}
+        </p>
     </div>
+<div class="card info-section-card application-status-card">
+    <h3>
+        <i class="fa-solid fa-list-check"></i>
+        Application Progress
+    </h3>
 
-    <div class="card info-section-card">
-        <h3>
-            <i class="fa-solid fa-list-check"></i>
-            Application Status
-        </h3>
+    <div class="progress-steps">
+        <div class="progress-step active">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Applied</span>
+        </div>
 
+        <div class="progress-line"></div>
+
+        <div class="progress-step {% if application.status == 'Screening' or application.status == 'Shortlisted' or application.status == 'Interview Scheduled' or application.status == 'Interview Done' or application.status == 'Evaluated' or application.status == 'Offer Sent' or application.status == 'Hired' %}active{% endif %}">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Reviewing</span>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step {% if application.status == 'Interview Scheduled' or application.status == 'Interview Done' or application.status == 'Evaluated' or application.status == 'Offer Sent' or application.status == 'Hired' %}active{% endif %}">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Interview</span>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step {% if application.status == 'Offer Sent' or application.status == 'Hired' %}active{% endif %}">
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <span>Offer</span>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step {% if application.status == 'Hired' %}active{% endif %}">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Hired</span>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="card info-section-card application-status-card">
+    <h3>
+        <i class="fa-solid fa-circle-info"></i>
+        Application Information
+    </h3>
+
+   <div class="application-info-grid">
         <div class="info-box">
             <span>Status</span>
             <strong>{{ application.status }}</strong>
         </div>
 
-        <br>
-
         <div class="info-box">
             <span>Applied Date</span>
             <strong>{{ application.applied_date }}</strong>
         </div>
+
+        <div class="info-box">
+            <span>Last Updated</span>
+            <strong>{{ application.updated_at|date:"M d, Y" }}</strong>
+        </div>
     </div>
 </div>
 
-<div class="card info-section-card" style="margin-top: 20px;">
+<div class="card info-section-card application-status-card">
     <h3>
         <i class="fa-solid fa-note-sticky"></i>
         Notes

@@ -2,35 +2,89 @@
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="page-header">
     <div>
         <h1>My Jobs</h1>
-        <p>Manage jobs posted by your company.</p>
+        <p class="page-subtitle">Manage and track all jobs posted by your company.</p>
     </div>
 
-    <a href="{% url 'company_add_job' %}" class="action-btn">
+    <a href="{% url 'company_add_job' %}" class="primary-btn">
         <i class="fa-solid fa-plus"></i>
         Add Job
     </a>
+</div>
+
+<div class="job-stats-grid">
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-briefcase"></i>
+        <div>
+            <span>Total Jobs</span>
+            <strong>{{ total_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-circle-check"></i>
+        <div>
+            <span>Open Jobs</span>
+            <strong>{{ open_jobs }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <div>
+            <span>Closed Jobs</span>
+            <strong>{{ closed_jobs }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card search-card">
+    <form method="GET" class="search-form">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Search by title, location, or type..."
+            value="{{ search }}"
+        >
+
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Open" {% if status == 'Open' %}selected{% endif %}>Open</option>
+            <option value="Closed" {% if status == 'Closed' %}selected{% endif %}>Closed</option>
+        </select>
+
+        <button type="submit" class="primary-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+
+        <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
+            Reset
+        </a>
+    </form>
 </div>
 
 <div class="card">
     {% if jobs %}
         <table>
             <tr>
-                <th>Job Title</th>
+                <th>Job</th>
                 <th>Type</th>
                 <th>Location</th>
                 <th>Status</th>
-                <th>Min Salary</th>
-                <th>Max Salary</th>
+                <th>Salary Range</th>
                 <th>Actions</th>
             </tr>
 
             {% for job in jobs %}
             <tr>
-                <td>{{ job.job_title }}</td>
-                <td>{{ job.job_type }}</td>
+                <td>
+                    <strong>{{ job.job_title }}</strong>
+                </td>
+
+                <td>{{ job.job_type|default:"Not specified" }}</td>
                 <td>{{ job.location }}</td>
 
                 <td>
@@ -39,8 +93,13 @@
                     </span>
                 </td>
 
-                <td>${{ job.min_salary }}</td>
-                <td>${{ job.max_salary }}</td>
+                <td>
+                    {% if job.min_salary and job.max_salary %}
+                        ${{ job.min_salary }} - ${{ job.max_salary }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </td>
 
                 <td>
                     <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">
@@ -58,18 +117,35 @@
             </tr>
             {% endfor %}
         </table>
+
+        <div class="pagination">
+            {% if jobs.has_previous %}
+                <a href="?page=1&search={{ search }}&status={{ status }}">First</a>
+                <a href="?page={{ jobs.previous_page_number }}&search={{ search }}&status={{ status }}">Previous</a>
+            {% endif %}
+
+            <span>
+                Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+            </span>
+
+            {% if jobs.has_next %}
+                <a href="?page={{ jobs.next_page_number }}&search={{ search }}&status={{ status }}">Next</a>
+                <a href="?page={{ jobs.paginator.num_pages }}&search={{ search }}&status={{ status }}">Last</a>
+            {% endif %}
+        </div>
+
     {% else %}
         <div class="empty-state">
             <div class="empty-icon">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
 
-            <h2>No jobs posted yet</h2>
-            <p>Start by adding your first job opening for candidates.</p>
+            <h2>No jobs found</h2>
+            <p>Try changing your search/filter or add a new job opening.</p>
 
             <a href="{% url 'company_add_job' %}" class="action-btn">
                 <i class="fa-solid fa-plus"></i>
-                Add First Job
+                Add Job
             </a>
         </div>
     {% endif %}

@@ -1,18 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 from core.models import Company, Job
 from core.decorators import role_required
 
-#list job
+
+# list job
 @role_required(['company'])
 def company_jobs_list(request):
     company = get_object_or_404(Company, user=request.user)
-    jobs = Job.objects.filter(company=company)
+
+    jobs = Job.objects.filter(company=company).order_by('-created_at')
+
+    search = request.GET.get('search', '')
+    status = request.GET.get('status', '')
+
+    if search:
+        jobs = jobs.filter(
+            Q(job_title__icontains=search) |
+            Q(location__icontains=search) |
+            Q(job_type__icontains=search)
+        )
+
+    if status:
+        jobs = jobs.filter(status=status)
+
+    total_jobs = Job.objects.filter(company=company).count()
+    open_jobs = Job.objects.filter(company=company, status='Open').count()
+    closed_jobs = Job.objects.filter(company=company, status='Closed').count()
+
+    paginator = Paginator(jobs, 5)
+    page_number = request.GET.get('page')
+    jobs = paginator.get_page(page_number)
 
     return render(request, 'core/company_dashboard/jobs/list_jobs.html', {
-        'jobs': jobs
+        'jobs': jobs,
+        'search': search,
+        'status': status,
+        'total_jobs': total_jobs,
+        'open_jobs': open_jobs,
+        'closed_jobs': closed_jobs,
     })
 
-#add job
+
+# add job
 @role_required(['company'])
 def company_add_job(request):
     company = get_object_or_404(Company, user=request.user)
@@ -33,7 +65,8 @@ def company_add_job(request):
 
     return render(request, 'core/company_dashboard/jobs/add_job.html')
 
-#edit job
+
+# edit job
 @role_required(['company'])
 def company_edit_job(request, job_id):
     company = get_object_or_404(Company, user=request.user)
@@ -54,7 +87,9 @@ def company_edit_job(request, job_id):
     return render(request, 'core/company_dashboard/jobs/edit_job.html', {
         'job': job
     })
-#show details
+
+
+# show details
 @role_required(['company'])
 def company_job_details(request, job_id):
     company = get_object_or_404(Company, user=request.user)
@@ -64,7 +99,8 @@ def company_job_details(request, job_id):
         'job': job
     })
 
-#delete job
+
+# delete job
 @role_required(['company'])
 def company_delete_job(request, job_id):
     company = get_object_or_404(Company, user=request.user)

@@ -182,7 +182,23 @@ a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     overflow: hidden;
 }
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
 
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+
+    box-shadow: 0 6px 18px rgba(15,23,42,.08);
+
+    transition: .25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
 .info-section-card {
     margin-bottom: 28px;
 }
@@ -367,63 +383,173 @@ form textarea {
 /* 
     DASHBOARD HOME
 */
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 22px;
-    margin-top: 25px;
+.welcome-card{
+    background: linear-gradient(135deg,#2563eb,#0f172a);
+    color:white;
+    border-radius:24px;
+    padding:35px;
+    margin-bottom:30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:25px;
+    box-shadow:0 12px 30px rgba(37,99,235,.25);
 }
 
-.stat-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.welcome-left{
+    display:flex;
+    align-items:center;
+    gap:25px;
 }
 
-.stat-link {
-    color: inherit;
-    transition: 0.2s ease;
+.candidate-avatar{
+    width:85px;
+    height:85px;
+    border-radius:20px;
+    background:white;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:36px;
+    font-weight:900;
 }
 
-.stat-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+.section-label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,.15);
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
 }
 
-.stat-icon {
-    width: 55px;
-    height: 55px;
-    background: #dbeafe;
-    color: #2563eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    font-size: 24px;
+.welcome-card h1{
+    margin:15px 0 8px;
+    font-size:38px;
 }
 
-.stat-card h3 {
-    margin: 0;
-    color: #2563eb;
-    font-size: 18px;
+.welcome-card p{
+    margin:0;
+    color:#dbeafe;
 }
 
-.stat-card p {
-    font-size: 30px;
-    margin: 10px 0 0;
-    font-weight: bold;
+.welcome-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
 }
 
-.quick-actions {
-    margin-top: 35px;
+.welcome-tags span{
+    background:rgba(255,255,255,.15);
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+.hero-btn{
+    background:white;
+    color:#2563eb;
+    padding:14px 20px;
+    border-radius:12px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    margin-bottom:30px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:24px;
+}
+
+.panel{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(15,23,42,.08);
+}
+
+.panel-header h2{
+    margin:0;
+}
+
+.panel-header p{
+    color:#64748b;
+}
+
+.quick-action-list{
+    display:grid;
+    gap:15px;
+    margin-top:20px;
+}
+
+.quick-action-list a{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:16px;
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    color:#0f172a;
+    background:#f8fafc;
+    transition:.2s;
+}
+
+.quick-action-list a:hover{
+    background:#eff6ff;
+}
+
+.quick-action-list i{
+    width:45px;
+    height:45px;
+    background:#2563eb;
+    color:white;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.profile-mini{
+    text-align:center;
+    margin-top:20px;
+}
+
+.profile-mini .candidate-avatar{
+    margin:auto;
+}
+
+.profile-mini h3{
+    margin:15px 0 5px;
+}
+
+.profile-mini p{
+    color:#64748b;
+}
+
+.outline-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:12px 16px;
+    border-radius:12px;
+    font-weight:700;
+}
 /* 
     SHARED MINI STATS
 */
@@ -435,9 +561,11 @@ form textarea {
 }
 
 .candidate-job-stats-grid {
-    grid-template-columns: repeat(3, 1fr);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
 }
-
 .candidate-application-stats-grid {
     grid-template-columns: repeat(5, 1fr);
 }
@@ -915,9 +1043,7 @@ form textarea {
 .interview-notes-card {
     margin-top: 0;
 }
-/* 
-   CANDIDATE PROFILE PAGE
-*/
+
 /* 
    CANDIDATE PROFILE HERO
 */
@@ -990,11 +1116,6 @@ form textarea {
     background: #eff6ff;
 }
 
-.candidate-profile-main {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-}
 
 .candidate-large-avatar {
     width: 88px;
@@ -1105,6 +1226,19 @@ form textarea {
 /* 
   RESPONSIVE DESIGN
 */
+
+/* Medium screens */
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tablets */
 @media (max-width: 1100px) {
     .candidate-application-stats-grid,
     .candidate-interview-stats-grid {
@@ -1118,6 +1252,7 @@ form textarea {
     }
 }
 
+/* Small laptops */
 @media (max-width: 1000px) {
     .candidate-jobs-grid,
     .candidate-job-stats-grid {
@@ -1125,11 +1260,13 @@ form textarea {
     }
 }
 
+/* Tablets and small screens */
 @media (max-width: 900px) {
     .details-grid,
     .interview-details-grid,
     .job-info-grid,
-    .application-info-grid {
+    .application-info-grid,
+    .profile-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1155,8 +1292,20 @@ form textarea {
     .progress-step i {
         margin: 0;
     }
+
+    .candidate-profile-hero,
+    .candidate-profile-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-cv-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
     .sidebar {
         width: 80px;
@@ -1198,30 +1347,30 @@ form textarea {
     .search-form select {
         max-width: 100%;
     }
+
+    .welcome-card,
+    .welcome-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
+/* Very small mobile */
 @media (max-width: 700px) {
     .candidate-application-stats-grid,
     .candidate-interview-stats-grid {
         grid-template-columns: 1fr;
     }
 }
-@media (max-width: 900px) {
-    .profile-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .candidate-profile-hero,
-        .candidate-profile-main {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .profile-cv-btn {
-            width: 100%;
-            justify-content: center;
-        }
-        }
 </style>
 
 </head>

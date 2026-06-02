@@ -1,21 +1,57 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 from core.models import Company, Application
 from core.decorators import role_required
 
-#list
+
+# list
 @role_required(['company'])
 def company_applications_list(request):
     company = get_object_or_404(Company, user=request.user)
 
     applications = Application.objects.filter(
         job__company=company
-    ).select_related('candidate', 'job')
+    ).select_related('candidate', 'job').order_by('-applied_date', '-id')
+
+    search = request.GET.get('search', '')
+    status = request.GET.get('status', '')
+
+    if search:
+        applications = applications.filter(
+            Q(candidate__full_name__icontains=search) |
+            Q(job__job_title__icontains=search)
+        )
+
+    if status:
+        applications = applications.filter(status=status)
+
+    all_applications = Application.objects.filter(job__company=company)
+
+    total_applications = all_applications.count()
+    applied_count = all_applications.filter(status='Applied').count()
+    interview_count = all_applications.filter(status='Interview Scheduled').count()
+    hired_count = all_applications.filter(status='Hired').count()
+    rejected_count = all_applications.filter(status='Rejected').count()
+
+    paginator = Paginator(applications, 5)
+    page_number = request.GET.get('page')
+    applications = paginator.get_page(page_number)
 
     return render(request, 'core/company_dashboard/applications/list_applications.html', {
-        'applications': applications
+        'applications': applications,
+        'search': search,
+        'status': status,
+        'total_applications': total_applications,
+        'applied_count': applied_count,
+        'interview_count': interview_count,
+        'hired_count': hired_count,
+        'rejected_count': rejected_count,
     })
 
-#show details
+
+# show details
 @role_required(['company'])
 def company_application_details(request, application_id):
     company = get_object_or_404(Company, user=request.user)
@@ -35,10 +71,11 @@ def company_application_details(request, application_id):
         'application': application
     })
 
-#kanbaan
-def company_applications_kanban(request):
 
-    company = Company.objects.get(user=request.user)
+# kanban
+@role_required(['company'])
+def company_applications_kanban(request):
+    company = get_object_or_404(Company, user=request.user)
 
     applications = Application.objects.filter(
         job__company=company
@@ -63,14 +100,18 @@ def company_applications_kanban(request):
         'statuses': statuses,
     })
 
-#update kanbaan status
+
+# update kanban status
+@role_required(['company'])
 def update_application_status_from_kanban(request, application_id, new_status):
-    company = Company.objects.get(user=request.user)
+    company = get_object_or_404(Company, user=request.user)
+
     application = get_object_or_404(
         Application,
         id=application_id,
         job__company=company
     )
+
     allowed_statuses = [
         'Applied',
         'Screening',
@@ -79,6 +120,7 @@ def update_application_status_from_kanban(request, application_id, new_status):
         'Rejected',
         'Hired',
     ]
+
     if new_status in allowed_statuses:
         application.status = new_status
         application.save()

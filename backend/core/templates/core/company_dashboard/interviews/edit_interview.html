@@ -21,8 +21,12 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>Interview Date</label>
-                <input type="datetime-local" name="interview_date" required>
-            </div>
+            <input 
+                type="datetime-local" 
+                name="interview_date" 
+                value="{{ interview.interview_date|date:'Y-m-d\\TH:i' }}" 
+                required
+            >            </div>
 
             <div class="form-group">
                 <label>Interview Type</label>

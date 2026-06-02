@@ -19,9 +19,29 @@
 
         <p><strong>Name:</strong> {{ application.candidate.full_name }}</p>
         <p><strong>Phone:</strong> {{ application.candidate.phone }}</p>
-        <p><strong>LinkedIn:</strong> {{ application.candidate.linkedin_url }}</p>
+        <p>
+            <strong>LinkedIn:</strong>
+            {% if application.candidate.linkedin_url %}
+                <a href="{{ application.candidate.linkedin_url }}" target="_blank">
+                    View LinkedIn
+                </a>
+            {% else %}
+                No LinkedIn added
+            {% endif %}
+        </p>      
         <p><strong>Experience:</strong> {{ application.candidate.experience_years }} years</p>
         <p><strong>Current Position:</strong> {{ application.candidate.current_position }}</p>
+        <p>
+        <strong>CV:</strong>
+        {% if application.candidate.cv %}
+            <a href="{{ application.candidate.cv.url }}" target="_blank" class="small-btn view-btn">
+                <i class="fa-solid fa-file-pdf"></i>
+                View CV
+            </a>
+        {% else %}
+            No CV uploaded
+        {% endif %}
+        </p>
     </div>
 
     <div class="card info-section-card">

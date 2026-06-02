@@ -9,7 +9,7 @@
 
     <style>
 /* 
-   1. GLOBAL RESET
+   GLOBAL RESET
 */
 * {
     box-sizing: border-box;
@@ -27,7 +27,7 @@ a {
 }
 
 /* 
-   2. MAIN LAYOUT
+   MAIN LAYOUT
 */
 .layout {
     display: flex;
@@ -45,7 +45,7 @@ a {
 }
 
 /* 
-   3. SIDEBAR
+  SIDEBAR
 */
 .sidebar {
     width: 260px;
@@ -114,7 +114,7 @@ a {
 }
 
 /* 
-   4. NAVBAR
+    NAVBAR
 */
 .navbar {
     background: white;
@@ -141,7 +141,7 @@ a {
 }
 
 /* 
-   5. PAGE HEADERS
+   PAGE HEADERS
 */
 .dashboard-header,
 .page-header {
@@ -171,7 +171,7 @@ a {
 }
 
 /* 
-   6. CARDS
+   CARDS
 */
 .card,
 .stat-card,
@@ -205,7 +205,7 @@ a {
 }
 
 /* 
-   7. BUTTONS
+   BUTTONS
 */
 .action-btn,
 .primary-btn,
@@ -272,7 +272,7 @@ a {
 }
 
 /* 
-   8. TABLES
+   TABLES
 */
 table {
     width: 100%;
@@ -303,7 +303,7 @@ tr:hover {
 }
 
 /* 
-   9. FORMS AND SEARCH
+    FORMS AND SEARCH
 */
 form {
     display: grid;
@@ -365,7 +365,7 @@ form textarea {
 }
 
 /* 
-   10. DASHBOARD HOME
+    DASHBOARD HOME
 */
 .stats-container {
     display: grid;
@@ -425,7 +425,7 @@ form textarea {
 }
 
 /* 
-   11. SHARED MINI STATS
+    SHARED MINI STATS
 */
 .candidate-job-stats-grid,
 .candidate-application-stats-grid {
@@ -477,7 +477,7 @@ form textarea {
 }
 
 /* 
-   12. STATUS BADGES
+    STATUS BADGES
 */
 .status-pill,
 .app-status-badge {
@@ -531,7 +531,7 @@ form textarea {
 }
 
 /* 
-   13. DETAILS PAGES
+   DETAILS PAGES
 */
 .details-grid {
     display: grid;
@@ -580,7 +580,7 @@ form textarea {
 }
 
 /* 
-   14. CANDIDATE JOBS PAGE
+    CANDIDATE JOBS PAGE
 */
 .candidate-jobs-grid {
     display: grid;
@@ -668,7 +668,7 @@ form textarea {
 }
 
 /* 
-   15. APPLICATION DETAILS PAGE
+    APPLICATION DETAILS PAGE
 */
 .candidate-application-hero,
 .candidate-job-hero {
@@ -725,7 +725,7 @@ form textarea {
 }
 
 /* 
-   16. APPLICATION PROGRESS
+    APPLICATION PROGRESS
 */
 .progress-steps {
     display: flex;
@@ -773,7 +773,7 @@ form textarea {
 }
 
 /* 
-   17. EMPTY STATE
+    EMPTY STATE
 */
 .empty-state {
     text-align: center;
@@ -794,7 +794,7 @@ form textarea {
 }
 
 /* 
-   18. PAGINATION
+    PAGINATION
 */
 .pagination {
     margin-top: 25px;
@@ -818,14 +818,117 @@ form textarea {
 }
 
 /* 
-   19. RESPONSIVE DESIGN
+   CANDIDATE INTERVIEWS PAGE
+*/
+/* 
+   CANDIDATE INTERVIEWS PAGE
+*/
+.candidate-interview-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.interview-status-badge {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.interview-status-scheduled {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.interview-status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.interview-status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.candidate-interview-hero {
+    background: linear-gradient(135deg, #2563eb, #0f172a);
+    color: white;
+    border-radius: 22px;
+    padding: 32px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+}
+
+.candidate-interview-hero h1 {
+    font-size: 34px;
+    margin: 14px 0 8px;
+}
+
+.candidate-interview-hero p {
+    color: #dbeafe;
+    margin: 0 0 16px;
+}
+
+.interview-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.clean-info-list {
+    display: grid;
+    gap: 14px;
+}
+
+.clean-info-list div {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.clean-info-list span {
+    display: block;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.clean-info-list strong {
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.interview-info-cards {
+    display: grid;
+    gap: 14px;
+}
+
+.interview-notes-card {
+    margin-top: 0;
+}
+/* 
+  RESPONSIVE DESIGN
+*/
+/* 
+  RESPONSIVE DESIGN
 */
 @media (max-width: 1100px) {
-    .candidate-application-stats-grid {
+    .candidate-application-stats-grid,
+    .candidate-interview-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .candidate-application-hero {
+    .candidate-application-hero,
+    .candidate-interview-hero {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -839,6 +942,13 @@ form textarea {
 }
 
 @media (max-width: 900px) {
+    .details-grid,
+    .interview-details-grid,
+    .job-info-grid,
+    .application-info-grid {
+        grid-template-columns: 1fr;
+    }
+
     .progress-steps {
         flex-direction: column;
         align-items: flex-start;
@@ -892,10 +1002,7 @@ form textarea {
         gap: 15px;
     }
 
-    .form-grid,
-    .details-grid,
-    .job-info-grid,
-    .application-info-grid {
+    .form-grid {
         grid-template-columns: 1fr;
     }
 
@@ -910,7 +1017,8 @@ form textarea {
 }
 
 @media (max-width: 700px) {
-    .candidate-application-stats-grid {
+    .candidate-application-stats-grid,
+    .candidate-interview-stats-grid {
         grid-template-columns: 1fr;
     }
 }

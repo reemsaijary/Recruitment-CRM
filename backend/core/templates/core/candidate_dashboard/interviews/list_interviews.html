@@ -2,11 +2,72 @@
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="page-header">
     <div>
         <h1>My Interviews</h1>
-        <p>View your scheduled interview details.</p>
+        <p class="page-subtitle">Track your scheduled, completed, and cancelled interviews.</p>
     </div>
+</div>
+
+<div class="candidate-interview-stats-grid">
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <div>
+            <span>Total Interviews</span>
+            <strong>{{ total_interviews }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-clock"></i>
+        <div>
+            <span>Scheduled</span>
+            <strong>{{ scheduled_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-circle-check"></i>
+        <div>
+            <span>Completed</span>
+            <strong>{{ completed_count }}</strong>
+        </div>
+    </div>
+
+    <div class="mini-stat-card">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <div>
+            <span>Cancelled</span>
+            <strong>{{ cancelled_count }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card search-card">
+    <form method="GET" class="search-form">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by job, company, or interview type..."
+            value="{{ search }}"
+        >
+
+        <select name="status">
+            <option value="">All Statuses</option>
+            <option value="Scheduled" {% if status == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+            <option value="Completed" {% if status == 'Completed' %}selected{% endif %}>Completed</option>
+            <option value="Cancelled" {% if status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+
+        <button type="submit" class="primary-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+
+        <a href="{% url 'candidate_interviews_list' %}" class="secondary-btn">
+            Reset
+        </a>
+    </form>
 </div>
 
 <div class="card">
@@ -23,15 +84,23 @@
 
             {% for interview in interviews %}
             <tr>
-                <td><strong>{{ interview.application.job.job_title }}</strong></td>
-                <td>{{ interview.application.job.company.company_name }}</td>
-                <td>{{ interview.interview_date }}</td>
-                <td>{{ interview.interview_type }}</td>
                 <td>
-                    <span class="status-pill">
+                    <strong>{{ interview.application.job.job_title }}</strong>
+                    <span class="table-subtext">{{ interview.application.job.location }}</span>
+                </td>
+
+                <td>{{ interview.application.job.company.company_name }}</td>
+
+                <td>{{ interview.interview_date }}</td>
+
+                <td>{{ interview.interview_type }}</td>
+
+                <td>
+                    <span class="interview-status-badge interview-status-{{ interview.status|slugify }}">
                         {{ interview.status }}
                     </span>
                 </td>
+
                 <td>
                     <a href="{% url 'candidate_interview_details' interview.id %}" class="small-btn view-btn">
                         <i class="fa-solid fa-eye"></i>
@@ -41,14 +110,31 @@
             </tr>
             {% endfor %}
         </table>
+
+        <div class="pagination">
+            {% if interviews.has_previous %}
+                <a href="?page=1&search={{ search }}&status={{ status }}">First</a>
+                <a href="?page={{ interviews.previous_page_number }}&search={{ search }}&status={{ status }}">Previous</a>
+            {% endif %}
+
+            <span>
+                Page {{ interviews.number }} of {{ interviews.paginator.num_pages }}
+            </span>
+
+            {% if interviews.has_next %}
+                <a href="?page={{ interviews.next_page_number }}&search={{ search }}&status={{ status }}">Next</a>
+                <a href="?page={{ interviews.paginator.num_pages }}&search={{ search }}&status={{ status }}">Last</a>
+            {% endif %}
+        </div>
+
     {% else %}
         <div class="empty-state">
             <div class="empty-icon">
                 <i class="fa-solid fa-calendar-days"></i>
             </div>
 
-            <h2>No interviews scheduled yet</h2>
-            <p>Your interview invitations will appear here once a company schedules them.</p>
+            <h2>No interviews found</h2>
+            <p>Try changing your search/filter or wait until a company schedules an interview.</p>
         </div>
     {% endif %}
 </div>

@@ -18,7 +18,10 @@
     {% if notifications %}
         <div class="notification-list">
             {% for notification in notifications %}
-                <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
+
+                <a href="{% url 'mark_notification_read' notification.id %}"
+                   class="notification-item {% if not notification.is_read %}unread{% endif %}">
+
                     <div class="notification-icon">
                         {% if notification.notification_type == 'application' %}
                             <i class="fa-solid fa-file-lines"></i>
@@ -38,11 +41,13 @@
                     </div>
 
                     {% if not notification.is_read %}
-                        <a href="{% url 'mark_notification_read' notification.id %}" class="small-btn view-btn">
-                            Mark Read
-                        </a>
+                        <span class="status-pill status-applied">
+                            New
+                        </span>
                     {% endif %}
-                </div>
+
+                </a>
+
             {% endfor %}
         </div>
     {% else %}

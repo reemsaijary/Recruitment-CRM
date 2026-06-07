@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from core.models import Company, Application, Notification
 from core.decorators import role_required
-
+from django.urls import reverse
 
 # list
 @role_required(['company'])
@@ -74,6 +74,7 @@ def company_application_details(request, application_id):
                 user=application.candidate.user,
                 title='Application Status Updated',
                 message=f'Your application for {application.job.job_title} is now {new_status}.',
+                url=reverse('candidate_application_details', args=[application.id]),
                 notification_type='status'
             )
 
@@ -139,11 +140,12 @@ def update_application_status_from_kanban(request, application_id, new_status):
         application.save()
 
         if application.candidate.user and old_status != new_status:
-            Notification.objects.create(
-                user=application.candidate.user,
-                title='Application Status Updated',
-                message=f'Your application for {application.job.job_title} is now {new_status}.',
-                notification_type='status'
-            )
+           Notification.objects.create(
+            user=application.candidate.user,
+            title='Application Status Updated',
+            message=f'Your application for {application.job.job_title} is now {new_status}.',
+            url=reverse('candidate_application_details', args=[application.id]),
+            notification_type='status'
+        )
 
     return redirect('company_applications_kanban')

@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from core.models import Candidate, Job, Application, Notification
 from core.decorators import role_required
-
+from django.urls import reverse
 
 # job list
 @role_required(['candidate'])
@@ -97,7 +97,7 @@ def apply_to_job(request, job_id):
             user=job.company.user,
             title='New Application Received',
             message=f'{candidate.full_name} applied for {job.job_title}.',
+            url=reverse('company_application_details', args=[application.id]),
             notification_type='application'
-        )
-
+    )
     return redirect('candidate_applications_list')

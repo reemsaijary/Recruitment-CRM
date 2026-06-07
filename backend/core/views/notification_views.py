@@ -36,8 +36,10 @@ def mark_notification_read(request, notification_id):
     notification.is_read = True
     notification.save()
 
-    return redirect('notifications_list')
+    if notification.url:
+        return redirect(notification.url)
 
+    return redirect('notifications_list')
 
 @login_required
 def mark_all_notifications_read(request):

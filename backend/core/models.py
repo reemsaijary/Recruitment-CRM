@@ -165,6 +165,7 @@ class Notification(models.Model):
     )
     title = models.CharField(max_length=200)
     message = models.TextField()
+    url = models.CharField(max_length=500, blank=True, null=True)
     notification_type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='system')
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from core.models import Company, Application, Interview, Notification
 from core.decorators import role_required
-
+from django.urls import reverse
 
 # list
 @role_required(['company'])
@@ -76,12 +76,12 @@ def company_add_interview(request, application_id):
 
         if application.candidate.user:
             Notification.objects.create(
-                user=application.candidate.user,
-                title='Interview Scheduled',
-                message=f'You have an interview for {application.job.job_title} on {interview.interview_date}.',
-                notification_type='interview'
-            )
-
+            user=application.candidate.user,
+            title='Interview Scheduled',
+            message=f'You have an interview for {application.job.job_title} on {interview.interview_date}.',
+            url=reverse('candidate_interview_details', args=[interview.id]),
+            notification_type='interview'
+        )
         application.status = "Interview Scheduled"
         application.save()
 

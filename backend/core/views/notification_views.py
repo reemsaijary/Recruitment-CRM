@@ -60,3 +60,25 @@ def unread_notifications_count_api(request):
     return JsonResponse({
         'count': count
     })
+
+@login_required
+def recent_notifications_api(request):
+    notifications = Notification.objects.filter(
+        user=request.user
+    ).order_by('-created_at')[:5]
+
+    data = []
+
+    for notification in notifications:
+        data.append({
+            'id': notification.id,
+            'title': notification.title,
+            'message': notification.message,
+            'is_read': notification.is_read,
+            'created_at': notification.created_at.strftime('%b %d, %Y - %I:%M %p'),
+            'read_url': f'/notifications/{notification.id}/read/',
+        })
+
+    return JsonResponse({
+        'notifications': data
+    })

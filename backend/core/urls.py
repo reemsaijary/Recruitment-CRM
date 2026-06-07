@@ -25,12 +25,7 @@ from core.views.company_views.application_views import update_application_status
 
 from core.views.candidate_views.profile_views import candidate_profile, edit_candidate_profile
 
-from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read)
-
-from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read, unread_notifications_count_api)
-
-from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read, unread_notifications_count_api, recent_notifications_api
-)
+from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read, unread_notifications_count_api, recent_notifications_api, delete_notification)
 
 urlpatterns = [
 
@@ -47,6 +42,7 @@ urlpatterns = [
     path('notifications/mark-all-read/', mark_all_notifications_read, name='mark_all_notifications_read'),    
     path('notifications/unread-count/',  unread_notifications_count_api, name='unread_notifications_count_api'),
     path('notifications/recent/', recent_notifications_api, name='recent_notifications_api'),
+    path('notifications/<int:notification_id>/delete/', delete_notification, name='delete_notification'),
 
 # admin dashboard
     path('candidates/', candidates_list, name='candidates_list'),

@@ -82,3 +82,15 @@ def recent_notifications_api(request):
     return JsonResponse({
         'notifications': data
     })
+
+@login_required
+def delete_notification(request, notification_id):
+    notification = get_object_or_404(
+        Notification,
+        id=notification_id,
+        user=request.user
+    )
+
+    notification.delete()
+
+    return redirect('notifications_list')

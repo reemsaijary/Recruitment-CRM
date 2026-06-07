@@ -19,34 +19,44 @@
         <div class="notification-list">
             {% for notification in notifications %}
 
-                <a href="{% url 'mark_notification_read' notification.id %}"
-                   class="notification-item {% if not notification.is_read %}unread{% endif %}">
+                <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
 
-                    <div class="notification-icon">
-                        {% if notification.notification_type == 'application' %}
-                            <i class="fa-solid fa-file-lines"></i>
-                        {% elif notification.notification_type == 'interview' %}
-                            <i class="fa-solid fa-calendar-days"></i>
-                        {% elif notification.notification_type == 'status' %}
-                            <i class="fa-solid fa-chart-line"></i>
-                        {% else %}
-                            <i class="fa-solid fa-bell"></i>
+                    <a href="{% url 'mark_notification_read' notification.id %}" class="notification-main-link">
+
+                        <div class="notification-icon">
+                            {% if notification.notification_type == 'application' %}
+                                <i class="fa-solid fa-file-lines"></i>
+                            {% elif notification.notification_type == 'interview' %}
+                                <i class="fa-solid fa-calendar-days"></i>
+                            {% elif notification.notification_type == 'status' %}
+                                <i class="fa-solid fa-chart-line"></i>
+                            {% else %}
+                                <i class="fa-solid fa-bell"></i>
+                            {% endif %}
+                        </div>
+
+                        <div class="notification-content">
+                            <h3>{{ notification.title }}</h3>
+                            <p>{{ notification.message }}</p>
+                            <span>{{ notification.created_at|date:"M d, Y - h:i A" }}</span>
+                        </div>
+
+                    </a>
+
+                    <div class="notification-actions">
+                        {% if not notification.is_read %}
+                            <span class="status-pill status-applied">New</span>
                         {% endif %}
+
+                        <a href="{% url 'delete_notification' notification.id %}"
+                           class="small-btn delete-btn"
+                           onclick="return confirm('Delete this notification?');">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </a>
                     </div>
 
-                    <div class="notification-content">
-                        <h3>{{ notification.title }}</h3>
-                        <p>{{ notification.message }}</p>
-                        <span>{{ notification.created_at|date:"M d, Y - h:i A" }}</span>
-                    </div>
-
-                    {% if not notification.is_read %}
-                        <span class="status-pill status-applied">
-                            New
-                        </span>
-                    {% endif %}
-
-                </a>
+                </div>
 
             {% endfor %}
         </div>

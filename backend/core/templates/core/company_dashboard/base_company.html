@@ -1282,11 +1282,13 @@ form textarea {
    <a href="{% url 'notifications_list' %}" class="notification-bell">
     <i class="fa-solid fa-bell"></i>
 
-    {% if unread_notifications_count %}
-        <span class="notification-badge">
-            {{ unread_notifications_count }}
-        </span>
-    {% endif %}
+    <span
+        id="notification-badge"
+        class="notification-badge"
+        {% if unread_notifications_count == 0 %}style="display:none;"{% endif %}
+    >
+        {{ unread_notifications_count }}
+    </span>
 </a>
 
     <div class="user-info">
@@ -1310,6 +1312,24 @@ form textarea {
     function toggleSidebar() {
         document.querySelector('.sidebar').classList.toggle('closed');
     }
+
+    function refreshNotificationCount() {
+        fetch("{% url 'unread_notifications_count_api' %}")
+            .then(response => response.json())
+            .then(data => {
+
+                const badge = document.getElementById("notification-badge");
+
+                if (data.count > 0) {
+                    badge.style.display = "flex";
+                    badge.innerText = data.count;
+                } else {
+                    badge.style.display = "none";
+                }
+            });
+    }
+
+    setInterval(refreshNotificationCount, 5000);
 </script>
 
 </body>

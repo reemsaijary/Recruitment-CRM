@@ -27,6 +27,8 @@ from core.views.candidate_views.profile_views import candidate_profile, edit_can
 
 from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read)
 
+from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read, unread_notifications_count_api)
+
 urlpatterns = [
 
     path('login/', login_view, name='login'),
@@ -40,6 +42,7 @@ urlpatterns = [
     path('notifications/', notifications_list, name='notifications_list'),
     path('notifications/<int:notification_id>/read/', mark_notification_read, name='mark_notification_read'),
     path('notifications/mark-all-read/', mark_all_notifications_read, name='mark_all_notifications_read'),    
+    path('notifications/unread-count/',  unread_notifications_count_api, name='unread_notifications_count_api'),
 
 # admin dashboard
     path('candidates/', candidates_list, name='candidates_list'),

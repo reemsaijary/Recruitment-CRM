@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from core.models import Notification
-
+from django.http import JsonResponse
 
 @login_required
 def notifications_list(request):
@@ -49,3 +49,14 @@ def mark_all_notifications_read(request):
     ).update(is_read=True)
 
     return redirect('notifications_list')
+
+@login_required
+def unread_notifications_count_api(request):
+    count = Notification.objects.filter(
+        user=request.user,
+        is_read=False
+    ).count()
+
+    return JsonResponse({
+        'count': count
+    })

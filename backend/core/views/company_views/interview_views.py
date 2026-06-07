@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from core.models import Company, Application, Interview
+from core.models import Company, Application, Interview, Notification
 from core.decorators import role_required
 
 
@@ -66,13 +66,21 @@ def company_add_interview(request, application_id):
     )
 
     if request.method == "POST":
-        Interview.objects.create(
+        interview = Interview.objects.create(
             application=application,
             interview_date=request.POST.get('interview_date'),
             interview_type=request.POST.get('interview_type'),
             status=request.POST.get('status'),
             notes=request.POST.get('notes')
         )
+
+        if application.candidate.user:
+            Notification.objects.create(
+                user=application.candidate.user,
+                title='Interview Scheduled',
+                message=f'You have an interview for {application.job.job_title} on {interview.interview_date}.',
+                notification_type='interview'
+            )
 
         application.status = "Interview Scheduled"
         application.save()

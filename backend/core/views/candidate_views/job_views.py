@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from core.models import Candidate, Job, Application
+from core.models import Candidate, Job, Application, Notification
 from core.decorators import role_required
 
 
@@ -85,11 +85,19 @@ def apply_to_job(request, job_id):
     if existing_application:
         return redirect('candidate_applications_list')
 
-    Application.objects.create(
+    application = Application.objects.create(
         candidate=candidate,
         job=job,
         status='Applied',
         notes='Applied by candidate'
     )
+
+    if job.company.user:
+        Notification.objects.create(
+            user=job.company.user,
+            title='New Application Received',
+            message=f'{candidate.full_name} applied for {job.job_title}.',
+            notification_type='application'
+        )
 
     return redirect('candidate_applications_list')

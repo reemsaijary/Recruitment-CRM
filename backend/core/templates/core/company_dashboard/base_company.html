@@ -1029,6 +1029,100 @@ form textarea {
     color: #0f172a;
 }
 
+/* NOTIFICATIONS */
+.notification-list {
+    display: grid;
+    gap: 14px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.notification-item.unread {
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.notification-icon {
+    width: 48px;
+    height: 48px;
+    background: #dbeafe;
+    color: #2563eb;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-content h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+}
+
+.notification-content p {
+    margin: 0 0 6px;
+    color: #334155;
+}
+
+.notification-content span {
+    color: #64748b;
+    font-size: 13px;
+}
+/* NOTIFICATION BELL */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.notification-bell {
+    width: 43px;
+    height: 43px;
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 18px;
+    transition: 0.2s ease;
+}
+
+.notification-bell:hover {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    background: #dc2626;
+    color: white;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+}
+
 /* 
    20. RESPONSIVE DESIGN
  */
@@ -1121,6 +1215,8 @@ form textarea {
         align-items: flex-start;
     }
 }
+
+
 </style>
 </head>
 
@@ -1162,7 +1258,10 @@ form textarea {
             <i class="fa-solid fa-calendar-days"></i>
             <span class="sidebar-text">Interviews</span>
         </a>
-
+        <a href="{% url 'notifications_list' %}">
+            <i class="fa-solid fa-bell"></i>
+            <span class="sidebar-text">Notifications</span>
+        </a>
         <a href="{% url 'logout' %}">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span class="sidebar-text">Logout</span>
@@ -1175,10 +1274,24 @@ form textarea {
         <div class="navbar">
             <h2>Company Dashboard</h2>
 
-            <div class="user-info">
-                <i class="fa-solid fa-user"></i>
-                Hello, {{ request.user.username }}
-            </div>
+            <div class="navbar-actions">
+
+   <a href="{% url 'notifications_list' %}" class="notification-bell">
+    <i class="fa-solid fa-bell"></i>
+
+    {% if unread_notifications_count %}
+        <span class="notification-badge">
+            {{ unread_notifications_count }}
+        </span>
+    {% endif %}
+</a>
+
+    <div class="user-info">
+        <i class="fa-solid fa-user"></i>
+        Hello, {{ request.user.username }}
+    </div>
+
+</div>
         </div>
 
         <div class="container">

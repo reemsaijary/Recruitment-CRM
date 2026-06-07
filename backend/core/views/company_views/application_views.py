@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from core.models import Company, Application
+from core.models import Company, Application, Notification
 from core.decorators import role_required
 
 
@@ -63,8 +63,20 @@ def company_application_details(request, application_id):
     )
 
     if request.method == "POST":
-        application.status = request.POST.get("status")
+        old_status = application.status
+        new_status = request.POST.get("status")
+
+        application.status = new_status
         application.save()
+
+        if application.candidate.user and old_status != new_status:
+            Notification.objects.create(
+                user=application.candidate.user,
+                title='Application Status Updated',
+                message=f'Your application for {application.job.job_title} is now {new_status}.',
+                notification_type='status'
+            )
+
         return redirect('company_application_details', application_id=application.id)
 
     return render(request, 'core/company_dashboard/applications/application_details.html', {
@@ -122,7 +134,16 @@ def update_application_status_from_kanban(request, application_id, new_status):
     ]
 
     if new_status in allowed_statuses:
+        old_status = application.status
         application.status = new_status
         application.save()
+
+        if application.candidate.user and old_status != new_status:
+            Notification.objects.create(
+                user=application.candidate.user,
+                title='Application Status Updated',
+                message=f'Your application for {application.job.job_title} is now {new_status}.',
+                notification_type='status'
+            )
 
     return redirect('company_applications_kanban')

@@ -25,6 +25,8 @@ from core.views.company_views.application_views import update_application_status
 
 from core.views.candidate_views.profile_views import candidate_profile, edit_candidate_profile
 
+from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read)
+
 urlpatterns = [
 
     path('login/', login_view, name='login'),
@@ -33,7 +35,12 @@ urlpatterns = [
     path('crm-admin/dashboard/', dashboard, name='dashboard'),
     path('company/dashboard/', company_dashboard, name='company_dashboard'),
     path('candidate/dashboard/', candidate_dashboard, name='candidate_dashboard'),
-    
+
+#notifications
+    path('notifications/', notifications_list, name='notifications_list'),
+    path('notifications/<int:notification_id>/read/', mark_notification_read, name='mark_notification_read'),
+    path('notifications/mark-all-read/', mark_all_notifications_read, name='mark_all_notifications_read'),    
+
 # admin dashboard
     path('candidates/', candidates_list, name='candidates_list'),
     path('candidates/<int:candidate_id>/', candidate_details, name='candidate_details'),

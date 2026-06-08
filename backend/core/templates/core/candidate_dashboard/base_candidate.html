@@ -1606,21 +1606,57 @@ form textarea {
 
 /* Mobile */
 @media (max-width: 768px) {
+    .layout {
+        display: block;
+    }
+
     .sidebar {
-        width: 80px;
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 18px;
     }
 
-    .sidebar .sidebar-text,
-    .sidebar .logo {
+    .sidebar-header {
+        margin-bottom: 0;
+    }
+
+    .sidebar-menu {
         display: none;
+        margin-top: 18px;
     }
 
-    .sidebar a {
-        justify-content: center;
+    .sidebar.mobile-open .sidebar-menu {
+        display: block;
+    }
+
+    .sidebar.closed {
+        width: 100%;
+    }
+
+    .sidebar.closed .logo,
+    .sidebar.closed .sidebar-text {
+        display: inline;
+    }
+
+    .sidebar.closed a {
+        justify-content: flex-start;
     }
 
     .navbar {
         padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .navbar-actions,
+    .user-info {
+        width: 100%;
+    }
+
+    .user-info {
+        justify-content: center;
     }
 
     .container {
@@ -1628,13 +1664,16 @@ form textarea {
     }
 
     .dashboard-header,
-    .page-header {
+    .page-header,
+    .welcome-card,
+    .welcome-left {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
 
-    .form-grid {
+    .form-grid,
+    .stats-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1645,16 +1684,6 @@ form textarea {
 
     .search-form select {
         max-width: 100%;
-    }
-
-    .welcome-card,
-    .welcome-left {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
     }
 
     .hero-btn {
@@ -1678,7 +1707,7 @@ form textarea {
 
 <div class="layout">
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">RecruitCRM</div>
 
@@ -1687,37 +1716,44 @@ form textarea {
             </button>
         </div>
 
-        <a href="{% url 'candidate_dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            <span class="sidebar-text">Dashboard</span>
-        </a>
+        <nav class="sidebar-menu">
 
-        <a href="{% url 'candidate_jobs_list' %}">
-            <i class="fa-solid fa-briefcase"></i>
-            <span class="sidebar-text">Available Jobs</span>
-        </a>
+    <a href="{% url 'candidate_dashboard' %}">
+        <i class="fa-solid fa-house"></i>
+        <span class="sidebar-text">Dashboard</span>
+    </a>
 
-        <a href="{% url 'candidate_applications_list' %}">
-            <i class="fa-solid fa-file-lines"></i>
-            <span class="sidebar-text">My Applications</span>
-        </a>
+    <a href="{% url 'candidate_jobs_list' %}">
+        <i class="fa-solid fa-briefcase"></i>
+        <span class="sidebar-text">Available Jobs</span>
+    </a>
 
-        <a href="{% url 'candidate_interviews_list' %}">
-            <i class="fa-solid fa-calendar-days"></i>
-            <span class="sidebar-text">My Interviews</span>
-        </a>
-        <a href="{% url 'candidate_profile' %}">
-            <i class="fa-solid fa-user"></i>
-            <span class="sidebar-text">My Profile</span>
-        </a>
-        <a href="{% url 'notifications_list' %}">
-            <i class="fa-solid fa-bell"></i>
-            <span class="sidebar-text">Notifications</span>
-        </a>
-        <a href="{% url 'logout' %}">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span class="sidebar-text">Logout</span>
-        </a>
+    <a href="{% url 'candidate_applications_list' %}">
+        <i class="fa-solid fa-file-lines"></i>
+        <span class="sidebar-text">My Applications</span>
+    </a>
+
+    <a href="{% url 'candidate_interviews_list' %}">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span class="sidebar-text">My Interviews</span>
+    </a>
+
+    <a href="{% url 'candidate_profile' %}">
+        <i class="fa-solid fa-user"></i>
+        <span class="sidebar-text">My Profile</span>
+    </a>
+
+    <a href="{% url 'notifications_list' %}">
+        <i class="fa-solid fa-bell"></i>
+        <span class="sidebar-text">Notifications</span>
+    </a>
+
+    <a href="{% url 'logout' %}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span class="sidebar-text">Logout</span>
+    </a>
+
+</nav>
     </aside>
 
    <main class="main">
@@ -1772,9 +1808,15 @@ form textarea {
 </div>
 
 <script>
-    function toggleSidebar() {
-        document.querySelector('.sidebar').classList.toggle('closed');
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle("mobile-open");
+    } else {
+        sidebar.classList.toggle("closed");
     }
+}
 
     function refreshNotificationCount() {
         fetch("{% url 'unread_notifications_count_api' %}")

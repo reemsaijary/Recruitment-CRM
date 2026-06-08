@@ -699,14 +699,183 @@
             color: #64748b;
             margin-bottom: 28px;
         }
-    </style>
+    /* responsive */
+    @media (max-width: 1024px) {
+    .dashboard-grid,
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-content-grid,
+    .form-grid,
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .filter-form {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 16px 18px;
+        border-radius: 0;
+    }
+
+    .sidebar-header {
+        margin-bottom: 0;
+    }
+
+    .sidebar-menu {
+        display: none;
+        margin-top: 18px;
+    }
+
+   .sidebar.mobile-open .sidebar-menu {
+    display: block;
+}
+
+    .sidebar.closed {
+        width: 100%;
+    }
+
+    .sidebar.closed .logo {
+        display: block;
+    }
+
+    .sidebar.closed .sidebar-text {
+        display: inline;
+    }
+
+    .sidebar.closed .sidebar-header {
+        justify-content: space-between;
+    }
+
+    .sidebar.closed .sidebar-menu a {
+        justify-content: flex-start;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .navbar {
+        padding: 18px 22px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .container {
+        padding: 22px 18px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .dashboard-hero {
+        padding: 26px;
+        border-radius: 20px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 30px;
+    }
+
+    .hero-actions,
+    .page-actions,
+    .table-actions,
+    .form-actions,
+    .delete-actions,
+    .filter-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn,
+    .secondary-btn,
+    .danger-btn {
+        width: 100%;
+    }
+
+    .dashboard-grid,
+    .admin-stats-grid,
+    .filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 650px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-left h2 {
+        font-size: 24px;
+    }
+
+    .navbar-left p {
+        font-size: 13px;
+    }
+
+    .navbar-user {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dashboard-hero h1,
+    .page-header h1 {
+        font-size: 26px;
+    }
+
+    .dashboard-card strong {
+        font-size: 28px;
+    }
+
+    .mini-stat-card {
+        align-items: flex-start;
+    }
+
+    .container {
+        padding: 18px 14px;
+    }
+
+    th,
+    td {
+        padding: 11px;
+        font-size: 13px;
+    }
+}
+   </style>
 </head>
 
 <body>
 
 <div class="layout">
 
-    <aside class="sidebar" id="sidebar">
+   <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2 class="logo">RecruitCRM</h2>
 
@@ -786,7 +955,13 @@
 
 <script>
     function toggleSidebar() {
-        document.getElementById("sidebar").classList.toggle("closed");
+        const sidebar = document.getElementById("sidebar");
+
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle("mobile-open");
+        } else {
+            sidebar.classList.toggle("closed");
+        }
     }
 </script>
 

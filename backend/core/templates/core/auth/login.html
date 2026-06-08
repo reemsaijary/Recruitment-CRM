@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Login - Recruitment CRM</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         * {
             box-sizing: border-box;
@@ -12,95 +14,254 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #020617, #1e3a8a);
             min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(59,130,246,0.35), transparent 35%),
+                linear-gradient(135deg, #020617, #0f172a 45%, #1e3a8a);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #0f172a;
+            padding: 20px;
         }
 
-        .login-card {
-            background-color: #ffffff;
-            width: 420px;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        .login-wrapper {
+            width: 100%;
+            max-width: 980px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 28px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+            backdrop-filter: blur(12px);
         }
 
-        .login-card h1 {
-            margin: 0;
-            font-size: 28px;
-            color: #0f172a;
-            text-align: center;
+        .login-info {
+            padding: 55px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .login-card p {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 30px;
+        .badge {
+            width: fit-content;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            margin-bottom: 22px;
         }
 
-        label {
-            font-weight: bold;
+        .login-info h1 {
+            font-size: 44px;
+            margin: 0 0 15px;
+            line-height: 1.1;
+        }
+
+        .login-info p {
+            color: #cbd5e1;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 430px;
+        }
+
+        .feature-list {
+            margin-top: 28px;
+            display: grid;
+            gap: 14px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e2e8f0;
             font-size: 14px;
         }
 
-        input {
-            width: 100%;
-            padding: 13px;
-            margin-top: 7px;
-            margin-bottom: 18px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 15px;
+        .feature-item i {
+            color: #60a5fa;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        .login-card {
+            background: #ffffff;
+            padding: 42px;
+            border-radius: 28px 0 0 28px;
         }
 
-        button {
-            width: 100%;
-            padding: 13px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+        .login-card h2 {
+            margin: 0;
+            font-size: 30px;
+            text-align: center;
+            color: #0f172a;
         }
 
-        button:hover {
-            background-color: #1d4ed8;
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin: 10px 0 28px;
+            font-size: 14px;
         }
 
         .message {
             background-color: #fee2e2;
             color: #991b1b;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             margin-bottom: 18px;
             text-align: center;
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 7px;
+            display: block;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 14px 14px 42px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 15px;
+            background: #f8fafc;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.13);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(37,99,235,0.28);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .google-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: #ffffff;
+            color: #334155;
+            padding: 13px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid #cbd5e1;
+            font-weight: 700;
+        }
+
+        .google-btn:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
         }
 
         .footer-text {
-            margin-top: 22px;
+            margin-top: 26px;
             text-align: center;
             font-size: 13px;
             color: #64748b;
+        }
+
+        @media (max-width: 850px) {
+            .login-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .login-info {
+                display: none;
+            }
+
+            .login-card {
+                border-radius: 24px;
+            }
         }
     </style>
 </head>
 
 <body>
 
+<div class="login-wrapper">
+
+    <div class="login-info">
+
+        <h1>Manage hiring with confidence.</h1>
+
+        <p>
+            Track candidates, jobs, applications, interviews, and recruitment activity from one clean CRM workspace.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">
+                <i class="fa-solid fa-user-check"></i>
+                Candidate and company dashboards
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-calendar-check"></i>
+                Interview and application tracking
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-bell"></i>
+                Smart notifications and status updates
+            </div>
+        </div>
+    </div>
+
     <div class="login-card">
-        <h1>RecruitCRM</h1>
-        <p>Login to your recruitment workspace</p>
+        <h2>Welcome Back</h2>
+        <div class="subtitle">Login to access your Recruitment CRM workspace</div>
 
         {% if messages %}
             {% for message in messages %}
@@ -112,36 +273,35 @@
             {% csrf_token %}
 
             <label>Username</label>
-            <input type="text" name="username" placeholder="Enter your username" required>
-
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required>
-
-            <button type="submit">Login</button>
-
-            <div style="margin-top:15px;">
-                <a href="{% url 'google_login' %}"
-                style="
-                display:block;
-                text-align:center;
-                background:#fff;
-                color:#444;
-                padding:12px;
-                border-radius:8px;
-                text-decoration:none;
-                border:1px solid #ddd;
-                font-weight:bold;">
-                
-                Continue with Google
-                </a>
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="username" placeholder="Enter your username" required>
             </div>
 
+            <label>Password</label>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+            <div class="divider">or</div>
+
+            <a href="{% url 'google_login' %}" class="google-btn">
+                <i class="fa-brands fa-google"></i>
+                Continue with Google
+            </a>
         </form>
 
         <div class="footer-text">
             Recruitment CRM System
         </div>
     </div>
+
+</div>
 
 </body>
 </html>

@@ -143,6 +143,18 @@ ACCOUNT_SIGNUP_FIELDS = ['email*']
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+    }
+}
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SOCIALACCOUNT_ADAPTER = 'core.adapters.CandidateSocialAccountAdapter'

@@ -486,6 +486,128 @@ body {
     line-height: 1.65;
 }
 
+/* 
+   HOW IT WORKS
+*/
+
+.how-section {
+    background:
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 28%),
+        #ffffff;
+    padding: 90px 24px 100px;
+}
+
+.how-header {
+    max-width: 760px;
+    margin: 0 auto 60px;
+    text-align: center;
+}
+
+.how-header h2 {
+    font-size: 42px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 18px 0;
+    letter-spacing: -1px;
+}
+
+.how-header h2 span {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.how-header p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.how-steps {
+    max-width: 1180px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.step-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 32px 26px;
+    border-radius: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+    text-align: center;
+    overflow: hidden;
+    transition: 0.25s ease;
+}
+
+.step-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), transparent 45%);
+    opacity: 0;
+    transition: 0.25s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(124, 58, 237, 0.25);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+.step-card:hover::before {
+    opacity: 1;
+}
+
+.step-number {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 36px;
+    font-weight: 800;
+    color: rgba(124, 58, 237, 0.12);
+}
+
+.step-icon,
+.step-card h3,
+.step-card p {
+    position: relative;
+    z-index: 1;
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+
+    border-radius: 18px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 16px 35px rgba(124, 58, 237, 0.28);
+}
+
+.step-card h3 {
+    color: #0f172a;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.step-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.65;
+}
 /* RESPONSIVE */
 
 @media (max-width: 1000px) {
@@ -565,5 +687,12 @@ body {
 
     .feature-card {
         text-align: left;
+    }
+    .how-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .how-header h2 {
+        font-size: 34px;
     }
 }

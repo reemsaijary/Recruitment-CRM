@@ -278,6 +278,84 @@
 
 </section>
 
+<!-- SCREENSHOTS -->
+
+<section class="screenshots-section" id="screenshots">
+
+    <div class="screenshots-header">
+        <span class="section-badge">
+            <i class="fa-solid fa-desktop"></i>
+            Product Screenshots
+        </span>
+
+        <h2>
+            Powerful dashboards for
+            <span>every role</span>
+        </h2>
+        
+    </div>
+
+    <div class="screenshot-tabs">
+        <button class="screenshot-tab active" data-target="admin-card">
+            <i class="fa-solid fa-user-shield"></i>
+            Admin Dashboard
+        </button>
+
+        <button class="screenshot-tab" data-target="company-card">
+            <i class="fa-solid fa-building"></i>
+            Company Dashboard
+        </button>
+
+        <button class="screenshot-tab" data-target="candidate-card">
+            <i class="fa-solid fa-user"></i>
+            Candidate Dashboard
+        </button>
+    </div>
+
+    <div class="screenshots-row">
+
+        <div class="screenshot-card admin-card active-card">
+            <img src="{% static 'core/images/screenshots/admin/admin-dashboard.png' %}" alt="Admin Dashboard">
+            <h3>Admin Dashboard</h3>
+        </div>
+
+        <div class="screenshot-card company-card">
+            <img src="{% static 'core/images/screenshots/company/company-dashboard.png' %}" alt="Company Dashboard">
+            <h3>Company Dashboard</h3>
+        </div>
+
+        <div class="screenshot-card candidate-card">
+            <img src="{% static 'core/images/screenshots/candidate/candidate-dashboard.png' %}" alt="Candidate Dashboard">
+            <h3>Candidate Dashboard</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    const screenshotTabs = document.querySelectorAll(".screenshot-tab");
+    const screenshotCards = document.querySelectorAll(".screenshot-card");
+
+    screenshotTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            const targetClass = tab.dataset.target;
+
+            screenshotTabs.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            screenshotCards.forEach(card => {
+                card.classList.remove("active-card");
+            });
+
+            tab.classList.add("active");
+
+            document.querySelector("." + targetClass).classList.add("active-card");
+        });
+    });
+</script>
+
 
 
 </main>

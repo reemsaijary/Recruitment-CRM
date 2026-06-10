@@ -876,6 +876,297 @@ body {
     font-weight: 600;
 }
 
+/* CTA */
+
+.cta-section {
+    background: #ffffff;
+    padding: 30px 24px 80px;
+}
+
+.cta-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 32px;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,.35), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,.18), transparent 30%),
+        linear-gradient(135deg, #7c3aed, #9333ea, #c026d3);
+
+    box-shadow:
+        0 28px 80px rgba(124,58,237,.32),
+        0 0 45px rgba(192,38,211,.20);
+
+    transition: 0.3s ease;
+}
+
+.cta-container:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 36px 95px rgba(124,58,237,.42),
+        0 0 70px rgba(192,38,211,.30);
+}
+
+.cta-container::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    left: -90px;
+    bottom: -90px;
+    background: rgba(255,255,255,.14);
+    border-radius: 50%;
+}
+
+.cta-container::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    right: 90px;
+    top: -80px;
+    background: rgba(255,255,255,.12);
+    border-radius: 50%;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-content span {
+    display: inline-flex;
+    font-size: 34px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.20));
+}
+
+.cta-content h2 {
+    color: white;
+    font-size: 36px;
+    line-height: 1.15;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.8px;
+}
+
+.cta-content p {
+    color: #f3e8ff;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 26px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cta-white {
+    background: white;
+    color: #7c3aed;
+    box-shadow: 0 14px 30px rgba(255,255,255,.22);
+}
+
+.cta-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 45px rgba(255,255,255,.32);
+}
+
+.cta-outline {
+    color: white;
+    border: 1px solid rgba(255,255,255,.45);
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+}
+
+.cta-outline:hover {
+    background: rgba(255,255,255,.16);
+    transform: translateY(-3px);
+}
+
+.cta-visual {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-visual i {
+    color: white;
+    font-size: 105px;
+    filter:
+        drop-shadow(0 18px 35px rgba(0,0,0,.28))
+        drop-shadow(0 0 30px rgba(255,255,255,.22));
+    transform: rotate(-12deg);
+    transition: 0.35s ease;
+}
+
+.cta-container:hover .cta-visual i {
+    transform: rotate(-6deg) translateY(-8px) scale(1.05);
+}
+
+/* TESTIMONIALS */
+
+.testimonials-section {
+    background: #ffffff;
+    padding: 0 24px 80px;
+}
+
+.testimonials-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.testimonials-header h2 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.testimonials-header i {
+    color: #a855f7;
+    transition: .3s ease;
+}
+
+.testimonials-header:hover i {
+    transform: scale(1.15);
+    text-shadow: 0 0 18px rgba(168,85,247,.4);
+}
+
+.testimonials-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.testimonial-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid #e5e7eb;
+
+    position: relative;
+    overflow: hidden;
+
+    box-shadow: 0 18px 45px rgba(15,23,42,.07);
+
+    transition: all .35s ease;
+}
+
+/* Purple Glow Effect */
+
+.testimonial-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(168,85,247,.15),
+            transparent 45%
+        );
+
+    opacity: 0;
+    transition: .35s ease;
+}
+
+.testimonial-card:hover::before {
+    opacity: 1;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+
+    border-color: rgba(124,58,237,.25);
+
+    box-shadow:
+        0 30px 70px rgba(124,58,237,.18),
+        0 0 35px rgba(124,58,237,.12);
+}
+
+/* Featured Middle Card */
+
+.testimonial-card:nth-child(2) {
+    transform: translateY(-8px);
+}
+
+.testimonial-card:nth-child(2):hover {
+    transform: translateY(-18px);
+}
+
+/* Stars */
+
+.stars {
+    color: #facc15;
+    font-size: 20px;
+    margin-bottom: 16px;
+    transition: .3s ease;
+}
+
+.testimonial-card:hover .stars {
+    transform: scale(1.08);
+}
+
+/* Quote */
+
+.testimonial-card p {
+    color: #334155;
+    line-height: 1.8;
+    font-size: 17px;
+    margin-bottom: 20px;
+    transition: .3s ease;
+}
+
+.testimonial-card:hover p {
+    color: #1e293b;
+}
+
+/* Author */
+
+.testimonial-card h4 {
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 700;
+    transition: .3s ease;
+}
+
+.testimonial-card:hover h4 {
+    color: #7c3aed;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .testimonials-header h2 {
+        font-size: 34px;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .testimonial-card:nth-child(2) {
+        transform: none;
+    }
+
+    .testimonial-card:nth-child(2):hover {
+        transform: translateY(-10px);
+    }
+}
 /* RESPONSIVE */
 
 @media (max-width: 1000px) {
@@ -938,6 +1229,9 @@ body {
     .trusted-logos span {
         font-size: 18px;
     }
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
 }
 @media (max-width: 900px) {
     .features-container {
@@ -980,5 +1274,45 @@ body {
 
     .extra-screenshot-card img {
         height: 240px;
+    }
+     .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .stat-item {
+        border-right: none;
+    }
+    .cta-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 42px 28px;
+    }
+
+    .cta-buttons {
+        justify-content: center;
+    }
+
+    .cta-content h2 {
+        font-size: 30px;
+    }
+
+    .cta-visual i {
+        font-size: 78px;
+    }
+    .testimonials-header h2 {
+        font-size: 34px;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .testimonial-card:nth-child(2) {
+        transform: none;
+    }
+
+    .testimonial-card:nth-child(2):hover {
+        transform: translateY(-10px);
     }
 }

@@ -27,11 +27,14 @@ from core.views.candidate_views.profile_views import candidate_profile, edit_can
 
 from .views.notification_views import (notifications_list, mark_notification_read, mark_all_notifications_read, unread_notifications_count_api, recent_notifications_api, delete_notification)
 
+from .views.landing_views import landing_page
+
 urlpatterns = [
 
+    path('', landing_page, name='landing'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('', login_view, name='home'),
+    
     path('crm-admin/dashboard/', dashboard, name='dashboard'),
     path('company/dashboard/', company_dashboard, name='company_dashboard'),
     path('candidate/dashboard/', candidate_dashboard, name='candidate_dashboard'),

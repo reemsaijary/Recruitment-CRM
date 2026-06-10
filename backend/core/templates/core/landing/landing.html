@@ -331,6 +331,41 @@
 
     </div>
 
+    <div class="more-screenshots-action">
+    <button class="btn btn-primary" id="showMoreScreenshotsBtn">
+        View More Screenshots
+        <i class="fa-solid fa-arrow-down"></i>
+    </button>
+</div>
+
+<div class="extra-screenshots-grid" id="extraScreenshots">
+
+    <div class="extra-screenshot-card">
+        <img src="{% static 'core/images/screenshots/candidate/available-jobs.png' %}" alt="Job Listings">
+        <h3>Job Listings</h3>
+    </div>
+
+    <div class="extra-screenshot-card">
+        <img src="{% static 'core/images/screenshots/company/applications.png' %}" alt="Applications">
+        <h3>Applications</h3>
+    </div>
+
+    <div class="extra-screenshot-card">
+        <img src="{% static 'core/images/screenshots/company/notifications.png' %}" alt="Notifications">
+        <h3>Notifications</h3>
+    </div>
+
+    <div class="extra-screenshot-card locked-card">
+        <div class="locked-content">
+            <i class="fa-solid fa-lock"></i>
+            <h3>Want to explore more?</h3>
+            <p>Sign in to view the full HireHub platform.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Sign In</a>
+        </div>
+    </div>
+
+</div>
+
 </section>
 
 <script>
@@ -353,6 +388,19 @@
 
             document.querySelector("." + targetClass).classList.add("active-card");
         });
+    });
+
+    const showMoreBtn = document.getElementById("showMoreScreenshotsBtn");
+    const extraScreenshots = document.getElementById("extraScreenshots");
+
+    showMoreBtn.addEventListener("click", () => {
+        extraScreenshots.classList.toggle("show");
+
+        if (extraScreenshots.classList.contains("show")) {
+            showMoreBtn.innerHTML = 'Hide Screenshots <i class="fa-solid fa-arrow-up"></i>';
+        } else {
+            showMoreBtn.innerHTML = 'View More Screenshots <i class="fa-solid fa-arrow-down"></i>';
+        }
     });
 </script>
 

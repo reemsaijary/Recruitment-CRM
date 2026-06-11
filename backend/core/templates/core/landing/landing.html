@@ -7,10 +7,10 @@
     <title>HireHub | Smart Recruitment Platform</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'core/css/landing.css' %}?v=99">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -472,6 +472,83 @@
     </div>
 
 </section>
+
+ 
+<!-- PRICING -->
+
+<section class="pricing-section" id="pricing">
+        <div class="pricing-header">
+            <span class="section-badge">
+                <i class="fa-solid fa-credit-card"></i>
+                Pricing Plans
+            </span>
+
+            <h2>Simple pricing for <span>every business</span></h2>
+            <p>Choose the plan that fits your hiring needs.</p>
+        </div>
+    <div class="pricing-wrapper">
+        <div class="pricing-cards">
+
+            <div class="pricing-card">
+                <h4>Starter</h4>
+                <p>Perfect for small teams</p>
+                <h3>$0 <span>/month</span></h3>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Up to 3 Users</li>
+                    <li><i class="fa-solid fa-check"></i> Basic Reporting</li>
+                    <li><i class="fa-solid fa-check"></i> Email Support</li>
+                </ul>
+
+                <a href="{% url 'login' %}" class="pricing-btn outline">Get Started</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <span class="popular-badge">Most Popular</span>
+                <h4>Professional</h4>
+                <p>For growing companies</p>
+                <h3>$29 <span>/month</span></h3>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Up to 10 Users</li>
+                    <li><i class="fa-solid fa-check"></i> Advanced Job Posting</li>
+                    <li><i class="fa-solid fa-check"></i> Unlimited Dashboards</li>
+                    <li><i class="fa-solid fa-check"></i> Priority Support</li>
+                </ul>
+
+                <a href="{% url 'login' %}" class="pricing-btn white">Get Started</a>
+            </div>
+
+            <div class="pricing-card">
+                <h4>Enterprise</h4>
+                <p>For large organizations</p>
+                <h3>$79 <span>/month</span></h3>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Unlimited Users</li>
+                    <li><i class="fa-solid fa-check"></i> Unlimited Job Posting</li>
+                    <li><i class="fa-solid fa-check"></i> AI Automated Features</li>
+                    <li><i class="fa-solid fa-check"></i> 24/7 Phone Support</li>
+                </ul>
+
+                <a href="{% url 'login' %}" class="pricing-btn outline">Get Started</a>
+            </div>
+
+        </div>
+
+        <div class="pricing-image">
+            <img src="{% static 'core/images/pricing-img.png' %}" alt="Pricing Illustration">
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+
+
 
 <script>
     const screenshotTabs = document.querySelectorAll(".screenshot-tab");

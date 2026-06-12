@@ -1,144 +1,178 @@
-{% extends 'core/company_dashboard/base_company.html' %}
 
+{% extends 'core/company_dashboard/base_company.html' %}
 {% block content %}
 
-<div class="company-hero">
-    <div>
+<section class="dashboard-hero">
+    <div class="dashboard-hero-content">
         <span class="hero-badge">
             <i class="fa-solid fa-building"></i>
             Company Workspace
         </span>
 
         <h1>Welcome back, {{ company.company_name }}</h1>
-        <p>Manage your jobs, review candidates, track applications, and schedule interviews from one place.</p>
+
+        <p>
+            Manage job posts, review applications, track candidates, and schedule interviews from one clean workspace.
+        </p>
+
+        <div class="hero-metrics">
+            <div>
+                <strong>{{ active_jobs }}</strong>
+                <span>Active Jobs</span>
+            </div>
+
+            <div>
+                <strong>{{ total_applications }}</strong>
+                <span>Applications</span>
+            </div>
+
+            <div>
+                <strong>{{ total_interviews }}</strong>
+                <span>Interviews</span>
+            </div>
+        </div>
     </div>
 
-    <a href="{% url 'company_add_job' %}" class="primary-btn">
-        <i class="fa-solid fa-plus"></i>
-        Post New Job
-    </a>
-</div>
+    <div class="dashboard-hero-action">
+        <a href="{% url 'company_add_job' %}" class="hero-btn">
+            <i class="fa-solid fa-plus"></i>
+            Post New Job
+        </a>
+    </div>
+</section>
 
-<div class="stats-container">
+<section class="dashboard-stats">
+    <a href="{% url 'company_jobs_list' %}" class="stat-card">
+        <div class="stat-icon purple">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
 
-    <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
-        <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
         <div>
-            <h3>Total Jobs</h3>
-            <p>{{ total_jobs }}</p>
-            <span>All jobs posted by your company</span>
+            <span>Total Jobs</span>
+            <strong>{{ total_jobs }}</strong>
+            <p>All company job posts</p>
         </div>
     </a>
 
-    <a href="{% url 'company_applications_list' %}" class="stat-card stat-link">
-        <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
+    <a href="{% url 'company_applications_list' %}" class="stat-card">
+        <div class="stat-icon pink">
+            <i class="fa-solid fa-file-lines"></i>
+        </div>
+
         <div>
-            <h3>Total Applications</h3>
-            <p>{{ total_applications }}</p>
-            <span>Candidates applied to your jobs</span>
+            <span>Applications</span>
+            <strong>{{ total_applications }}</strong>
+            <p>Candidates applied</p>
         </div>
     </a>
 
-    <a href="{% url 'company_interviews_list' %}" class="stat-card stat-link">
-        <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+    <a href="{% url 'company_interviews_list' %}" class="stat-card">
+        <div class="stat-icon blue">
+            <i class="fa-solid fa-calendar-check"></i>
+        </div>
+
         <div>
-            <h3>Total Interviews</h3>
-            <p>{{ total_interviews }}</p>
-            <span>Scheduled candidate interviews</span>
+            <span>Interviews</span>
+            <strong>{{ total_interviews }}</strong>
+            <p>Scheduled interviews</p>
         </div>
     </a>
 
-    <a href="{% url 'company_jobs_list' %}" class="stat-card stat-link">
-        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+    <a href="{% url 'company_jobs_list' %}" class="stat-card">
+        <div class="stat-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+
         <div>
-            <h3>Active Jobs</h3>
-            <p>{{ active_jobs }}</p>
-            <span>Currently open job posts</span>
+            <span>Active Jobs</span>
+            <strong>{{ active_jobs }}</strong>
+            <p>Currently open roles</p>
         </div>
     </a>
+</section>
 
-</div>
+<section class="dashboard-content-grid">
 
-<div class="dashboard-grid">
-
-    <div class="card dashboard-panel">
+    <div class="dashboard-panel">
         <div class="panel-header">
             <div>
-                <h2>Quick Actions</h2>
-                <p>Fast access to common company tasks.</p>
+                <span class="section-label">Quick Actions</span>
+                <h2>Start your hiring tasks</h2>
+                <p>Fast access to the most used company tools.</p>
             </div>
         </div>
 
-        <div class="action-list">
-            <a href="{% url 'company_add_job' %}" class="dashboard-action">
+        <div class="action-grid">
+            <a href="{% url 'company_add_job' %}" class="action-card">
                 <i class="fa-solid fa-plus"></i>
                 <div>
                     <strong>Post New Job</strong>
-                    <span>Create a new job opportunity</span>
+                    <span>Create a new job opening</span>
                 </div>
             </a>
 
-            <a href="{% url 'company_candidates_list' %}" class="dashboard-action">
+            <a href="{% url 'company_candidates_list' %}" class="action-card">
                 <i class="fa-solid fa-users"></i>
                 <div>
                     <strong>Search Candidates</strong>
-                    <span>Find candidates by skills and experience</span>
+                    <span>Review candidate profiles</span>
                 </div>
             </a>
 
-            <a href="{% url 'company_applications_list' %}" class="dashboard-action">
+            <a href="{% url 'company_applications_list' %}" class="action-card">
                 <i class="fa-solid fa-table-columns"></i>
                 <div>
                     <strong>Application Pipeline</strong>
-                    <span>Review and update application status</span>
+                    <span>Track hiring stages</span>
                 </div>
             </a>
 
-            <a href="{% url 'company_interviews_list' %}" class="dashboard-action">
+            <a href="{% url 'company_interviews_list' %}" class="action-card">
                 <i class="fa-solid fa-calendar-days"></i>
                 <div>
                     <strong>View Interviews</strong>
-                    <span>Manage scheduled interviews</span>
+                    <span>Manage scheduled meetings</span>
                 </div>
             </a>
         </div>
     </div>
 
-    <div class="card dashboard-panel">
+    <div class="dashboard-panel summary-panel">
         <div class="panel-header">
             <div>
-                <h2>Recruitment Summary</h2>
-                <p>Your current hiring activity.</p>
+                <span class="section-label">Summary</span>
+                <h2>Hiring Activity</h2>
+                <p>Your current recruitment overview.</p>
             </div>
         </div>
 
         <div class="summary-list">
-       <div class="summary-item">
-    <span>
-        <i class="fa-solid fa-briefcase"></i>
-        Open Jobs
-    </span>
-    <strong>{{ active_jobs }}</strong>
-</div>
+            <div class="summary-item">
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    Open Jobs
+                </span>
+                <strong>{{ active_jobs }}</strong>
+            </div>
 
-<div class="summary-item">
-    <span>
-        <i class="fa-solid fa-file-lines"></i>
-        Applications
-    </span>
-    <strong>{{ total_applications }}</strong>
-</div>
+            <div class="summary-item">
+                <span>
+                    <i class="fa-solid fa-file-lines"></i>
+                    Applications
+                </span>
+                <strong>{{ total_applications }}</strong>
+            </div>
 
-<div class="summary-item">
-    <span>
-        <i class="fa-solid fa-calendar-check"></i>
-        Interviews
-    </span>
-    <strong>{{ total_interviews }}</strong>
-</div>
+            <div class="summary-item">
+                <span>
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Interviews
+                </span>
+                <strong>{{ total_interviews }}</strong>
+            </div>
         </div>
     </div>
 
-</div>
+</section>
 
 {% endblock %}

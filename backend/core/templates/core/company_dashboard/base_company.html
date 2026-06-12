@@ -1,1634 +1,130 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Company Dashboard</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-/* 
-   1. GLOBAL RESET
- */
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f1f5f9;
-    color: #0f172a;
-}
-
-a {
-    text-decoration: none;
-}
-
-/* 
-   2. MAIN LAYOUT
- */
-.layout {
-    display: flex;
-    min-height: 100vh;
-    align-items: flex-start;
-}
-.main {
-    flex: 1;
-    min-width: 0;
-}
-
-.container {
-    padding: 35px;
-}
-
-/* 
-   3. SIDEBAR
- */
-  .sidebar {
-            width: 260px;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            background: linear-gradient(180deg, #020617, #1e293b);
-            color: white;
-            padding: 20px 15px;
-            transition: width 0.3s ease;
-            overflow-y: auto;
-        }
-
-.sidebar.closed {
-    width: 80px;
-}
-
-.sidebar.closed .sidebar-text,
-.sidebar.closed .logo {
-    display: none;
-}
-
-.sidebar.closed a {
-    justify-content: center;
-}
-
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-.logo {
-    font-size: 26px;
-    font-weight: bold;
-}
-
-.toggle-btn {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 10px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.sidebar a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #e2e8f0;
-    padding: 14px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    transition: 0.2s;
-}
-
-.sidebar a:hover {
-    background: #2563eb;
-    color: white;
-}
-
-.sidebar i {
-    width: 20px;
-}
-
-/* 
-   4. NAVBAR
- */
-.navbar {
-    background: white;
-    padding: 25px 35px;
-    border-bottom: 1px solid #e2e8f0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar h2 {
-    margin: 0;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: bold;
-    color: #1e293b;
-    background: #f1f5f9;
-    padding: 10px 16px;
-    border-radius: 10px;
-}
-
-/* 
-   5. PAGE HEADERS
- */
-.dashboard-header,
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.dashboard-header h1,
-.page-header h1 {
-    margin: 0;
-    font-size: 32px;
-}
-
-.dashboard-header p,
-.page-header p,
-.page-subtitle {
-    color: #64748b;
-    margin-top: 8px;
-    font-size: 15px;
-}
-
-.header-actions,
-.page-actions {
-    display: flex;
-    gap: 10px;
-}
-
-/* 
-   6. CARDS
- */
-.card,
-.stat-card,
-.quick-actions {
-    background: white;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
-.info-section-card h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #0f172a;
-}
-
-.info-section-card h3 i {
-    color: #2563eb;
-}
-
-.info-section-card p {
-    margin: 12px 0;
-    color: #334155;
-}
-
-.info-section-card strong {
-    color: #0f172a;
-}
-
-/* 
-   7. BUTTONS
- */
-.action-btn,
-.primary-btn,
-.secondary-btn,
-.danger-btn,
-.small-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.action-btn,
-.primary-btn {
-    background: #2563eb;
-    color: white;
-}
-
-.action-btn {
-    padding: 12px 18px;
-    border-radius: 10px;
-}
-
-.primary-btn,
-.secondary-btn,
-.danger-btn {
-    padding: 11px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-}
-
-.secondary-btn {
-    background: white;
-    color: #0f172a;
-    border: 1px solid #dbe3ef;
-}
-
-.danger-btn,
-.delete-btn {
-    background: #dc2626;
-    color: white;
-}
-
-.small-btn {
-    padding: 7px 11px;
-    border-radius: 7px;
-    font-size: 14px;
-    margin-right: 5px;
-    color: white;
-}
-
-.view-btn {
-    background: #2563eb;
-}
-
-.edit-btn {
-    background: #16a34a;
-}
-
-.interview-shortcut-btn {
-    background: #0ea5e9;
-}
-
-.action-btn:hover,
-.primary-btn:hover,
-.view-btn:hover {
-    background: #1d4ed8;
-}
-
-/* 
-   8. TABLES
- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: #0f172a;
-    color: white;
-    padding: 14px;
-    text-align: left;
-}
-
-td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-tr {
-    transition: 0.2s ease;
-}
-
-tr:hover {
-    background: #f8fafc;
-}
-
-th:first-child {
-    border-top-left-radius: 10px;
-}
-
-th:last-child {
-    border-top-right-radius: 10px;
-}
-
-.table-subtext {
-    display: block;
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-/* 
-   9. FORMS AND SEARCH
- */
-form {
-    display: grid;
-    gap: 16px;
-}
-
-form label {
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-form input,
-form textarea,
-form select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 15px;
-}
-
-form textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.full-width {
-    grid-column: 1 / -1;
-}
-
-.form-footer {
-    margin-top: 24px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.search-card {
-    padding: 18px 25px;
-    margin-bottom: 20px;
-}
-
-.search-form {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.search-form input {
-    flex: 1;
-}
-
-.search-form button {
-    height: 44px;
-}
-
-.search-form select {
-    max-width: 180px;
-}
-
-/* 
-   10. DASHBOARD HOME
- */
-.company-hero {
-    background: linear-gradient(135deg, #2563eb, #0f172a);
-    color: white;
-    border-radius: 22px;
-    padding: 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
-}
-
-.company-hero h1 {
-    font-size: 34px;
-    margin: 14px 0 10px;
-}
-
-.company-hero p {
-    color: #dbeafe;
-    max-width: 650px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.15);
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 22px;
-    margin-top: 25px;
-}
-
-.stat-card {
-    min-height: 135px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.stat-link {
-    color: inherit;
-    transition: 0.2s ease;
-}
-
-.stat-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-.stat-icon,
-.mini-stat-card i {
-    background: #dbeafe;
-    color: #2563eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.stat-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 14px;
-    font-size: 24px;
-}
-
-.stat-card h3 {
-    margin: 0;
-    color: #2563eb;
-    font-size: 18px;
-}
-
-.stat-card p {
-    font-size: 30px;
-    margin: 10px 0 0;
-    font-weight: bold;
-}
-
-.stat-card span {
-    display: block;
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-    margin-top: 30px;
-}
-
-.dashboard-panel {
-    height: fit-content;
-}
-
-.panel-header {
-    margin-bottom: 20px;
-}
-
-.panel-header h2 {
-    margin: 0;
-    font-size: 18px;
-    color: #0f172a;
-}
-
-.panel-header p {
-    margin-top: 6px;
-    color: #64748b;
-    font-size: 14px;
-}
-
-.summary-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    border-radius: 14px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-}
-
-.summary-item span {
-    color: #64748b;
-    font-weight: 600;
-}
-
-.summary-item strong {
-    color: #2563eb;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.summary-item i {
-    color: #2563eb;
-    margin-right: 8px;
-}
-
-.action-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.dashboard-action {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 16px;
-    border-radius: 16px;
-    color: #0f172a;
-    transition: 0.2s ease;
-}
-
-.dashboard-action:hover {
-    background: #eff6ff;
-    border-color: #2563eb;
-    transform: translateY(-3px);
-}
-
-.dashboard-action i {
-    width: 44px;
-    height: 44px;
-    background: #dbeafe;
-    color: #2563eb;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 
-   11. SHARED MINI STATS
- */
-.job-stats-grid,
-.candidate-stats-grid,
-.interview-stats-grid,
-.application-stats-grid {
-    display: grid;
-    gap: 18px;
-    margin-bottom: 24px;
-}
-
-.job-stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.candidate-stats-grid,
-.interview-stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.application-stats-grid {
-    grid-template-columns: repeat(5, 1fr);
-}
-
-.mini-stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-}
-
-.mini-stat-card i {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    font-size: 22px;
-}
-
-.mini-stat-card span {
-    color: #64748b;
-    font-size: 14px;
-}
-
-.mini-stat-card strong {
-    display: block;
-    font-size: 26px;
-    color: #0f172a;
-    margin-top: 4px;
-}
-
-/* 
-   12. STATUS BADGES
- */
-.status-pill,
-.experience-pill,
-.app-status-badge,
-.interview-status-badge,
-.status-open,
-.status-closed {
-    display: inline-block;
-    padding: 7px 12px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.status-pill,
-.experience-pill,
-.status-applied,
-.interview-status-scheduled {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.status-open,
-.status-hired,
-.interview-status-completed {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status-closed,
-.status-rejected,
-.interview-status-cancelled {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.status-screening {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.status-shortlisted {
-    background: #ede9fe;
-    color: #5b21b6;
-}
-
-.status-interview-scheduled {
-    background: #cffafe;
-    color: #0e7490;
-}
-
-/* 
-   13. CANDIDATES
- */
-.candidate-cell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.candidate-avatar,
-.candidate-large-avatar {
-    background: #dbeafe;
-    color: #2563eb;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    text-transform: uppercase;
-}
-
-.candidate-avatar {
-    width: 42px;
-    height: 42px;
-}
-
-.candidate-cell strong {
-    display: block;
-    color: #0f172a;
-}
-
-.candidate-cell span {
-    display: block;
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.candidate-profile-hero {
-    background: linear-gradient(135deg, #2563eb, #0f172a);
-    color: white;
-    border-radius: 22px;
-    padding: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 26px;
-    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
-}
-
-.candidate-profile-main {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.candidate-large-avatar {
-    width: 82px;
-    height: 82px;
-    background: white;
-    font-size: 34px;
-}
-
-.candidate-profile-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.candidate-profile-tags span {
-    background: rgba(255,255,255,0.15);
-    padding: 8px 12px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.skills-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 18px;
-    border-radius: 14px;
-    color: #334155;
-    line-height: 1.7;
-}
-
-/* 
-   14. DETAILS PAGES
- */
-.profile-card {
-    max-width: 100%;
-}
-
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 25px;
-}
-
-.profile-avatar {
-    width: 70px;
-    height: 70px;
-    background: #dbeafe;
-    color: #2563eb;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-}
-
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
-
-.details-grid div {
-    background: #f8fafc;
-    padding: 16px;
-    border-radius: 12px;
-}
-
-.details-grid strong {
-    color: #2563eb;
-}
-
-.application-status-card {
-    margin-top: 20px;
-}
-
-.section-line {
-    border: none;
-    border-top: 1px solid #e2e8f0;
-    margin: 28px 0;
-}
-
-/* 
-   15. JOB DETAILS
- */
-.job-form-card,
-.job-details-card {
-    background: white;
-}
-
-.job-form-card {
-    padding: 28px;
-}
-
-.job-details-card {
-    border-radius: 18px;
-    padding: 30px;
-    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
-}
-
-.job-details-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 22px;
-}
-
-.job-info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-top: 24px;
-}
-
-.info-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 18px;
-}
-
-.info-box span {
-    display: block;
-    color: #64748b;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.description-box {
-    margin-top: 26px;
-}
-
-.description-box p {
-    color: #334155;
-    line-height: 1.7;
-}
-
-/* 
-   16. KANBAN BOARD
- */
-.kanban-board {
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    padding-bottom: 14px;
-    max-width: 100%;
-}
-
-.kanban-column {
-    flex: 0 0 240px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px;
-    min-height: 420px;
-}
-
-.kanban-column-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-}
-
-.kanban-card {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-}
-
-.kanban-card-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
-}
-
-.kanban-action-btn {
-    padding: 5px 8px;
-    border-radius: 7px;
-    font-size: 11px;
-    font-weight: 700;
-    color: white;
-}
-
-.view-action { background: #2563eb; }
-.screening-action { background: #f59e0b; }
-.shortlist-action { background: #7c3aed; }
-.interview-action { background: #0ea5e9; }
-.hired-action { background: #16a34a; }
-.reject-action { background: #dc2626; }
-
-/* 
-   17. EMPTY STATE
- */
-.empty-state {
-    text-align: center;
-    padding: 45px 20px;
-}
-
-.empty-icon {
-    width: 70px;
-    height: 70px;
-    background: #dbeafe;
-    color: #2563eb;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 18px;
-    font-size: 30px;
-}
-
-/* 
-   18. DELETE PAGE
- */
-.delete-wrapper {
-    min-height: 60vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.delete-card {
-    width: 100%;
-    max-width: 520px;
-    background: white;
-    border-radius: 20px;
-    padding: 34px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
-}
-
-.delete-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #fee2e2;
-    color: #dc2626;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    margin: 0 auto 18px;
-}
-
-.delete-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 26px;
-}
-
-/* 
-   19. PAGINATION
- */
-.pagination {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.pagination a {
-    background: #2563eb;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-.pagination span {
-    font-weight: 600;
-    color: #0f172a;
-}
-
-/* 
-   NOTIFICATIONS PAGE
- */
-
-.notification-list {
-    display: grid;
-    gap: 14px;
-}
-
-.notification-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-
-    padding: 18px;
-
-    transition: 0.25s ease;
-}
-
-.notification-item:hover {
-    transform: translateY(-2px);
-    background: #eff6ff;
-}
-
-.notification-item.unread {
-    background: #eff6ff;
-    border-color: #93c5fd;
-}
-
-.notification-main-link {
-    flex: 1;
-
-    display: flex;
-    align-items: center;
-    gap: 16px;
-
-    text-decoration: none;
-    color: inherit;
-}
-
-.notification-icon {
-    width: 48px;
-    height: 48px;
-
-    background: #dbeafe;
-    color: #2563eb;
-
-    border-radius: 14px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 20px;
-
-    flex-shrink: 0;
-}
-
-.notification-content {
-    flex: 1;
-}
-
-.notification-content h3 {
-    margin: 0 0 6px;
-    font-size: 17px;
-    color: #0f172a;
-}
-
-.notification-content p {
-    margin: 0 0 6px;
-    color: #334155;
-    line-height: 1.5;
-}
-
-.notification-content span {
-    color: #64748b;
-    font-size: 13px;
-}
-
-.notification-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    flex-shrink: 0;
-}
-
-.delete-btn {
-    background: #ef4444;
-    color: white;
-
-    padding: 8px 14px;
-    border-radius: 10px;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    text-decoration: none;
-
-    transition: 0.2s ease;
-}
-
-.delete-btn:hover {
-    background: #dc2626;
-    color: white;
-}
-
-.delete-btn i {
-    margin-right: 5px;
-}
-
-/* 
-   NOTIFICATION BELL
- */
-
-.navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.notification-wrapper {
-    position: relative;
-}
-
-.notification-bell {
-    width: 43px;
-    height: 43px;
-
-    background: #f1f5f9;
-    color: #0f172a;
-
-    border: none;
-    cursor: pointer;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: relative;
-
-    font-size: 18px;
-
-    transition: 0.2s ease;
-}
-
-.notification-bell:hover {
-    background: #dbeafe;
-    color: #2563eb;
-}
-
-.notification-badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-
-    min-width: 20px;
-    height: 20px;
-
-    background: #dc2626;
-    color: white;
-
-    border-radius: 999px;
-
-    font-size: 12px;
-    font-weight: 800;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0 6px;
-}
-
-/* 
-   NOTIFICATION DROPDOWN
- */
-
-.notification-dropdown {
-    display: none;
-
-    position: absolute;
-    top: 55px;
-    right: 0;
-
-    width: 360px;
-
-    background: white;
-
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-
-    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
-
-    overflow: hidden;
-    z-index: 999;
-}
-
-.notification-dropdown.show {
-    display: block;
-}
-
-.notification-dropdown-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 14px 16px;
-
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.notification-dropdown-header strong {
-    color: #0f172a;
-}
-
-.notification-dropdown-header a {
-    color: #2563eb;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-/* 
-   DROPDOWN NOTIFICATION ITEMS
- */
-
-.dropdown-notification-item {
-    display: flex;
-    gap: 12px;
-
-    padding: 14px 16px;
-
-    text-decoration: none;
-    color: inherit;
-
-    border-bottom: 1px solid #f1f5f9;
-
-    transition: 0.2s ease;
-}
-
-.dropdown-notification-item:hover {
-    background: #eff6ff;
-}
-
-.dropdown-notification-item.unread {
-    background: #f8fbff;
-}
-
-.dropdown-notification-icon {
-    width: 38px;
-    height: 38px;
-
-    background: #dbeafe;
-    color: #2563eb;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-}
-
-.dropdown-notification-content {
-    flex: 1;
-}
-
-.dropdown-notification-content h4 {
-    margin: 0 0 4px;
-    font-size: 14px;
-    color: #0f172a;
-}
-
-.dropdown-notification-content p {
-    margin: 0 0 5px;
-    color: #475569;
-    font-size: 13px;
-}
-
-.dropdown-notification-content span {
-    color: #64748b;
-    font-size: 12px;
-}
-
-.notification-dropdown-empty {
-    padding: 18px;
-    text-align: center;
-    color: #64748b;
-    margin: 0;
-}
-/* 
-   20. BETTER RESPONSIVE DESIGN
- */
-@media (max-width: 1100px) {
-    .dashboard-grid,
-    .action-list,
-    .job-stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .application-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .candidate-stats-grid,
-    .interview-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .layout {
-        display: block;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 16px 18px;
-    }
-
-    .sidebar-header {
-        margin-bottom: 0;
-    }
-
-    .sidebar-menu {
-        display: none;
-        margin-top: 18px;
-    }
-
-    .sidebar.mobile-open .sidebar-menu {
-        display: block;
-    }
-
-    .sidebar.closed {
-        width: 100%;
-    }
-
-    .sidebar.closed .logo,
-    .sidebar.closed .sidebar-text {
-        display: inline;
-    }
-
-    .sidebar.closed a {
-        justify-content: flex-start;
-    }
-
-    .main {
-        width: 100%;
-    }
-
-    .navbar {
-        padding: 18px 20px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-    }
-
-    .navbar-actions,
-    .user-info {
-        width: 100%;
-    }
-
-    .user-info {
-        justify-content: center;
-    }
-
-    .container {
-        padding: 20px 16px;
-    }
-
-    .company-hero,
-    .candidate-profile-hero {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 26px;
-        border-radius: 20px;
-    }
-
-    .company-hero h1 {
-        font-size: 28px;
-    }
-
-    .dashboard-header,
-    .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-    }
-
-    .header-actions,
-    .page-actions,
-    .form-footer,
-    .delete-actions,
-    .notification-actions {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .action-btn,
-    .primary-btn,
-    .secondary-btn,
-    .danger-btn {
-        width: 100%;
-    }
-
-    .stats-container,
-    .application-stats-grid,
-    .candidate-stats-grid,
-    .interview-stats-grid,
-    .job-stats-grid,
-    .form-grid,
-    .details-grid,
-    .job-info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .search-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-form select {
-        max-width: 100%;
-    }
-
-    .card {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 680px;
-    }
-
-    .notification-dropdown {
-        right: auto;
-        left: 0;
-        width: 320px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo {
-        font-size: 22px;
-    }
-
-    .navbar h2 {
-        font-size: 23px;
-    }
-
-    .container {
-        padding: 16px 12px;
-    }
-
-    .company-hero {
-        padding: 22px;
-    }
-
-    .company-hero h1,
-    .dashboard-header h1,
-    .page-header h1 {
-        font-size: 25px;
-    }
-
-    .stat-card,
-    .mini-stat-card,
-    .card {
-        padding: 18px;
-    }
-
-    .stat-card p {
-        font-size: 26px;
-    }
-
-    .candidate-profile-main {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .notification-item,
-    .notification-main-link {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .notification-dropdown {
-        width: 290px;
-    }
-}
-
-</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'core/css/company/dashboard/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'core/css/company/base.css' %}?v=1">
+{% block extra_css %}
+{% endblock %}
 </head>
 
 <body>
 
 <div class="layout">
 
-    <!-- Sidebar -->
- <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <div class="logo">RecruitCRM</div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Recruit<span>CRM</span></div>
 
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </div>
+            <button class="toggle-btn" onclick="toggleSidebar()" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
 
-    <div class="sidebar-menu">
+        <div class="sidebar-section">
+            <p>Main</p>
 
-        <a href="{% url 'company_dashboard' %}">
-            <i class="fa-solid fa-house"></i>
-            <span class="sidebar-text">Dashboard</span>
-        </a>
+            <a href="{% url 'company_dashboard' %}">
+                <i class="fa-solid fa-house"></i>
+                <span class="sidebar-text">Dashboard</span>
+            </a>
 
-        <a href="{% url 'company_jobs_list' %}">
-            <i class="fa-solid fa-briefcase"></i>
-            <span class="sidebar-text">My Jobs</span>
-        </a>
+            <a href="{% url 'company_jobs_list' %}">
+                <i class="fa-solid fa-briefcase"></i>
+                <span class="sidebar-text">My Jobs</span>
+            </a>
 
-        <a href="{% url 'company_applications_list' %}">
-            <i class="fa-solid fa-file-lines"></i>
-            <span class="sidebar-text">Applications</span>
-        </a>
+            <a href="{% url 'company_candidates_list' %}">
+                <i class="fa-solid fa-users"></i>
+                <span class="sidebar-text">Candidates</span>
+            </a>
+        </div>
 
-        <a href="{% url 'company_candidates_list' %}">
-            <i class="fa-solid fa-users"></i>
-            <span class="sidebar-text">Candidates</span>
-        </a>
+        <div class="sidebar-section">
+            <p>Hiring</p>
 
-        <a href="{% url 'company_interviews_list' %}">
-            <i class="fa-solid fa-calendar-days"></i>
-            <span class="sidebar-text">Interviews</span>
-        </a>
+            <a href="{% url 'company_applications_list' %}">
+                <i class="fa-solid fa-file-lines"></i>
+                <span class="sidebar-text">Applications</span>
+            </a>
 
-        <a href="{% url 'notifications_list' %}">
-            <i class="fa-solid fa-bell"></i>
-            <span class="sidebar-text">Notifications</span>
-        </a>
+            <a href="{% url 'company_interviews_list' %}">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span class="sidebar-text">Interviews</span>
+            </a>
+        </div>
 
-        <a href="{% url 'logout' %}">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span class="sidebar-text">Logout</span>
-        </a>
+        <div class="sidebar-section">
+            <p>Account</p>
 
-    </div>
+            <a href="{% url 'notifications_list' %}">
+                <i class="fa-solid fa-bell"></i>
+                <span class="sidebar-text">Notifications</span>
+            </a>
 
-</aside>
+            <a href="{% url 'logout' %}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="sidebar-text">Logout</span>
+            </a>
+        </div>
+    </aside>
 
-    <!-- Main Content -->
     <main class="main">
 
         <div class="navbar">
-            <h2>Company Dashboard</h2>
-
-            <div class="navbar-actions">
-
-   <div class="notification-wrapper">
-
-    <button type="button" class="notification-bell" onclick="toggleNotificationDropdown()">
-        <i class="fa-solid fa-bell"></i>
-
-        <span
-            id="notification-badge"
-            class="notification-badge"
-            {% if unread_notifications_count == 0 %}style="display:none;"{% endif %}
-        >
-            {{ unread_notifications_count }}
-        </span>
-    </button>
-
-    <div id="notification-dropdown" class="notification-dropdown">
-        <div class="notification-dropdown-header">
-            <strong>Notifications</strong>
-            <a href="{% url 'notifications_list' %}">View All</a>
-        </div>
-
-        <div id="notification-dropdown-list">
-            <p class="notification-dropdown-empty">Loading...</p>
-        </div>
+    <div class="navbar-left">
+        <span class="navbar-kicker">Company Portal</span>
+        <h2>Hiring Workspace</h2>
     </div>
 
-</div>
+    <div class="navbar-actions">
 
-    <div class="user-info">
-        <i class="fa-solid fa-user"></i>
-        Hello, {{ request.user.username }}
-    </div>
+        <div class="notification-wrapper">
+            <button type="button" class="notification-bell" onclick="toggleNotificationDropdown()">
+                <i class="fa-solid fa-bell"></i>
 
-</div>
+                <span
+                    id="notification-badge"
+                    class="notification-badge"
+                    {% if unread_notifications_count == 0 %}style="display:none;"{% endif %}
+                >
+                    {{ unread_notifications_count }}
+                </span>
+            </button>
+
+            <div id="notification-dropdown" class="notification-dropdown">
+                <div class="notification-dropdown-header">
+                    <strong>Notifications</strong>
+                    <a href="{% url 'notifications_list' %}">View All</a>
+                </div>
+
+                <div id="notification-dropdown-list">
+                    <p class="notification-dropdown-empty">Loading...</p>
+                </div>
+            </div>
         </div>
+
+        <div class="user-info">
+            <span class="user-avatar">
+                <i class="fa-solid fa-user"></i>
+            </span>
+
+            <div>
+                <small>Company Account</small>
+                <strong>{{ request.user.username }}</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
 
         <div class="container">
             {% block content %}
@@ -1640,8 +136,7 @@ form textarea {
 </div>
 
 <script>
-    
-    function toggleSidebar() {
+function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
 
     if (window.innerWidth <= 768) {
@@ -1650,77 +145,78 @@ form textarea {
         sidebar.classList.toggle("closed");
     }
 }
-    function refreshNotificationCount() {
-        fetch("{% url 'unread_notifications_count_api' %}")
-            .then(response => response.json())
-            .then(data => {
-                const badge = document.getElementById("notification-badge");
 
-                if (data.count > 0) {
-                    badge.style.display = "flex";
-                    badge.innerText = data.count;
-                } else {
-                    badge.style.display = "none";
+function refreshNotificationCount() {
+    fetch("{% url 'unread_notifications_count_api' %}")
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.getElementById("notification-badge");
+
+            if (data.count > 0) {
+                badge.style.display = "flex";
+                badge.innerText = data.count;
+            } else {
+                badge.style.display = "none";
+            }
+        });
+}
+
+function loadRecentNotifications() {
+    fetch("{% url 'recent_notifications_api' %}")
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById("notification-dropdown-list");
+            list.innerHTML = "";
+
+            if (data.notifications.length === 0) {
+                list.innerHTML = '<p class="notification-dropdown-empty">No notifications yet</p>';
+                return;
+            }
+
+            data.notifications.forEach(notification => {
+                const item = document.createElement("a");
+                item.href = notification.read_url;
+                item.className = "dropdown-notification-item";
+
+                if (!notification.is_read) {
+                    item.classList.add("unread");
                 }
+
+                item.innerHTML = `
+                    <div class="dropdown-notification-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+
+                    <div class="dropdown-notification-content">
+                        <h4>${notification.title}</h4>
+                        <p>${notification.message}</p>
+                        <span>${notification.created_at}</span>
+                    </div>
+                `;
+
+                list.appendChild(item);
             });
+        });
+}
+
+function toggleNotificationDropdown() {
+    const dropdown = document.getElementById("notification-dropdown");
+    dropdown.classList.toggle("show");
+
+    if (dropdown.classList.contains("show")) {
+        loadRecentNotifications();
     }
+}
 
-    function loadRecentNotifications() {
-        fetch("{% url 'recent_notifications_api' %}")
-            .then(response => response.json())
-            .then(data => {
-                const list = document.getElementById("notification-dropdown-list");
-                list.innerHTML = "";
+document.addEventListener("click", function(event) {
+    const wrapper = document.querySelector(".notification-wrapper");
 
-                if (data.notifications.length === 0) {
-                    list.innerHTML = '<p class="notification-dropdown-empty">No notifications yet</p>';
-                    return;
-                }
-
-                data.notifications.forEach(notification => {
-                    const item = document.createElement("a");
-                    item.href = notification.read_url;
-                    item.className = "dropdown-notification-item";
-
-                    if (!notification.is_read) {
-                        item.classList.add("unread");
-                    }
-
-                    item.innerHTML = `
-                        <div class="dropdown-notification-icon">
-                            <i class="fa-solid fa-bell"></i>
-                        </div>
-
-                        <div class="dropdown-notification-content">
-                            <h4>${notification.title}</h4>
-                            <p>${notification.message}</p>
-                            <span>${notification.created_at}</span>
-                        </div>
-                    `;
-
-                    list.appendChild(item);
-                });
-            });
+    if (wrapper && !wrapper.contains(event.target)) {
+        document.getElementById("notification-dropdown").classList.remove("show");
     }
+});
 
-    function toggleNotificationDropdown() {
-        const dropdown = document.getElementById("notification-dropdown");
-        dropdown.classList.toggle("show");
-
-        if (dropdown.classList.contains("show")) {
-            loadRecentNotifications();
-        }
-    }
-
-    document.addEventListener("click", function(event) {
-        const wrapper = document.querySelector(".notification-wrapper");
-
-        if (wrapper && !wrapper.contains(event.target)) {
-            document.getElementById("notification-dropdown").classList.remove("show");
-        }
-    });
-
-    setInterval(refreshNotificationCount, 5000);
+setInterval(refreshNotificationCount, 5000);
 </script>
 
 </body>

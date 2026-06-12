@@ -1,304 +1,121 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Recruitment CRM</title>
+    <title>Login - HireHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="{% static 'core/css/login.css' %}?v=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at top left, rgba(59,130,246,0.35), transparent 35%),
-                linear-gradient(135deg, #020617, #0f172a 45%, #1e3a8a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0f172a;
-            padding: 20px;
-        }
-
-        .login-wrapper {
-            width: 100%;
-            max-width: 980px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 28px;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            overflow: hidden;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.35);
-            backdrop-filter: blur(12px);
-        }
-
-        .login-info {
-            padding: 55px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .badge {
-            width: fit-content;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            margin-bottom: 22px;
-        }
-
-        .login-info h1 {
-            font-size: 44px;
-            margin: 0 0 15px;
-            line-height: 1.1;
-        }
-
-        .login-info p {
-            color: #cbd5e1;
-            font-size: 16px;
-            line-height: 1.7;
-            max-width: 430px;
-        }
-
-        .feature-list {
-            margin-top: 28px;
-            display: grid;
-            gap: 14px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #e2e8f0;
-            font-size: 14px;
-        }
-
-        .feature-item i {
-            color: #60a5fa;
-        }
-
-        .login-card {
-            background: #ffffff;
-            padding: 42px;
-            border-radius: 28px 0 0 28px;
-        }
-
-        .login-card h2 {
-            margin: 0;
-            font-size: 30px;
-            text-align: center;
-            color: #0f172a;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin: 10px 0 28px;
-            font-size: 14px;
-        }
-
-        .message {
-            background-color: #fee2e2;
-            color: #991b1b;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        label {
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 7px;
-            display: block;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 18px;
-        }
-
-        .input-group i {
-            position: absolute;
-            top: 50%;
-            left: 14px;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 14px 14px 42px;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            font-size: 15px;
-            background: #f8fafc;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #2563eb;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(37,99,235,0.13);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 6px;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 22px rgba(37,99,235,0.28);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 22px 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #e2e8f0;
-        }
-
-        .google-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            background: #ffffff;
-            color: #334155;
-            padding: 13px;
-            border-radius: 12px;
-            text-decoration: none;
-            border: 1px solid #cbd5e1;
-            font-weight: 700;
-        }
-
-        .google-btn:hover {
-            background: #f8fafc;
-            border-color: #94a3b8;
-        }
-
-        .footer-text {
-            margin-top: 26px;
-            text-align: center;
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        @media (max-width: 850px) {
-            .login-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .login-info {
-                display: none;
-            }
-
-            .login-card {
-                border-radius: 24px;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="login-wrapper">
+<div class="login-page">
 
-    <div class="login-info">
+    <a href="{% url 'landing' %}" class="back-home">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Home
+    </a>
 
-        <h1>Manage hiring with confidence.</h1>
+    <div class="login-wrapper">
 
-        <p>
-            Track candidates, jobs, applications, interviews, and recruitment activity from one clean CRM workspace.
-        </p>
+        <div class="login-info">
 
-        <div class="feature-list">
-            <div class="feature-item">
-                <i class="fa-solid fa-user-check"></i>
-                Candidate and company dashboards
+            <div class="login-brand">
+                <span class="brand-icon">
+                    <i class="fa-solid fa-users"></i>
+                </span>
+                <span>HireHub</span>
             </div>
-            <div class="feature-item">
-                <i class="fa-solid fa-calendar-check"></i>
-                Interview and application tracking
+
+            <span class="login-badge">
+                <i class="fa-solid fa-star"></i>
+                Smart Hiring Workspace
+            </span>
+
+            <h1>
+                Recruit Smarter.
+                <span>Hire Faster.</span>
+            </h1>
+
+            <p>
+                Access your recruitment workspace to manage jobs, candidates,
+                interviews, applications, and hiring workflows in one place.
+            </p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fa-solid fa-user-check"></i>
+                    Role-based dashboards for every user
+                </div>
+
+                <div class="feature-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Track interviews and applications
+                </div>
+
+                <div class="feature-item">
+                    <i class="fa-solid fa-bell"></i>
+                    Stay updated with smart notifications
+                </div>
             </div>
-            <div class="feature-item">
-                <i class="fa-solid fa-bell"></i>
-                Smart notifications and status updates
-            </div>
+
         </div>
-    </div>
 
-    <div class="login-card">
-        <h2>Welcome Back</h2>
-        <div class="subtitle">Login to access your Recruitment CRM workspace</div>
+        <div class="login-card">
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="POST">
-            {% csrf_token %}
-
-            <label>Username</label>
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" name="username" placeholder="Enter your username" required>
+            <div class="login-card-header">
+                <h2>Welcome Back</h2>
+                <p>Login to access your HireHub workspace</p>
             </div>
 
-            <label>Password</label>
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" name="password" placeholder="Enter your password" required>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label>Username</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="username" placeholder="Enter your username" required>
+                </div>
+
+                <label>Password</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Login
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div class="divider">or</div>
+
+                <a href="{% url 'google_login' %}" class="google-btn">
+                    <i class="fa-brands fa-google"></i>
+                    Continue with Google
+                </a>
+            </form>
+
+            <div class="footer-text">
+                HireHub Recruitment CRM
             </div>
 
-            <button type="submit" class="login-btn">
-                Login
-            </button>
-
-            <div class="divider">or</div>
-
-            <a href="{% url 'google_login' %}" class="google-btn">
-                <i class="fa-brands fa-google"></i>
-                Continue with Google
-            </a>
-        </form>
-
-        <div class="footer-text">
-            Recruitment CRM System
         </div>
+
     </div>
 
 </div>

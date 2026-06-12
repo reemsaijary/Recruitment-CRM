@@ -10,8 +10,12 @@ html {
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f8fafc;
+    
     color: #0f172a;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(124,58,237,.14), transparent 30%),
+        radial-gradient(circle at 85% 40%, rgba(168,85,247,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
 }
 
 /* HEADER */
@@ -266,7 +270,7 @@ body {
 */
 
 .trusted-section {
-    background: #ffffff;
+    /* background: #ffffff; */
     padding: 28px 24px 34px;
     text-align: center;
     border-bottom: 1px solid #eef2f7;
@@ -319,9 +323,11 @@ body {
 .features-section {
     position: relative;
     background:
-        radial-gradient(circle at top left, rgba(124, 58, 237, 0.08), transparent 30%),
-        linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-     padding: 60px 24px 90px;
+        radial-gradient(circle at 20% 30%, rgba(124,58,237,.14), transparent 30%),
+        radial-gradient(circle at 85% 40%, rgba(168,85,247,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+        
+    padding: 60px 24px 90px;
     overflow: hidden;
 }
 
@@ -491,10 +497,15 @@ body {
 */
 
 .how-section {
-    background:
+    /* background:
         radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 28%),
-        #ffffff;
+        #ffffff; */
     padding: 90px 24px 100px;
+
+     background:
+        radial-gradient(circle at 20% 30%, rgba(124,58,237,.14), transparent 30%),
+        radial-gradient(circle at 85% 40%, rgba(168,85,247,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
 }
 
 .how-header {

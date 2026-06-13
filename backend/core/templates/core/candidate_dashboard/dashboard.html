@@ -1,44 +1,78 @@
 {% extends 'core/candidate_dashboard/base_candidate.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/candidate/dashboard/dashboard.css' %}?v=2">
+{% endblock %}
 
 {% block content %}
 
-<section class="welcome-card">
-    <div class="welcome-left">
-        <div class="candidate-avatar">
-            {{ candidate.full_name|first }}
-        </div>
+<section class="dashboard-hero">
 
-        <div>
-            <span class="section-label">
-                <i class="fa-solid fa-house"></i>
-                Candidate Dashboard
-            </span>
+    <div class="dashboard-hero-content">
 
-            <h1>Welcome back, {{ candidate.full_name }}</h1>
-            <p>Track your applications, browse open jobs, and follow your interview progress.</p>
+        <div class="candidate-hero-row">
 
-            <div class="welcome-tags">
-                <span><i class="fa-solid fa-briefcase"></i> {{ available_jobs }} Open Jobs</span>
-                <span><i class="fa-solid fa-file-lines"></i> {{ my_applications }} Applications</span>
-                <span><i class="fa-solid fa-calendar-check"></i> {{ scheduled_interviews }} Interviews</span>
+            <div class="candidate-avatar">
+                {{ candidate.full_name|first }}
             </div>
+
+            <div>
+                <span class="hero-badge">
+                    <i class="fa-solid fa-house"></i>
+                    Candidate Dashboard
+                </span>
+
+                <h1>Welcome back, {{ candidate.full_name }}</h1>
+
+                <p>
+                    Track your applications, browse open jobs, and follow your interview progress from one clean workspace.
+                </p>
+
+                <div class="hero-metrics">
+
+                    <a href="{% url 'candidate_jobs_list' %}" class="hero-metric-card">
+                        <strong>{{ available_jobs }}</strong>
+                        <span>Open Jobs</span>
+                    </a>
+
+                    <a href="{% url 'candidate_applications_list' %}" class="hero-metric-card">
+                        <strong>{{ my_applications }}</strong>
+                        <span>Applications</span>
+                    </a>
+
+                    <a href="{% url 'candidate_interviews_list' %}" class="hero-metric-card">
+                        <strong>{{ scheduled_interviews }}</strong>
+                        <span>Interviews</span>
+                    </a>
+
+                </div>
+            </div>
+
         </div>
+
     </div>
 
-    <a href="{% url 'candidate_jobs_list' %}" class="hero-btn">
-        Browse Jobs
-        <i class="fa-solid fa-arrow-right"></i>
-    </a>
+    <div class="dashboard-hero-action">
+        <a href="{% url 'candidate_jobs_list' %}" class="hero-btn">
+            Browse Jobs
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
 </section>
 
-<section class="stats-grid">
+<section class="dashboard-stats">
+
     <a href="{% url 'candidate_jobs_list' %}" class="stat-card">
         <div class="stat-icon blue">
             <i class="fa-solid fa-briefcase"></i>
         </div>
+
         <div>
             <span>Available Jobs</span>
             <strong>{{ available_jobs }}</strong>
+            <p>Open opportunities</p>
         </div>
     </a>
 
@@ -46,9 +80,11 @@
         <div class="stat-icon purple">
             <i class="fa-solid fa-file-lines"></i>
         </div>
+
         <div>
             <span>My Applications</span>
             <strong>{{ my_applications }}</strong>
+            <p>Your submitted applications</p>
         </div>
     </a>
 
@@ -56,9 +92,11 @@
         <div class="stat-icon green">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
+
         <div>
             <span>Scheduled Interviews</span>
             <strong>{{ scheduled_interviews }}</strong>
+            <p>Upcoming or active interviews</p>
         </div>
     </a>
 
@@ -66,8 +104,10 @@
         <div class="stat-icon orange">
             <i class="fa-solid fa-chart-line"></i>
         </div>
+
         <div>
             <span>Latest Status</span>
+
             <strong class="status-text">
                 {% if latest_application %}
                     {{ latest_application.status }}
@@ -75,68 +115,96 @@
                     None
                 {% endif %}
             </strong>
+
+            <p>Your newest application update</p>
         </div>
     </a>
+
 </section>
 
-<section class="dashboard-grid">
-    <div class="panel">
+<section class="dashboard-content-grid">
+
+    <div class="dashboard-panel">
+
         <div class="panel-header">
             <div>
-                <h2>Quick Actions</h2>
-                <p>Common actions you may need as a candidate.</p>
+                <span class="section-label">Quick Actions</span>
+                <h2>Start your career tasks</h2>
+                <p>Fast access to the most used candidate tools.</p>
             </div>
         </div>
 
-        <div class="quick-action-list">
-            <a href="{% url 'candidate_jobs_list' %}">
+        <div class="action-grid">
+
+            <a href="{% url 'candidate_jobs_list' %}" class="action-card">
                 <i class="fa-solid fa-magnifying-glass"></i>
+
                 <div>
                     <strong>Browse Jobs</strong>
                     <span>Find new open opportunities</span>
                 </div>
             </a>
 
-            <a href="{% url 'candidate_applications_list' %}">
+            <a href="{% url 'candidate_applications_list' %}" class="action-card">
                 <i class="fa-solid fa-list-check"></i>
+
                 <div>
                     <strong>Track Applications</strong>
-                    <span>Check your current application status</span>
+                    <span>Check your application status</span>
                 </div>
             </a>
 
-            <a href="{% url 'candidate_interviews_list' %}">
+            <a href="{% url 'candidate_interviews_list' %}" class="action-card">
                 <i class="fa-solid fa-calendar-check"></i>
+
                 <div>
                     <strong>View Interviews</strong>
                     <span>See upcoming interview schedules</span>
                 </div>
             </a>
+
+            <a href="{% url 'candidate_profile' %}" class="action-card">
+                <i class="fa-solid fa-user-pen"></i>
+
+                <div>
+                    <strong>Update Profile</strong>
+                    <span>Manage your candidate information</span>
+                </div>
+            </a>
+
         </div>
+
     </div>
 
-    <div class="panel profile-panel">
+    <div class="dashboard-panel summary-panel">
+
         <div class="panel-header">
             <div>
+                <span class="section-label">Profile</span>
                 <h2>Profile Summary</h2>
                 <p>Your candidate information.</p>
             </div>
         </div>
 
         <div class="profile-mini">
+
             <div class="candidate-avatar small">
                 {{ candidate.full_name|first }}
             </div>
 
             <h3>{{ candidate.full_name }}</h3>
+
             <p>{{ candidate.current_position|default:"Candidate" }}</p>
 
             <a href="{% url 'candidate_profile' %}" class="outline-btn">
                 View Profile
                 <i class="fa-solid fa-arrow-right"></i>
             </a>
+
         </div>
+
     </div>
+
 </section>
 
 {% endblock %}

@@ -1,74 +1,115 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/notifications/list_notifications.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="notifications-header">
+
     <div>
+        <span class="section-label">Notification Center</span>
         <h1>Notifications</h1>
-        <p class="page-subtitle">Stay updated with new applications and recruitment activity.</p>
+        <p>Stay updated with applications, interviews, and recruitment activity.</p>
     </div>
 
-    <a href="{% url 'mark_all_notifications_read' %}" class="secondary-btn">
+    <a href="{% url 'mark_all_notifications_read' %}" class="primary-btn">
         <i class="fa-solid fa-check-double"></i>
         Mark All as Read
     </a>
+
 </div>
 
-<div class="card">
+<div class="notifications-card">
+
     {% if notifications %}
+
         <div class="notification-list">
+
             {% for notification in notifications %}
 
-                <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
+            <div class="notification-item {% if not notification.is_read %}unread %}{% endif %}">
 
-                    <a href="{% url 'mark_notification_read' notification.id %}" class="notification-main-link">
+                <a href="{% url 'mark_notification_read' notification.id %}"
+                   class="notification-main-link">
 
-                        <div class="notification-icon">
-                            {% if notification.notification_type == 'application' %}
-                                <i class="fa-solid fa-file-lines"></i>
-                            {% elif notification.notification_type == 'interview' %}
-                                <i class="fa-solid fa-calendar-days"></i>
-                            {% elif notification.notification_type == 'status' %}
-                                <i class="fa-solid fa-chart-line"></i>
-                            {% else %}
-                                <i class="fa-solid fa-bell"></i>
-                            {% endif %}
-                        </div>
+                    <div class="notification-icon">
 
-                        <div class="notification-content">
-                            <h3>{{ notification.title }}</h3>
-                            <p>{{ notification.message }}</p>
-                            <span>{{ notification.created_at|date:"M d, Y - h:i A" }}</span>
-                        </div>
+                        {% if notification.notification_type == 'application' %}
+                            <i class="fa-solid fa-file-lines"></i>
+
+                        {% elif notification.notification_type == 'interview' %}
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                        {% elif notification.notification_type == 'status' %}
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        {% else %}
+                            <i class="fa-solid fa-bell"></i>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="notification-content">
+
+                        <h3>{{ notification.title }}</h3>
+
+                        <p>{{ notification.message }}</p>
+
+                        <span>
+                            {{ notification.created_at|date:"M d, Y - h:i A" }}
+                        </span>
+
+                    </div>
+
+                </a>
+
+                <div class="notification-actions">
+
+                    {% if not notification.is_read %}
+                        <span class="notification-badge">
+                            New
+                        </span>
+                    {% endif %}
+
+                    <a href="{% url 'delete_notification' notification.id %}"
+                       class="small-btn delete-btn"
+                       onclick="return confirm('Delete this notification?');">
+
+                        <i class="fa-solid fa-trash"></i>
+                        Delete
 
                     </a>
 
-                    <div class="notification-actions">
-                        {% if not notification.is_read %}
-                            <span class="status-pill status-applied">New</span>
-                        {% endif %}
-
-                        <a href="{% url 'delete_notification' notification.id %}"
-                           class="small-btn delete-btn"
-                           onclick="return confirm('Delete this notification?');">
-                            <i class="fa-solid fa-trash"></i>
-                            Delete
-                        </a>
-                    </div>
-
                 </div>
 
+            </div>
+
             {% endfor %}
+
         </div>
+
     {% else %}
+
         <div class="empty-state">
+
             <div class="empty-icon">
                 <i class="fa-solid fa-bell-slash"></i>
             </div>
-            <h3>No notifications yet</h3>
-            <p>You will see new applications and updates here.</p>
+
+            <h2>No notifications yet</h2>
+
+            <p>
+                You will see applications, interviews, and status updates here.
+            </p>
+
         </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

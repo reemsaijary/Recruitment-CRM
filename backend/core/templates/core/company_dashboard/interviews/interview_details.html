@@ -1,14 +1,22 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/interviews/interview_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="interview-details-header">
+
     <div>
+        <span class="section-label">Interview Management</span>
         <h1>Interview Details</h1>
-        <p class="page-subtitle">Review candidate and interview information.</p>
+        <p>Review candidate, job, and interview information.</p>
     </div>
 
     <div class="header-actions">
+
         <a href="{% url 'company_interviews_list' %}" class="secondary-btn">
             <i class="fa-solid fa-arrow-left"></i>
             Back
@@ -18,36 +26,122 @@
             <i class="fa-solid fa-pen"></i>
             Edit Interview
         </a>
+
     </div>
+
 </div>
 
-<div class="details-grid">
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-user"></i> Candidate Information</h3>
+<div class="interview-hero-card">
 
-        <p><strong>Name:</strong> {{ interview.application.candidate.full_name }}</p>
-        <p><strong>Phone:</strong> {{ interview.application.candidate.phone }}</p>
+    <div class="interview-profile-main">
+
+        <div class="interview-avatar">
+            {{ interview.application.candidate.full_name|first }}
+        </div>
+
+        <div>
+
+            <span class="profile-badge">
+                Candidate Profile
+            </span>
+
+            <h2>{{ interview.application.candidate.full_name }}</h2>
+
+            <p>
+                {{ interview.application.job.job_title }}
+            </p>
+
+            <div class="interview-tags">
+
+                <span>
+                    <i class="fa-solid fa-phone"></i>
+                    {{ interview.application.candidate.phone }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ interview.application.job.location }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ interview.application.status }}
+                </span>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-briefcase"></i> Job Information</h3>
-
-        <p><strong>Job:</strong> {{ interview.application.job.job_title }}</p>
-        <p><strong>Application Status:</strong> {{ interview.application.status }}</p>
-    </div>
 </div>
 
-<div class="card info-section-card application-status-card">
-    <h3><i class="fa-solid fa-calendar-check"></i> Interview Information</h3>
+<div class="interview-info-grid">
 
-    <div class="job-info-grid">
+    <div class="interview-info-card">
+
+        <h3>
+            <i class="fa-solid fa-user"></i>
+            Candidate Information
+        </h3>
+
+        <div class="info-list">
+
+            <div class="info-item">
+                <span>Candidate Name</span>
+                <strong>{{ interview.application.candidate.full_name }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Phone Number</span>
+                <strong>{{ interview.application.candidate.phone }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="interview-info-card">
+
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
+
+        <div class="info-list">
+
+            <div class="info-item">
+                <span>Job Title</span>
+                <strong>{{ interview.application.job.job_title }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Application Status</span>
+                <strong>{{ interview.application.status }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="interview-section-card">
+
+    <h3>
+        <i class="fa-solid fa-calendar-check"></i>
+        Interview Information
+    </h3>
+
+    <div class="interview-details-grid">
+
         <div class="info-box">
             <span>Date</span>
             <strong>{{ interview.interview_date }}</strong>
         </div>
 
         <div class="info-box">
-            <span>Type</span>
+            <span>Interview Type</span>
             <strong>{{ interview.interview_type }}</strong>
         </div>
 
@@ -55,12 +149,22 @@
             <span>Status</span>
             <strong>{{ interview.status }}</strong>
         </div>
+
     </div>
 
-    <div class="description-box">
-        <h3>Notes</h3>
-        <p>{{ interview.notes|default:"No notes added" }}</p>
+</div>
+
+<div class="interview-section-card">
+
+    <h3>
+        <i class="fa-solid fa-note-sticky"></i>
+        Interview Notes
+    </h3>
+
+    <div class="notes-box">
+        {{ interview.notes|default:"No notes added." }}
     </div>
+
 </div>
 
 {% endblock %}

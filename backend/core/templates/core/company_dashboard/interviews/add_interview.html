@@ -1,45 +1,75 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/interviews/add_interview.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="interview-form-header">
+
     <div>
+        <span class="section-label">Interview Management</span>
         <h1>Schedule Interview</h1>
-        <p class="page-subtitle">Create an interview for this candidate application.</p>
+        <p>Create an interview for this candidate application.</p>
     </div>
 
     <a href="{% url 'company_application_details' application.id %}" class="secondary-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Application
     </a>
+
 </div>
 
-<div class="card info-section-card">
-    <h3><i class="fa-solid fa-circle-info"></i> Application Summary</h3>
+<div class="application-summary-card">
 
-    <p><strong>Candidate:</strong> {{ application.candidate.full_name }}</p>
-    <p><strong>Job:</strong> {{ application.job.job_title }}</p>
+    <div class="summary-icon">
+        <i class="fa-solid fa-user-check"></i>
+    </div>
+
+    <div class="summary-content">
+        <h3>{{ application.candidate.full_name }}</h3>
+
+        <p>
+            Applied for
+            <strong>{{ application.job.job_title }}</strong>
+        </p>
+    </div>
+
 </div>
 
-<br>
+<div class="interview-form-card">
 
-<div class="card job-form-card">
     <form method="POST">
         {% csrf_token %}
 
         <div class="form-grid">
+
             <div class="form-group">
                 <label>Interview Date</label>
-                <input type="datetime-local" name="interview_date" required>
+
+                <input
+                    type="datetime-local"
+                    name="interview_date"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label>Interview Type</label>
-                <input type="text" name="interview_type" placeholder="Online / On-site" required>
+
+                <input
+                    type="text"
+                    name="interview_type"
+                    placeholder="Online / On-site / Technical"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label>Status</label>
+
                 <select name="status">
                     <option value="Scheduled">Scheduled</option>
                     <option value="Completed">Completed</option>
@@ -48,18 +78,29 @@
             </div>
 
             <div class="form-group full-width">
-                <label>Notes</label>
-                <textarea name="notes" placeholder="Add interview notes or instructions..."></textarea>
+
+                <label>Interview Notes</label>
+
+                <textarea
+                    name="notes"
+                    placeholder="Add interview notes or instructions..."
+                ></textarea>
+
             </div>
+
         </div>
 
         <div class="form-footer">
+
             <button type="submit" class="primary-btn">
                 <i class="fa-solid fa-calendar-plus"></i>
-                Save Interview
+                Schedule Interview
             </button>
+
         </div>
+
     </form>
+
 </div>
 
 {% endblock %}

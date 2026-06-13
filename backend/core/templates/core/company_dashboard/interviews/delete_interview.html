@@ -1,34 +1,54 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/interviews/delete_interview.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="delete-wrapper">
-    <div class="delete-card">
-        <div class="delete-icon">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+<div class="delete-interview-page">
+
+    <div class="delete-interview-card">
+
+        <div class="delete-interview-icon">
+            <i class="fa-solid fa-calendar-xmark"></i>
         </div>
+
+        <span class="section-label">
+            Interview Management
+        </span>
 
         <h1>Delete Interview?</h1>
 
         <p>
-            Are you sure you want to delete the interview for
+            Are you sure you want to permanently delete the interview for
             <strong>{{ interview.application.candidate.full_name }}</strong>?
             This action cannot be undone.
         </p>
 
-        <form method="POST" class="delete-actions">
+        <form method="POST">
+
             {% csrf_token %}
 
-            <a href="{% url 'company_interview_details' interview.id %}" class="secondary-btn">
-                Cancel
-            </a>
+            <div class="delete-interview-actions">
 
-            <button type="submit" class="danger-btn">
-                <i class="fa-solid fa-trash"></i>
-                Yes, Delete
-            </button>
+                <a href="{% url 'company_interview_details' interview.id %}"
+                   class="secondary-btn">
+                    Cancel
+                </a>
+
+                <button type="submit" class="danger-btn">
+                    <i class="fa-solid fa-trash"></i>
+                    Yes, Delete Interview
+                </button>
+
+            </div>
+
         </form>
+
     </div>
+
 </div>
 
 {% endblock %}

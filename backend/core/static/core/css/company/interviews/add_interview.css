@@ -1,0 +1,200 @@
+.interview-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.interview-form-header h1 {
+    margin: 6px 0 8px;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.interview-form-header p {
+    margin: 0;
+    color: #64748b;
+}
+
+/* APPLICATION SUMMARY */
+
+.application-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-bottom: 24px;
+    padding: 24px;
+
+    background: linear-gradient(180deg,#ffffff,#fcfaff);
+
+    border: 1px solid #ede9fe;
+    border-radius: 28px;
+
+    box-shadow: 0 18px 48px rgba(15,23,42,.06);
+
+    transition: .35s ease;
+}
+
+.application-summary-card:hover {
+    transform: translateY(-6px);
+
+    border-color: #ddd6fe;
+
+    box-shadow:
+        0 28px 70px rgba(124,58,237,.12),
+        0 12px 34px rgba(15,23,42,.05);
+}
+
+.summary-icon {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 22px;
+
+    background: #ede9fe;
+    color: #7c3aed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+}
+
+.summary-content h3 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.summary-content p {
+    margin: 0;
+    color: #64748b;
+}
+
+/* FORM CARD */
+
+.interview-form-card {
+    background: linear-gradient(180deg,#ffffff,#fcfaff);
+
+    border: 1px solid #e5e7eb;
+    border-radius: 28px;
+
+    padding: 30px;
+
+    box-shadow: 0 18px 48px rgba(15,23,42,.07);
+
+    position: relative;
+    overflow: hidden;
+
+    transition: all .35s ease;
+}
+
+.interview-form-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top right,
+        rgba(124,58,237,.08),
+        transparent 34%);
+
+    opacity: 0;
+    transition: .35s ease;
+
+    pointer-events: none;
+}
+
+.interview-form-card:hover {
+    transform: translateY(-7px);
+
+    border-color: #ddd6fe;
+
+    box-shadow:
+        0 30px 80px rgba(124,58,237,.14),
+        0 16px 40px rgba(15,23,42,.06);
+}
+
+.interview-form-card:hover::before {
+    opacity: 1;
+}
+
+.interview-form-card form {
+    position: relative;
+    z-index: 1;
+}
+
+.interview-form-card label {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.interview-form-card input,
+.interview-form-card select,
+.interview-form-card textarea {
+    transition: .25s ease;
+}
+
+.interview-form-card input:hover,
+.interview-form-card select:hover,
+.interview-form-card textarea:hover {
+    border-color: #c4b5fd;
+}
+
+.interview-form-card input:focus,
+.interview-form-card select:focus,
+.interview-form-card textarea:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124,58,237,.12);
+}
+
+.interview-form-card textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.form-group:hover label {
+    color: #7c3aed;
+}
+
+.form-footer .primary-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 18px 40px rgba(124,58,237,.30);
+}
+
+.interview-form-header .secondary-btn:hover {
+    transform: translateY(-3px);
+
+    border-color: #ddd6fe;
+
+    box-shadow:
+        0 14px 32px rgba(124,58,237,.10);
+}
+
+/* RESPONSIVE */
+
+@media (max-width:768px) {
+
+    .interview-form-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .application-summary-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .interview-form-header .secondary-btn,
+    .form-footer .primary-btn {
+        width: 100%;
+    }
+}

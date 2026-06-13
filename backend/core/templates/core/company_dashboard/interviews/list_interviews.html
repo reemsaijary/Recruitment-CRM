@@ -1,41 +1,55 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/interviews/list_interviews.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="interviews-header">
     <div>
+        <span class="section-label">Interview Management</span>
         <h1>Interviews</h1>
-        <p class="page-subtitle">Manage, filter, and track scheduled interviews.</p>
+        <p>Manage, filter, and track all scheduled candidate interviews.</p>
     </div>
 </div>
 
 <div class="interview-stats-grid">
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-calendar-days"></i>
+    <div class="interview-stat-card">
+        <div class="interview-stat-icon purple">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
         <div>
             <span>Total Interviews</span>
             <strong>{{ total_interviews }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-clock"></i>
+    <div class="interview-stat-card">
+        <div class="interview-stat-icon blue">
+            <i class="fa-solid fa-clock"></i>
+        </div>
         <div>
             <span>Scheduled</span>
             <strong>{{ scheduled_count }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-circle-check"></i>
+    <div class="interview-stat-card">
+        <div class="interview-stat-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
         <div>
             <span>Completed</span>
             <strong>{{ completed_count }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-circle-xmark"></i>
+    <div class="interview-stat-card">
+        <div class="interview-stat-icon red">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </div>
         <div>
             <span>Cancelled</span>
             <strong>{{ cancelled_count }}</strong>
@@ -43,14 +57,17 @@
     </div>
 </div>
 
-<div class="card search-card">
-    <form method="GET" class="search-form">
-        <input
-            type="text"
-            name="search"
-            placeholder="Search by candidate, job, or interview type..."
-            value="{{ search }}"
-        >
+<div class="interviews-search-card">
+    <form method="GET" class="interviews-search-form">
+        <div class="search-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by candidate, job, or interview type..."
+                value="{{ search }}"
+            >
+        </div>
 
         <select name="status">
             <option value="">All Statuses</option>
@@ -70,67 +87,86 @@
     </form>
 </div>
 
-<div class="card">
+<div class="interviews-table-card">
     {% if interviews %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Job</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+        <div class="table-scroll">
+            <table class="interviews-table">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Job</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-            {% for interview in interviews %}
-            <tr>
-                <td>
-                    <div class="candidate-cell">
-                        <div class="candidate-avatar">
-                            {{ interview.application.candidate.full_name|first }}
-                        </div>
+                <tbody>
+                    {% for interview in interviews %}
+                    <tr>
+                        <td>
+                            <div class="candidate-cell">
+                                <div class="candidate-avatar">
+                                    {{ interview.application.candidate.full_name|first }}
+                                </div>
 
-                        <div>
-                            <strong>{{ interview.application.candidate.full_name }}</strong>
-                            <span>{{ interview.application.candidate.phone }}</span>
-                        </div>
-                    </div>
-                </td>
+                                <div>
+                                    <strong>{{ interview.application.candidate.full_name }}</strong>
+                                    <span>{{ interview.application.candidate.phone }}</span>
+                                </div>
+                            </div>
+                        </td>
 
-                <td>
-                    <strong>{{ interview.application.job.job_title }}</strong>
-                    <span class="table-subtext">{{ interview.application.job.location }}</span>
-                </td>
+                        <td>
+                            <strong>{{ interview.application.job.job_title }}</strong>
+                            <span class="table-subtext">{{ interview.application.job.location }}</span>
+                        </td>
 
-                <td>{{ interview.interview_date }}</td>
+                        <td>
+                            <strong>{{ interview.interview_date }}</strong>
+                        </td>
 
-                <td>{{ interview.interview_type }}</td>
+                        <td>
+                            <span class="interview-type-pill">
+                                {{ interview.interview_type }}
+                            </span>
+                        </td>
 
-                <td>
-                    <span class="interview-status-badge interview-status-{{ interview.status|slugify }}">
-                        {{ interview.status }}
-                    </span>
-                </td>
+                        <td>
+                            <span class="interview-status-badge interview-status-{{ interview.status|slugify }}">
+                                {{ interview.status }}
+                            </span>
+                        </td>
 
-                <td>
-                    <a href="{% url 'company_interview_details' interview.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i>
-                        View
-                    </a>
+                        <td class="actions-cell">
+    <div class="interview-actions">
 
-                    <a href="{% url 'company_edit_interview' interview.id %}" class="small-btn edit-btn">
-                        <i class="fa-solid fa-pen"></i>
-                        Edit
-                    </a>
+        <a href="{% url 'company_interview_details' interview.id %}"
+           class="small-btn view-btn">
+            <i class="fa-solid fa-eye"></i>
+            View
+        </a>
 
-                    <a href="{% url 'company_delete_interview' interview.id %}" class="small-btn delete-btn">
-                        <i class="fa-solid fa-trash"></i>
-                        Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+        <a href="{% url 'company_edit_interview' interview.id %}"
+           class="small-btn edit-btn">
+            <i class="fa-solid fa-pen"></i>
+            Edit
+        </a>
+
+        <a href="{% url 'company_delete_interview' interview.id %}"
+           class="small-btn delete-btn">
+            <i class="fa-solid fa-trash"></i>
+            Delete
+        </a>
+
+    </div>
+</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <div class="pagination">
             {% if interviews.has_previous %}
@@ -138,9 +174,7 @@
                 <a href="?page={{ interviews.previous_page_number }}&search={{ search }}&status={{ status }}">Previous</a>
             {% endif %}
 
-            <span>
-                Page {{ interviews.number }} of {{ interviews.paginator.num_pages }}
-            </span>
+            <span>Page {{ interviews.number }} of {{ interviews.paginator.num_pages }}</span>
 
             {% if interviews.has_next %}
                 <a href="?page={{ interviews.next_page_number }}&search={{ search }}&status={{ status }}">Next</a>

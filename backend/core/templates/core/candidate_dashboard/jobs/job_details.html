@@ -1,11 +1,18 @@
 {% extends 'core/candidate_dashboard/base_candidate.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/candidate/jobs/job_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="job-details-header">
+
     <div>
+        <span class="section-label">Career Opportunity</span>
         <h1>Job Details</h1>
-        <p class="page-subtitle">Review job information before applying.</p>
+        <p>Review job information before applying.</p>
     </div>
 
     <div class="header-actions">
@@ -26,19 +33,27 @@
             </a>
         {% endif %}
     </div>
+
 </div>
 
-<div class="candidate-job-hero">
-    <div>
+<section class="candidate-job-hero">
+
+    <div class="candidate-job-hero-content">
+
         <span class="hero-badge">
             <i class="fa-solid fa-briefcase"></i>
             Open Opportunity
         </span>
 
         <h1>{{ job.job_title }}</h1>
-        <p>{{ job.company.company_name }}</p>
+
+        <p>
+            <i class="fa-solid fa-building"></i>
+            {{ job.company.company_name }}
+        </p>
 
         <div class="candidate-job-tags">
+
             <span>
                 <i class="fa-solid fa-location-dot"></i>
                 {{ job.location }}
@@ -57,56 +72,113 @@
                     Salary not specified
                 {% endif %}
             </span>
+
         </div>
+
     </div>
+
+</section>
+
+<div class="job-details-grid">
+
+    <div class="job-info-card">
+
+        <h3>
+            <i class="fa-solid fa-building"></i>
+            Company Information
+        </h3>
+
+        <div class="info-list">
+
+            <div class="info-item">
+                <span>Company</span>
+                <strong>{{ job.company.company_name }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Industry</span>
+                <strong>{{ job.company.industry|default:"Not specified" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Country</span>
+                <strong>{{ job.company.country|default:"Not specified" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Website</span>
+
+                {% if job.company.website %}
+                    <a href="{{ job.company.website }}" target="_blank">
+                        {{ job.company.website }}
+                    </a>
+                {% else %}
+                    <strong>Not added</strong>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="job-info-card">
+
+        <h3>
+            <i class="fa-solid fa-circle-info"></i>
+            Job Summary
+        </h3>
+
+        <div class="info-list">
+
+            <div class="info-item">
+                <span>Job Type</span>
+                <strong>{{ job.job_type|default:"Not specified" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Location</span>
+                <strong>{{ job.location }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Status</span>
+                <strong>{{ job.status }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Salary</span>
+                <strong>
+                    {% if job.min_salary and job.max_salary %}
+                        ${{ job.min_salary }} - ${{ job.max_salary }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="details-grid">
+<div class="job-description-card">
 
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-building"></i> Company Information</h3>
-
-        <p><strong>Company:</strong> {{ job.company.company_name }}</p>
-        <p><strong>Industry:</strong> {{ job.company.industry|default:"Not specified" }}</p>
-        <p><strong>Country:</strong> {{ job.company.country|default:"Not specified" }}</p>
-        <p><strong>Website:</strong>
-            {% if job.company.website %}
-                <a href="{{ job.company.website }}" target="_blank">{{ job.company.website }}</a>
-            {% else %}
-                Not added
-            {% endif %}
-        </p>
-    </div>
-
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-circle-info"></i> Job Summary</h3>
-
-        <p><strong>Job Type:</strong> {{ job.job_type|default:"Not specified" }}</p>
-        <p><strong>Location:</strong> {{ job.location }}</p>
-        <p><strong>Status:</strong> {{ job.status }}</p>
-        <p>
-            <strong>Salary:</strong>
-            {% if job.min_salary and job.max_salary %}
-                ${{ job.min_salary }} - ${{ job.max_salary }}
-            {% else %}
-                Not specified
-            {% endif %}
-        </p>
-    </div>
-
-</div>
-
-<div class="card info-section-card application-status-card">
-    <h3><i class="fa-solid fa-align-left"></i> Job Description</h3>
+    <h3>
+        <i class="fa-solid fa-align-left"></i>
+        Job Description
+    </h3>
 
     <div class="description-box">
         <p>{{ job.description|default:"No description added." }}</p>
     </div>
+
 </div>
 
-<div class="form-footer">
+<div class="job-footer-actions">
+
     {% if already_applied %}
-        <span class="already-applied-btn">
+        <span class="already-applied-btn large">
             <i class="fa-solid fa-check"></i>
             You already applied to this job
         </span>
@@ -116,6 +188,7 @@
             Apply Now
         </a>
     {% endif %}
+
 </div>
 
 {% endblock %}

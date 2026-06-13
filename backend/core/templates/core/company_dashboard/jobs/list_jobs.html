@@ -1,11 +1,17 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/jobs/list_jobs.css' %}?v=3">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="jobs-header">
     <div>
+        <span class="section-label">Jobs Management</span>
         <h1>My Jobs</h1>
-        <p class="page-subtitle">Manage and track all jobs posted by your company.</p>
+        <p>Manage, search, and track all jobs posted by your company.</p>
     </div>
 
     <a href="{% url 'company_add_job' %}" class="primary-btn">
@@ -14,25 +20,31 @@
     </a>
 </div>
 
-<div class="job-stats-grid">
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-briefcase"></i>
+<div class="jobs-stats-grid">
+    <div class="job-stat-card">
+        <div class="job-stat-icon purple">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
         <div>
             <span>Total Jobs</span>
             <strong>{{ total_jobs }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-circle-check"></i>
+    <div class="job-stat-card">
+        <div class="job-stat-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
         <div>
             <span>Open Jobs</span>
             <strong>{{ open_jobs }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <i class="fa-solid fa-circle-xmark"></i>
+    <div class="job-stat-card">
+        <div class="job-stat-icon red">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </div>
         <div>
             <span>Closed Jobs</span>
             <strong>{{ closed_jobs }}</strong>
@@ -40,14 +52,17 @@
     </div>
 </div>
 
-<div class="card search-card">
-    <form method="GET" class="search-form">
-        <input 
-            type="text" 
-            name="search" 
-            placeholder="Search by title, location, or type..."
-            value="{{ search }}"
-        >
+<div class="jobs-search-card">
+    <form method="GET" class="jobs-search-form">
+        <div class="search-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search by title, location, or type..."
+                value="{{ search }}"
+            >
+        </div>
 
         <select name="status">
             <option value="">All Status</option>
@@ -55,68 +70,71 @@
             <option value="Closed" {% if status == 'Closed' %}selected{% endif %}>Closed</option>
         </select>
 
-        <button type="submit" class="primary-btn">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            Search
-        </button>
+        <button type="submit" class="primary-btn">Search</button>
 
-        <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
-            Reset
-        </a>
+        <a href="{% url 'company_jobs_list' %}" class="secondary-btn">Reset</a>
     </form>
 </div>
 
-<div class="card">
+<div class="jobs-table-card">
     {% if jobs %}
-        <table>
-            <tr>
-                <th>Job</th>
-                <th>Type</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Salary Range</th>
-                <th>Actions</th>
-            </tr>
+        <div class="table-scroll">
+            <table class="jobs-table">
+                <thead>
+                    <tr>
+                        <th>Job</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Salary Range</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-            {% for job in jobs %}
-            <tr>
-                <td>
-                    <strong>{{ job.job_title }}</strong>
-                </td>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>
+                            <strong>{{ job.job_title }}</strong>
+                        </td>
 
-                <td>{{ job.job_type|default:"Not specified" }}</td>
-                <td>{{ job.location }}</td>
+                        <td>{{ job.job_type|default:"Not specified" }}</td>
+                        <td>{{ job.location }}</td>
 
-                <td>
-                    <span class="{% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
-                        {{ job.status }}
-                    </span>
-                </td>
+                        <td>
+                            <span class="{% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+                                {{ job.status }}
+                            </span>
+                        </td>
 
-                <td>
-                    {% if job.min_salary and job.max_salary %}
-                        ${{ job.min_salary }} - ${{ job.max_salary }}
-                    {% else %}
-                        Not specified
-                    {% endif %}
-                </td>
+                        <td>
+                            {% if job.min_salary and job.max_salary %}
+                                ${{ job.min_salary }} - ${{ job.max_salary }}
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </td>
 
-                <td>
-                    <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i> View
-                    </a>
+                        <td>
+                            <div class="job-actions">
+                                <a href="{% url 'company_job_details' job.id %}" class="small-btn view-btn">
+                                    <i class="fa-solid fa-eye"></i> View
+                                </a>
 
-                    <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">
-                        <i class="fa-solid fa-pen"></i> Edit
-                    </a>
+                                <a href="{% url 'company_edit_job' job.id %}" class="small-btn edit-btn">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </a>
 
-                    <a href="{% url 'company_delete_job' job.id %}" class="small-btn delete-btn">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                                <a href="{% url 'company_delete_job' job.id %}" class="small-btn delete-btn">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <div class="pagination">
             {% if jobs.has_previous %}
@@ -124,9 +142,7 @@
                 <a href="?page={{ jobs.previous_page_number }}&search={{ search }}&status={{ status }}">Previous</a>
             {% endif %}
 
-            <span>
-                Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
-            </span>
+            <span>Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}</span>
 
             {% if jobs.has_next %}
                 <a href="?page={{ jobs.next_page_number }}&search={{ search }}&status={{ status }}">Next</a>
@@ -143,7 +159,7 @@
             <h2>No jobs found</h2>
             <p>Try changing your search/filter or add a new job opening.</p>
 
-            <a href="{% url 'company_add_job' %}" class="action-btn">
+            <a href="{% url 'company_add_job' %}" class="primary-btn">
                 <i class="fa-solid fa-plus"></i>
                 Add Job
             </a>

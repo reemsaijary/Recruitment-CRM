@@ -21,42 +21,23 @@
 /* FORM CARD */
 
 .job-form-card {
-    background: linear-gradient(
-        180deg,
-        #ffffff,
-        #fcfaff
-    );
-
+    background: linear-gradient(180deg, #ffffff, #fcfaff);
     border: 1px solid #e5e7eb;
     border-radius: 28px;
     padding: 30px;
-
-    box-shadow:
-        0 18px 48px rgba(15,23,42,.07);
-
+    box-shadow: 0 18px 48px rgba(15,23,42,.07);
+    transition: all .35s ease;
     position: relative;
     overflow: hidden;
-
-    transition: all .35s ease;
 }
 
 .job-form-card::before {
     content: "";
     position: absolute;
     inset: 0;
-
     background:
-        radial-gradient(
-            circle at top right,
-            rgba(124,58,237,.08),
-            transparent 34%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,0),
-            rgba(250,245,255,.28)
-        );
-
+        radial-gradient(circle at top right, rgba(124,58,237,.08), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0), rgba(250,245,255,.28));
     opacity: 0;
     transition: .35s ease;
     pointer-events: none;
@@ -64,9 +45,7 @@
 
 .job-form-card:hover {
     transform: translateY(-7px);
-
     border-color: #ddd6fe;
-
     box-shadow:
         0 30px 80px rgba(124,58,237,.14),
         0 16px 40px rgba(15,23,42,.06);
@@ -81,15 +60,13 @@
     z-index: 1;
 }
 
-/* LABELS */
+/* FORM FIELDS */
 
 .job-form-card label {
     color: #0f172a;
     font-size: 14px;
     font-weight: 800;
 }
-
-/* INPUTS */
 
 .job-form-card input,
 .job-form-card select,
@@ -107,17 +84,14 @@
 .job-form-card select:focus,
 .job-form-card textarea:focus {
     border-color: #7c3aed;
-
-    box-shadow:
-        0 0 0 4px rgba(124,58,237,.12);
+    box-shadow: 0 0 0 4px rgba(124,58,237,.12);
 }
 
 .job-form-card textarea {
-    min-height: 180px;
-    resize: vertical;
+    min-height: 150px;
 }
 
-/* SAVE BUTTON */
+/* BUTTON */
 
 .form-footer .primary-btn {
     transition: all .25s ease;
@@ -125,9 +99,7 @@
 
 .form-footer .primary-btn:hover {
     transform: translateY(-3px);
-
-    box-shadow:
-        0 18px 40px rgba(124,58,237,.30);
+    box-shadow: 0 18px 40px rgba(124,58,237,.30);
 }
 
 /* BACK BUTTON */
@@ -138,37 +110,15 @@
 
 .job-form-header .secondary-btn:hover {
     transform: translateY(-3px);
-
     border-color: #ddd6fe;
-
-    box-shadow:
-        0 14px 32px rgba(124,58,237,.10);
-}
-
-
-
-.form-group {
-    transition: all .25s ease;
-}
-
-.form-group:hover label {
-    color: #7c3aed;
+    box-shadow: 0 14px 32px rgba(124,58,237,.10);
 }
 
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
-
     .job-form-header {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .job-form-header .secondary-btn {
-        width: 100%;
-    }
-
-    .form-footer .primary-btn {
-        width: 100%;
     }
 }

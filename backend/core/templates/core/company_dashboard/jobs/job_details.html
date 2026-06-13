@@ -1,36 +1,46 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/jobs/job_details.css' %}?v=2">
+{% endblock %}
+
 {% block content %}
 
-<div class="page-header">
+<div class="job-details-header">
     <div>
+        <span class="section-label">Job Overview</span>
         <h1>Job Details</h1>
-        <p class="page-subtitle">View complete information about this job opening.</p>
+        <p>View complete information about this job opening.</p>
     </div>
 
     <div class="header-actions">
         <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
         </a>
 
         <a href="{% url 'company_edit_job' job.id %}" class="primary-btn">
-            <i class="fa-solid fa-pen"></i> Edit Job
+            <i class="fa-solid fa-pen"></i>
+            Edit Job
         </a>
     </div>
 </div>
 
-<div class="job-details-card">
+<div class="job-details-panel">
     <div class="job-details-top">
         <div>
+            <span class="status-badge {% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
+                {{ job.status }}
+            </span>
+
             <h2>{{ job.job_title }}</h2>
+
             <p>
                 <i class="fa-solid fa-location-dot"></i>
                 {{ job.location }}
             </p>
         </div>
-
-        <span class="status-badge {% if job.status == 'Open' %}status-open{% else %}status-closed{% endif %}">
-            {{ job.status }}
-        </span>
     </div>
 
     <div class="job-info-grid">

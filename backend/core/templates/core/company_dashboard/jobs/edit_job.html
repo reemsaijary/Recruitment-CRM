@@ -1,18 +1,26 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/jobs/edit_job.css' %}?v=3">
+{% endblock %}
+
 {% block content %}
 
-<div class="page-header">
+<div class="job-form-header">
     <div>
+        <span class="section-label">Update Job</span>
         <h1>Edit Job</h1>
-        <p class="page-subtitle">Update job details, salary range, status, and description.</p>
+        <p>Update job details, salary range, status, and description.</p>
     </div>
 
     <a href="{% url 'company_jobs_list' %}" class="secondary-btn">
-        <i class="fa-solid fa-arrow-left"></i> Back to Jobs
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Jobs
     </a>
 </div>
 
-<div class="card job-form-card">
+<div class="job-form-card">
     <form method="POST">
         {% csrf_token %}
 
@@ -58,7 +66,8 @@
 
         <div class="form-footer">
             <button type="submit" class="primary-btn">
-                <i class="fa-solid fa-floppy-disk"></i> Update Job
+                <i class="fa-solid fa-floppy-disk"></i>
+                Update Job
             </button>
         </div>
     </form>

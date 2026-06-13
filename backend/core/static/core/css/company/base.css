@@ -6,7 +6,10 @@ body {
     margin: 0;
     font-family: 'Manrope', sans-serif;
     color: #0f172a;
-    background: #f8fafc;
+     background:
+        radial-gradient(circle at 20% 30%, rgba(124,58,237,.14), transparent 30%),
+        radial-gradient(circle at 85% 40%, rgba(168,85,247,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
 }
 
 a {

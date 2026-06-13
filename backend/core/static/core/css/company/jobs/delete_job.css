@@ -1,0 +1,134 @@
+.delete-job-page {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 70px 20px 40px;
+    background:
+        radial-gradient(circle at 50% 25%, rgba(124,58,237,.14), transparent 34%),
+        linear-gradient(180deg, #faf7ff 0%, #f8fafc 100%);
+}
+
+.delete-job-card {
+    width: 100%;
+    max-width: 720px;
+    background: linear-gradient(180deg, #ffffff, #fcfaff);
+    border: 1px solid #ede9fe;
+    border-radius: 32px;
+    padding: 46px 44px;
+    text-align: center;
+
+    box-shadow:
+        0 30px 80px rgba(124,58,237,.14),
+        0 12px 35px rgba(15,23,42,.06);
+
+    transition: all .35s ease;
+}
+
+.delete-job-card:hover {
+    transform: translateY(-8px);
+
+    border-color: #d8b4fe;
+
+    box-shadow:
+        0 40px 100px rgba(124,58,237,.20),
+        0 20px 50px rgba(15,23,42,.08);
+}
+
+.delete-job-card::before {
+    content: "RecruitCRM Job Management";
+    display: inline-flex;
+    margin-bottom: 22px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: #f3e8ff;
+    color: #7c3aed;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.delete-job-icon {
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 18px;
+    border-radius: 26px;
+    background: rgba(124,58,237,.12);
+    color: #7c3aed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.section-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #7c3aed;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.delete-job-card h1 {
+    margin: 8px 0 12px;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.delete-job-card p {
+    max-width: 500px;
+    margin: 0 auto;
+    color: #64748b;
+    line-height: 1.75;
+}
+
+.delete-job-card strong {
+    color: #0f172a;
+}
+
+.delete-job-actions {
+    max-width: 560px;
+    margin: 30px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.delete-job-actions .secondary-btn,
+.delete-job-actions .danger-btn {
+    width: 100%;
+    height: 52px;
+}
+
+.danger-btn {
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #7c3aed, #9333ea);
+    color: #fff;
+    font-weight: 800;
+    border-radius: 14px;
+    transition: .25s ease;
+}
+
+.danger-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(124,58,237,.30);
+}
+
+@media (max-width: 600px) {
+    .delete-job-page {
+        padding-top: 35px;
+    }
+
+    .delete-job-card {
+        padding: 30px 22px;
+    }
+
+    .delete-job-actions {
+        grid-template-columns: 1fr;
+    }
+}

@@ -16,21 +16,23 @@
         </p>
 
         <div class="hero-metrics">
-            <div>
-                <strong>{{ active_jobs }}</strong>
-                <span>Active Jobs</span>
-            </div>
 
-            <div>
-                <strong>{{ total_applications }}</strong>
-                <span>Applications</span>
-            </div>
+    <a href="{% url 'company_jobs_list' %}" class="hero-metric-card">
+        <strong>{{ active_jobs }}</strong>
+        <span>Active Jobs</span>
+    </a>
 
-            <div>
-                <strong>{{ total_interviews }}</strong>
-                <span>Interviews</span>
-            </div>
-        </div>
+    <a href="{% url 'company_applications_list' %}" class="hero-metric-card">
+        <strong>{{ total_applications }}</strong>
+        <span>Applications</span>
+    </a>
+
+    <a href="{% url 'company_interviews_list' %}" class="hero-metric-card">
+        <strong>{{ total_interviews }}</strong>
+        <span>Interviews</span>
+    </a>
+
+</div>
     </div>
 
     <div class="dashboard-hero-action">
@@ -146,31 +148,42 @@
             </div>
         </div>
 
-        <div class="summary-list">
-            <div class="summary-item">
-                <span>
-                    <i class="fa-solid fa-briefcase"></i>
-                    Open Jobs
-                </span>
-                <strong>{{ active_jobs }}</strong>
-            </div>
+       <div class="summary-list">
 
-            <div class="summary-item">
-                <span>
-                    <i class="fa-solid fa-file-lines"></i>
-                    Applications
-                </span>
-                <strong>{{ total_applications }}</strong>
-            </div>
+    <a href="{% url 'company_jobs_list' %}" class="summary-item">
 
-            <div class="summary-item">
-                <span>
-                    <i class="fa-solid fa-calendar-check"></i>
-                    Interviews
-                </span>
-                <strong>{{ total_interviews }}</strong>
-            </div>
-        </div>
+        <span>
+            <i class="fa-solid fa-briefcase"></i>
+            Open Jobs
+        </span>
+
+        <strong>{{ active_jobs }}</strong>
+
+    </a>
+
+    <a href="{% url 'company_applications_list' %}" class="summary-item">
+
+        <span>
+            <i class="fa-solid fa-file-lines"></i>
+            Applications
+        </span>
+
+        <strong>{{ total_applications }}</strong>
+
+    </a>
+
+    <a href="{% url 'company_interviews_list' %}" class="summary-item">
+
+        <span>
+            <i class="fa-solid fa-calendar-check"></i>
+            Interviews
+        </span>
+
+        <strong>{{ total_interviews }}</strong>
+
+    </a>
+
+</div>
     </div>
 
 </section>

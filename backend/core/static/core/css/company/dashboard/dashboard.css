@@ -76,21 +76,42 @@
     margin-top: 24px;
 }
 
-.hero-metrics div {
+.hero-metric-card {
     min-width: 130px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
     padding: 14px 16px;
+
     border-radius: 20px;
     background: rgba(255,255,255,.10);
     border: 1px solid rgba(255,255,255,.16);
+
+    color: white;
+
+    transition: .25s ease;
+}
+.hero-metric-card:hover {
+    transform: translateY(-4px);
+
+    background: rgba(255,255,255,.16);
+
+    box-shadow:
+        0 18px 35px rgba(255,255,255,.12);
 }
 
-.hero-metrics strong {
+.hero-metric-card strong {
     display: block;
     font-size: 24px;
     font-weight: 800;
 }
 
-.hero-metrics span {
+.hero-metric-card span {
     display: block;
     margin-top: 3px;
     color: #e9d5ff;
@@ -289,10 +310,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     padding: 18px;
+
     border-radius: 20px;
+
     background: #f8fafc;
     border: 1px solid #e5e7eb;
+
+    color: inherit;
+
+    transition: .25s ease;
+}
+
+.summary-item:hover {
+    transform: translateY(-4px);
+
+    background: #faf5ff;
+
+    border-color: #ddd6fe;
+
+    box-shadow:
+        0 16px 34px rgba(124,58,237,.10);
 }
 
 .summary-item span {

@@ -1,104 +1,180 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/applications/application_details.css' %}?v=1">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="application-details-header">
     <div>
+        <span class="section-label">Application Overview</span>
         <h1>Application Details</h1>
-        <p class="page-subtitle">Review candidate, job, and application status information.</p>
+        <p>Review candidate, job, and application status information.</p>
     </div>
 
     <a href="{% url 'company_applications_list' %}" class="secondary-btn">
-        <i class="fa-solid fa-arrow-left"></i> Back
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
     </a>
 </div>
 
-<div class="details-grid">
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-user"></i> Candidate Information</h3>
+<div class="application-hero">
+    <div class="application-hero-main">
+        <div class="application-avatar">
+            {{ application.candidate.full_name|first }}
+        </div>
 
-        <p><strong>Name:</strong> {{ application.candidate.full_name }}</p>
-        <p><strong>Phone:</strong> {{ application.candidate.phone }}</p>
-        <p>
-            <strong>LinkedIn:</strong>
-            {% if application.candidate.linkedin_url %}
-                <a href="{{ application.candidate.linkedin_url }}" target="_blank">
-                    View LinkedIn
-                </a>
-            {% else %}
-                No LinkedIn added
-            {% endif %}
-        </p>      
-        <p><strong>Experience:</strong> {{ application.candidate.experience_years }} years</p>
-        <p><strong>Current Position:</strong> {{ application.candidate.current_position }}</p>
-        <p>
-        <strong>CV:</strong>
-        {% if application.candidate.cv %}
-            <a href="{{ application.candidate.cv.url }}" target="_blank" class="small-btn view-btn">
-                <i class="fa-solid fa-file-pdf"></i>
-                View CV
-            </a>
-        {% else %}
-            No CV uploaded
-        {% endif %}
-        </p>
+        <div>
+            <span class="profile-badge">Candidate Application</span>
+            <h2>{{ application.candidate.full_name }}</h2>
+            <p>{{ application.job.job_title }}</p>
+
+            <div class="application-tags">
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ application.candidate.experience_years }} Years Experience
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ application.job.location }}
+                </span>
+
+                <span class="app-status-badge status-{{ application.status|slugify }}">
+                    {{ application.status }}
+                </span>
+            </div>
+        </div>
     </div>
 
-    <div class="card info-section-card">
-        <h3><i class="fa-solid fa-briefcase"></i> Job Information</h3>
-
-        <p><strong>Job Title:</strong> {{ application.job.job_title }}</p>
-        <p><strong>Job Type:</strong> {{ application.job.job_type }}</p>
-        <p><strong>Location:</strong> {{ application.job.location }}</p>
-    </div>
+    {% if application.candidate.cv %}
+        <a href="{{ application.candidate.cv.url }}" target="_blank" class="primary-btn">
+            <i class="fa-solid fa-file-pdf"></i>
+            View CV
+        </a>
+    {% endif %}
 </div>
 
-<div class="card info-section-card application-status-card">
-    <h3><i class="fa-solid fa-list-check"></i> Application Information</h3>
+<div class="application-info-grid">
 
-    <div class="job-info-grid">
-        <div class="info-box">
+    <div class="application-info-card">
+        <h3>
+            <i class="fa-solid fa-user"></i>
+            Candidate Information
+        </h3>
+
+        <div class="info-list">
+            <div class="info-item">
+                <span>Name</span>
+                <strong>{{ application.candidate.full_name }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Phone</span>
+                <strong>{{ application.candidate.phone }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Experience</span>
+                <strong>{{ application.candidate.experience_years }} years</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Current Position</span>
+                <strong>{{ application.candidate.current_position|default:"No position added" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>LinkedIn</span>
+                {% if application.candidate.linkedin_url %}
+                    <a href="{{ application.candidate.linkedin_url }}" target="_blank">View LinkedIn</a>
+                {% else %}
+                    <strong>No LinkedIn added</strong>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="application-info-card">
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
+
+        <div class="info-list">
+            <div class="info-item">
+                <span>Job Title</span>
+                <strong>{{ application.job.job_title }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Job Type</span>
+                <strong>{{ application.job.job_type|default:"Not specified" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Location</span>
+                <strong>{{ application.job.location }}</strong>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="application-status-card">
+    <h3>
+        <i class="fa-solid fa-list-check"></i>
+        Application Information
+    </h3>
+
+    <div class="application-meta-grid">
+        <div class="meta-box">
             <span>Status</span>
             <strong>{{ application.status }}</strong>
         </div>
 
-        <div class="info-box">
+        <div class="meta-box">
             <span>Applied Date</span>
             <strong>{{ application.applied_date }}</strong>
         </div>
 
-        <div class="info-box">
+        <div class="meta-box">
             <span>Notes</span>
             <strong>{{ application.notes|default:"No notes" }}</strong>
         </div>
     </div>
 
-    <hr class="section-line">
+    <div class="status-update-box">
+        <h3>Update Application Status</h3>
+        <p>Move this candidate through the hiring pipeline or schedule an interview.</p>
 
-    <h3>Update Application Status</h3>
+        <form method="POST">
+            {% csrf_token %}
 
-    <form method="POST">
-        {% csrf_token %}
+            <select name="status">
+                <option value="Applied" {% if application.status == 'Applied' %}selected{% endif %}>Applied</option>
+                <option value="Screening" {% if application.status == 'Screening' %}selected{% endif %}>Screening</option>
+                <option value="Shortlisted" {% if application.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                <option value="Interview Scheduled" {% if application.status == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
+                <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                <option value="Hired" {% if application.status == 'Hired' %}selected{% endif %}>Hired</option>
+            </select>
 
-        <select name="status">
-            <option value="Applied" {% if application.status == 'Applied' %}selected{% endif %}>Applied</option>
-            <option value="Screening" {% if application.status == 'Screening' %}selected{% endif %}>Screening</option>
-            <option value="Shortlisted" {% if application.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
-            <option value="Interview Scheduled" {% if application.status == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
-            <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
-            <option value="Hired" {% if application.status == 'Hired' %}selected{% endif %}>Hired</option>
-        </select>
+            <div class="form-footer">
+                <button type="submit" class="primary-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Update Status
+                </button>
 
-        <div class="form-footer">
-            <button type="submit" class="primary-btn">
-                <i class="fa-solid fa-floppy-disk"></i> Update Status
-            </button>
-
-            <a href="{% url 'company_add_interview' application.id %}" class="secondary-btn">
-                <i class="fa-solid fa-calendar-plus"></i> Schedule Interview
-            </a>
-        </div>
-    </form>
+                <a href="{% url 'company_add_interview' application.id %}" class="secondary-btn">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    Schedule Interview
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

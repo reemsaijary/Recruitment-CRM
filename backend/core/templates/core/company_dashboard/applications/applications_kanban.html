@@ -1,11 +1,17 @@
 {% extends 'core/company_dashboard/base_company.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/company/applications/kanban.css' %}?v=1">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="kanban-header">
     <div>
+        <span class="section-label">Pipeline Board</span>
         <h1>Applications Kanban</h1>
-        <p class="page-subtitle">Track candidates through the hiring pipeline.</p>
+        <p>Track candidates through the hiring pipeline.</p>
     </div>
 
     <a href="{% url 'company_applications_list' %}" class="secondary-btn">
@@ -20,67 +26,87 @@
     <div class="kanban-column">
 
         <div class="kanban-column-header">
-            <h3>{{ status }}</h3>
-            <span>{{ applications.count }}</span>
+            <div>
+                <span class="column-label">Stage</span>
+                <h3>{{ status }}</h3>
+            </div>
+
+            <strong>{{ applications.count }}</strong>
         </div>
 
-        {% for application in applications %}
-        <div class="kanban-card">
-            <h4>{{ application.candidate.full_name }}</h4>
+        <div class="kanban-column-body">
+            {% for application in applications %}
+            <div class="kanban-card">
+                <div class="kanban-card-top">
+                    <div class="kanban-avatar">
+                        {{ application.candidate.full_name|first }}
+                    </div>
 
-            <p>
-                <i class="fa-solid fa-briefcase"></i>
-                {{ application.job.job_title }}
-            </p>
+                    <div>
+                        <h4>{{ application.candidate.full_name }}</h4>
+                        <span>{{ application.candidate.experience_years }} years experience</span>
+                    </div>
+                </div>
 
-            <p>
-                <i class="fa-solid fa-calendar"></i>
-                {{ application.applied_date }}
-            </p>
-    <div class="kanban-card-actions">
+                <div class="kanban-card-meta">
+                    <p>
+                        <i class="fa-solid fa-briefcase"></i>
+                        {{ application.job.job_title }}
+                    </p>
 
-            <a href="{% url 'company_application_details' application.id %}" class="kanban-action-btn view-action">
-                <i class="fa-solid fa-eye"></i>
-                View
-            </a>
+                    <p>
+                        <i class="fa-solid fa-calendar"></i>
+                        {{ application.applied_date }}
+                    </p>
+                </div>
 
-            {% if status != 'Screening' %}
-            <a href="{% url 'company_update_application_status_kanban' application.id 'Screening' %}" class="kanban-action-btn screening-action">
-                Screening
-            </a>
-            {% endif %}
+                <div class="kanban-card-actions">
+                    <a href="{% url 'company_application_details' application.id %}" class="kanban-action-btn view-action">
+                        <i class="fa-solid fa-eye"></i>
+                        View
+                    </a>
 
-            {% if status != 'Shortlisted' %}
-            <a href="{% url 'company_update_application_status_kanban' application.id 'Shortlisted' %}" class="kanban-action-btn shortlist-action">
-                Shortlist
-            </a>
-            {% endif %}
+                    {% if status != 'Screening' %}
+                    <a href="{% url 'company_update_application_status_kanban' application.id 'Screening' %}" class="kanban-action-btn screening-action">
+                        Screening
+                    </a>
+                    {% endif %}
 
-            {% if status != 'Interview Scheduled' %}
-            <a href="{% url 'company_update_application_status_kanban' application.id 'Interview Scheduled' %}" class="kanban-action-btn interview-action">
-                Interview
-            </a>
-            {% endif %}
+                    {% if status != 'Shortlisted' %}
+                    <a href="{% url 'company_update_application_status_kanban' application.id 'Shortlisted' %}" class="kanban-action-btn shortlist-action">
+                        Shortlist
+                    </a>
+                    {% endif %}
 
-            {% if status != 'Hired' %}
-            <a href="{% url 'company_update_application_status_kanban' application.id 'Hired' %}" class="kanban-action-btn hired-action">
-                Hired
-            </a>
-            {% endif %}
+                    {% if status != 'Interview Scheduled' %}
+                    <a href="{% url 'company_update_application_status_kanban' application.id 'Interview Scheduled' %}" class="kanban-action-btn interview-action">
+                        Interview
+                    </a>
+                    {% endif %}
 
-            {% if status != 'Rejected' %}
-            <a href="{% url 'company_update_application_status_kanban' application.id 'Rejected' %}" class="kanban-action-btn reject-action">
-                Reject
-            </a>
-            {% endif %}
+                    {% if status != 'Hired' %}
+                    <a href="{% url 'company_update_application_status_kanban' application.id 'Hired' %}" class="kanban-action-btn hired-action">
+                        Hired
+                    </a>
+                    {% endif %}
 
+                    {% if status != 'Rejected' %}
+                    <a href="{% url 'company_update_application_status_kanban' application.id 'Rejected' %}" class="kanban-action-btn reject-action">
+                        Reject
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% empty %}
+            <div class="kanban-empty">
+                <div>
+                    <i class="fa-solid fa-inbox"></i>
+                </div>
+                <p>No applications</p>
+            </div>
+            {% endfor %}
         </div>
-        </div>
-        {% empty %}
-        <div class="kanban-empty">
-            No applications
-        </div>
-        {% endfor %}
 
     </div>
     {% endfor %}

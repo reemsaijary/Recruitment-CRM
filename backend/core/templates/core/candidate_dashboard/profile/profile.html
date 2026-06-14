@@ -1,11 +1,17 @@
 {% extends 'core/candidate_dashboard/base_candidate.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/candidate/profile/profile.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="profile-header">
     <div>
+        <span class="section-label">Candidate Profile</span>
         <h1>My Profile</h1>
-        <p class="page-subtitle">Manage your personal information, skills, CV, and career profile.</p>
+        <p>Manage your personal information, skills, CV, and career profile.</p>
     </div>
 
     <a href="{% url 'edit_candidate_profile' %}" class="primary-btn">
@@ -14,8 +20,8 @@
     </a>
 </div>
 
-<div class="candidate-profile-hero">
-    <div class="candidate-profile-main">
+<section class="profile-hero">
+    <div class="profile-hero-main">
         <div class="candidate-large-avatar">
             {{ candidate.full_name|first }}
         </div>
@@ -29,10 +35,21 @@
             <h1>{{ candidate.full_name }}</h1>
             <p>{{ candidate.current_position|default:"No position added" }}</p>
 
-            <div class="candidate-job-tags">
-                <span><i class="fa-solid fa-location-dot"></i> {{ candidate.location|default:"No location added" }}</span>
-                <span><i class="fa-solid fa-briefcase"></i> {{ candidate.experience_years }} Years Experience</span>
-                <span><i class="fa-solid fa-phone"></i> {{ candidate.phone }}</span>
+            <div class="profile-tags">
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ candidate.location|default:"No location added" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ candidate.experience_years }} Years Experience
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-phone"></i>
+                    {{ candidate.phone }}
+                </span>
             </div>
         </div>
     </div>
@@ -43,56 +60,57 @@
             View CV
         </a>
     {% endif %}
-</div>
+</section>
 
 <div class="profile-grid">
-    <div class="card info-section-card">
+
+    <div class="profile-info-card">
         <h3>
             <i class="fa-solid fa-address-card"></i>
             Personal Information
         </h3>
 
-        <div class="clean-info-list">
-            <div>
+        <div class="info-list">
+            <div class="info-item">
                 <span>Full Name</span>
                 <strong>{{ candidate.full_name }}</strong>
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>Email</span>
                 <strong>{{ request.user.email|default:"No email added" }}</strong>
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>Phone</span>
                 <strong>{{ candidate.phone }}</strong>
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>Location</span>
                 <strong>{{ candidate.location|default:"No location added" }}</strong>
             </div>
         </div>
     </div>
 
-    <div class="card info-section-card">
+    <div class="profile-info-card">
         <h3>
             <i class="fa-solid fa-briefcase"></i>
             Professional Information
         </h3>
 
-        <div class="clean-info-list">
-            <div>
+        <div class="info-list">
+            <div class="info-item">
                 <span>Current Position</span>
                 <strong>{{ candidate.current_position|default:"No position added" }}</strong>
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>Experience</span>
                 <strong>{{ candidate.experience_years }} Years</strong>
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>LinkedIn</span>
                 {% if candidate.linkedin_url %}
                     <a href="{{ candidate.linkedin_url }}" target="_blank" class="profile-link">
@@ -103,7 +121,7 @@
                 {% endif %}
             </div>
 
-            <div>
+            <div class="info-item">
                 <span>CV / Resume</span>
                 {% if candidate.cv %}
                     <a href="{{ candidate.cv.url }}" target="_blank" class="small-btn view-btn">
@@ -116,26 +134,27 @@
             </div>
         </div>
     </div>
+
 </div>
 
-<div class="card info-section-card">
+<div class="profile-section-card">
     <h3>
         <i class="fa-solid fa-code"></i>
         Skills
     </h3>
 
-    <div class="skills-box">
+    <div class="content-box">
         {{ candidate.skills|default:"No skills added." }}
     </div>
 </div>
 
-<div class="card info-section-card">
+<div class="profile-section-card">
     <h3>
         <i class="fa-solid fa-note-sticky"></i>
         About / Notes
     </h3>
 
-    <div class="skills-box">
+    <div class="content-box">
         {{ candidate.notes|default:"No notes added." }}
     </div>
 </div>

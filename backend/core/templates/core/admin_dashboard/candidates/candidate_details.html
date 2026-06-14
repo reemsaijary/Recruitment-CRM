@@ -1,159 +1,289 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/candidates/candidate_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Candidate Profile</h1>
-        <p class="page-subtitle">Read-only candidate profile overview.</p>
+<div class="candidate-profile-hero">
+
+    <div class="candidate-profile-main">
+
+        <div class="candidate-large-avatar">
+            {{ candidate.full_name|first }}
+        </div>
+
+        <div>
+            <span class="hero-badge">
+                <i class="fa-solid fa-user-shield"></i>
+                Candidate Profile
+            </span>
+
+            <h1>{{ candidate.full_name }}</h1>
+
+            <p>
+                Complete candidate profile, applications,
+                interviews and recruitment history.
+            </p>
+
+            <div class="candidate-profile-tags">
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ candidate.location|default:"No Location" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ candidate.current_position|default:"No Position" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-chart-line"></i>
+                    {{ candidate.experience_years }} Years
+                </span>
+
+            </div>
+        </div>
+
     </div>
 
-    <a href="{% url 'candidates_list' %}" class="secondary-btn">
+    <a href="{% url 'candidates_list' %}" class="profile-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Candidates
     </a>
+
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-user"></i>
-        Personal Information
-    </h3>
+<div class="candidate-overview-grid">
 
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Full Name</span>
-            <strong>{{ candidate.full_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Email</span>
-            <strong>{{ candidate.user.email|default:"No email added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Phone</span>
-            <strong>{{ candidate.phone|default:"No phone added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Location</span>
-            <strong>{{ candidate.location|default:"No location added" }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-briefcase"></i>
-        Professional Information
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Current Position</span>
-            <strong>{{ candidate.current_position|default:"No position added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Experience</span>
-            <strong>{{ candidate.experience_years }} Years</strong>
-        </div>
-
-        <div class="info-box">
-            <span>LinkedIn</span>
-            <strong>{{ candidate.linkedin_url|default:"No LinkedIn added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>CV / Resume</span>
-
-            {% if candidate.cv %}
-                <a href="{{ candidate.cv.url }}" target="_blank" class="small-btn view-btn">
-                    <i class="fa-solid fa-file"></i>
-                    View CV
-                </a>
-            {% else %}
-                <strong>No CV uploaded</strong>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="description-box">
-        <h3>Skills</h3>
-        <p>{{ candidate.skills|default:"No skills added." }}</p>
-    </div>
-
-    <div class="description-box">
-        <h3>Notes</h3>
-        <p>{{ candidate.notes|default:"No notes added." }}</p>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
+    <div class="overview-card">
         <i class="fa-solid fa-file-lines"></i>
-        Applications
+        <span>Applications</span>
+        <strong>{{ applications|length }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Interviews</span>
+        <strong>{{ interviews|length }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-user-check"></i>
+        <span>Status</span>
+        <strong>Active</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-clock"></i>
+        <span>Experience</span>
+        <strong>{{ candidate.experience_years }}Y</strong>
+    </div>
+
+</div>
+
+<div class="profile-grid">
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-user"></i>
+            Personal Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="info-box">
+                <span>Full Name</span>
+                <strong>{{ candidate.full_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Email</span>
+                <strong>{{ candidate.user.email|default:"No email added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Phone</span>
+                <strong>{{ candidate.phone|default:"No phone added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Location</span>
+                <strong>{{ candidate.location|default:"No location added" }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Professional Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="info-box">
+                <span>Current Position</span>
+                <strong>{{ candidate.current_position|default:"No position added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Experience</span>
+                <strong>{{ candidate.experience_years }} Years</strong>
+            </div>
+
+            <div class="info-box">
+                <span>LinkedIn</span>
+
+                {% if candidate.linkedin_url %}
+                    <a href="{{ candidate.linkedin_url }}" target="_blank" class="profile-link">
+                        {{ candidate.linkedin_url }}
+                    </a>
+                {% else %}
+                    <strong>No LinkedIn added</strong>
+                {% endif %}
+            </div>
+
+            <div class="info-box">
+                <span>CV / Resume</span>
+
+                {% if candidate.cv %}
+                    <a href="{{ candidate.cv.url }}" target="_blank" class="cv-btn">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        View CV
+                    </a>
+                {% else %}
+                    <strong>No CV uploaded</strong>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <h3>
+        <i class="fa-solid fa-code"></i>
+        Skills
     </h3>
+
+    <div class="content-box">
+        {{ candidate.skills|default:"No skills added." }}
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <h3>
+        <i class="fa-solid fa-note-sticky"></i>
+        Notes
+    </h3>
+
+    <div class="content-box">
+        {{ candidate.notes|default:"No notes added." }}
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Pipeline History</span>
+            <h3>
+                <i class="fa-solid fa-file-lines"></i>
+                Applications
+            </h3>
+        </div>
+    </div>
 
     {% if applications %}
-        <table>
-            <tr>
-                <th>Job</th>
-                <th>Company</th>
-                <th>Status</th>
-                <th>Applied Date</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+                </tr>
 
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.job.job_title }}</td>
-                <td>{{ application.job.company.company_name }}</td>
-                <td>
-                    <span class="status-pill">
-                        {{ application.status }}
-                    </span>
-                </td>
-                <td>{{ application.applied_date }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.job.job_title }}</td>
+                    <td>{{ application.job.company.company_name }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ application.status|slugify }}">
+                            {{ application.status }}
+                        </span>
+                    </td>
+                    <td>{{ application.applied_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No applications found for this candidate.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>No applications found for this candidate.</p>
+        </div>
     {% endif %}
+
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-calendar-days"></i>
-        Interviews
-    </h3>
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Interview History</span>
+            <h3>
+                <i class="fa-solid fa-calendar-days"></i>
+                Interviews
+            </h3>
+        </div>
+    </div>
 
     {% if interviews %}
-        <table>
-            <tr>
-                <th>Job</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Status</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Job</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
 
-            {% for interview in interviews %}
-            <tr>
-                <td>{{ interview.application.job.job_title }}</td>
-                <td>{{ interview.interview_date }}</td>
-                <td>{{ interview.interview_type }}</td>
-                <td>
-                    <span class="status-pill">
-                        {{ interview.status }}
-                    </span>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for interview in interviews %}
+                <tr>
+                    <td>{{ interview.application.job.job_title }}</td>
+                    <td>{{ interview.interview_date }}</td>
+                    <td>{{ interview.interview_type }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ interview.status|slugify }}">
+                            {{ interview.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No interviews found for this candidate.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <p>No interviews found for this candidate.</p>
+        </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

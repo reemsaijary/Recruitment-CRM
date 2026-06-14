@@ -1,21 +1,36 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/candidates/list_candidates.css' %}?v2">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="candidates-hero">
     <div>
+        <span class="candidates-hero-badge">
+            <i class="fa-solid fa-users"></i>
+            Admin Candidate Center
+        </span>
+
         <h1>Candidates Management</h1>
+
+        <p>
+            Manage candidate profiles, track applications, review interviews,
+            and monitor recruitment activity from one clean workspace.
+        </p>
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Dashboard
     </a>
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="candidate-stats-grid">
+    <div class="candidate-stat-card">
+        <div class="candidate-stat-icon purple">
             <i class="fa-solid fa-users"></i>
         </div>
         <div>
@@ -24,8 +39,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="candidate-stat-card">
+        <div class="candidate-stat-icon pink">
             <i class="fa-solid fa-file-lines"></i>
         </div>
         <div>
@@ -34,8 +49,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="candidate-stat-card">
+        <div class="candidate-stat-icon blue">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
         <div>
@@ -44,8 +59,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="candidate-stat-card">
+        <div class="candidate-stat-icon green">
             <i class="fa-solid fa-chart-line"></i>
         </div>
         <div>
@@ -55,18 +70,21 @@
     </div>
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="candidate-filter-card">
+    <form method="GET" class="candidate-filter-form">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search name, email, skills, position...">
+        <div class="candidate-filter-group search-group">
+            <label>Search Candidates</label>
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search name, email, skills, position...">
+            </div>
         </div>
 
-        <div class="filter-group">
+        <div class="candidate-filter-group">
             <label>Location</label>
             <select name="location">
                 <option value="">All Locations</option>
@@ -78,7 +96,7 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <div class="candidate-filter-group">
             <label>Experience</label>
             <select name="experience">
                 <option value="">All Experience</option>
@@ -91,13 +109,13 @@
             </select>
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="candidate-filter-actions">
+            <button type="submit" class="candidate-apply-btn">
+                <i class="fa-solid fa-filter"></i>
                 Apply
             </button>
 
-            <a href="{% url 'candidates_list' %}" class="secondary-btn">
+            <a href="{% url 'candidates_list' %}" class="candidate-clear-btn">
                 Clear
             </a>
         </div>
@@ -105,61 +123,73 @@
     </form>
 </div>
 
-<div class="card">
+<div class="candidate-table-card">
+    <div class="candidate-table-header">
+        <div>
+            <span class="section-label">Candidate Directory</span>
+            <h2>
+                <i class="fa-solid fa-address-card"></i>
+                Candidate Profiles
+            </h2>
+        </div>
+    </div>
+
     {% if candidates %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Position</th>
-                <th>Experience</th>
-                <th>Applications</th>
-                <th>Interviews</th>
-                <th>Actions</th>
-            </tr>
+        <div class="candidate-table-wrapper">
+            <table>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Position</th>
+                    <th>Experience</th>
+                    <th>Applications</th>
+                    <th>Interviews</th>
+                    <th>Actions</th>
+                </tr>
 
-            {% for candidate in candidates %}
-            <tr>
-                <td>
-                    <div class="candidate-cell">
-                        <div class="candidate-avatar">
-                            {{ candidate.full_name|slice:":1" }}
+                {% for candidate in candidates %}
+                <tr>
+                    <td>
+                        <div class="candidate-cell">
+                            <div class="candidate-avatar">
+                                {{ candidate.full_name|slice:":1" }}
+                            </div>
+                            <div>
+                                <strong>{{ candidate.full_name }}</strong>
+                                <span>{{ candidate.user.email|default:"No email" }}</span>
+                            </div>
                         </div>
-                        <div>
-                            <strong>{{ candidate.full_name }}</strong>
-                            <span>{{ candidate.user.email|default:"No email" }}</span>
-                        </div>
-                    </div>
-                </td>
+                    </td>
 
-                <td>{{ candidate.current_position|default:"No position" }}</td>
+                    <td>{{ candidate.current_position|default:"No position" }}</td>
 
-                <td>
-                    {% if candidate.experience_years <= 1 %}
-                        <span class="exp-pill exp-low">{{ candidate.experience_years }} Years</span>
-                    {% elif candidate.experience_years <= 3 %}
-                        <span class="exp-pill exp-mid">{{ candidate.experience_years }} Years</span>
-                    {% else %}
-                        <span class="exp-pill exp-high">{{ candidate.experience_years }} Years</span>
-                    {% endif %}
-                </td>
+                    <td>
+                        {% if candidate.experience_years <= 1 %}
+                            <span class="exp-pill exp-low">{{ candidate.experience_years }} Years</span>
+                        {% elif candidate.experience_years <= 3 %}
+                            <span class="exp-pill exp-mid">{{ candidate.experience_years }} Years</span>
+                        {% else %}
+                            <span class="exp-pill exp-high">{{ candidate.experience_years }} Years</span>
+                        {% endif %}
+                    </td>
 
-                <td>
-                    <span class="count-pill">{{ candidate.applications_count }}</span>
-                </td>
+                    <td>
+                        <span class="count-pill">{{ candidate.applications_count }}</span>
+                    </td>
 
-                <td>
-                    <span class="count-pill">{{ candidate.interviews_count }}</span>
-                </td>
+                    <td>
+                        <span class="count-pill">{{ candidate.interviews_count }}</span>
+                    </td>
 
-                <td>
-                    <a href="{% url 'candidate_details' candidate.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i>
-                        View Profile
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                    <td>
+                        <a href="{% url 'candidate_details' candidate.id %}" class="candidate-view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View Profile
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
         <div class="pagination">
             {% if candidates.has_previous %}
@@ -176,8 +206,8 @@
         </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
+        <div class="candidate-empty-state">
+            <div class="candidate-empty-icon">
                 <i class="fa-solid fa-users"></i>
             </div>
 

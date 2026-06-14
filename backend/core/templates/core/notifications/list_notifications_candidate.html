@@ -1,27 +1,58 @@
 {% extends 'core/candidate_dashboard/base_candidate.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/candidate/notifications/list_notifications.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="notifications-header">
+
     <div>
+        <span class="section-label">Notification Center</span>
         <h1>Notifications</h1>
-        <p class="page-subtitle">Stay updated with your applications and interviews.</p>
+        <p>Stay updated with your applications, interviews, and hiring progress.</p>
     </div>
 
-    <a href="{% url 'mark_all_notifications_read' %}" class="secondary-btn">
+    <a href="{% url 'mark_all_notifications_read' %}" class="primary-btn">
         <i class="fa-solid fa-check-double"></i>
         Mark All as Read
     </a>
+
 </div>
 
-<div class="card">
+<section class="notifications-hero">
+
+    <div class="notifications-hero-content">
+
+        <span class="hero-badge">
+            <i class="fa-solid fa-bell"></i>
+            Candidate Updates
+        </span>
+
+        <h1>Stay on Track</h1>
+
+        <p>
+            Review important updates about your applications, interviews, and recruitment activity.
+        </p>
+
+    </div>
+
+</section>
+
+<div class="notifications-card">
+
     {% if notifications %}
+
         <div class="notification-list">
+
             {% for notification in notifications %}
 
                 <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
 
-                    <a href="{% url 'mark_notification_read' notification.id %}" class="notification-main-link">
+                    <a href="{% url 'mark_notification_read' notification.id %}"
+                       class="notification-main-link">
 
                         <div class="notification-icon">
                             {% if notification.notification_type == 'application' %}
@@ -44,8 +75,11 @@
                     </a>
 
                     <div class="notification-actions">
+
                         {% if not notification.is_read %}
-                            <span class="status-pill status-applied">New</span>
+                            <span class="notification-badge-pill">
+                                New
+                            </span>
                         {% endif %}
 
                         <a href="{% url 'delete_notification' notification.id %}"
@@ -54,21 +88,30 @@
                             <i class="fa-solid fa-trash"></i>
                             Delete
                         </a>
+
                     </div>
 
                 </div>
 
             {% endfor %}
+
         </div>
+
     {% else %}
+
         <div class="empty-state">
+
             <div class="empty-icon">
                 <i class="fa-solid fa-bell-slash"></i>
             </div>
-            <h3>No notifications yet</h3>
+
+            <h2>No notifications yet</h2>
             <p>You will see application and interview updates here.</p>
+
         </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

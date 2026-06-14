@@ -1,947 +1,118 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Recruitment CRM</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-        }
-
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            background: linear-gradient(180deg, #020617, #1e293b);
-            color: white;
-            padding: 20px 15px;
-            transition: width 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .sidebar.closed {
-            width: 80px;
-        }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 35px;
-        }
-
-        .logo {
-            margin: 0;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .toggle-btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 9px 11px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            color: #e5e7eb;
-            text-decoration: none;
-            padding: 13px 14px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .sidebar-menu a:hover {
-            background: #2563eb;
-            color: white;
-        }
-
-        .icon {
-            width: 22px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .sidebar.closed .sidebar-text,
-        .sidebar.closed .logo {
-            display: none;
-        }
-
-        .sidebar.closed .sidebar-header,
-        .sidebar.closed .sidebar-menu a {
-            justify-content: center;
-        }
-
-        /* Main */
-        .main {
-            flex: 1;
-        }
-
-        .navbar {
-            background: white;
-            padding: 18px 35px;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-left h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .navbar-left p {
-            margin: 4px 0 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-weight: 700;
-        }
-
-        .navbar-user i {
-            color: #2563eb;
-        }
-
-        .container {
-            padding: 35px;
-        }
-
-        /* Cards */
-        .card,
-        .stat-card,
-        .mini-stat-card,
-        .dashboard-card {
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .card {
-            padding: 22px;
-            margin-bottom: 20px;
-        }
-
-        /* Buttons */
-        .btn,
-        .secondary-btn,
-        .small-btn,
-        .danger-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            border-radius: 8px;
-        }
-
-        .btn {
-            padding: 10px 16px;
-            background: #2563eb;
-            color: white;
-        }
-
-        .secondary-btn {
-            background: white;
-            color: #0f172a;
-            border: 1px solid #dbe3ef;
-            padding: 11px 18px;
-        }
-
-        .small-btn {
-            padding: 7px 11px;
-            font-size: 14px;
-            color: white;
-        }
-
-        .view-btn {
-            background: #2563eb;
-        }
-
-        .edit-btn {
-            background: #16a34a;
-        }
-
-        .delete-btn,
-        .danger-btn {
-            background: #dc2626;
-            color: white;
-        }
-
-        .btn:hover,
-        .view-btn:hover {
-            background: #1d4ed8;
-        }
-
-        .edit-btn:hover {
-            background: #15803d;
-        }
-
-        .delete-btn:hover,
-        .danger-btn:hover {
-            background: #b91c1c;
-        }
-
-        /* Page Header */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .page-header h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-
-        .page-subtitle {
-            margin-top: 6px;
-            color: #64748b;
-            font-size: 15px;
-        }
-
-        .page-actions,
-        .table-actions,
-        .form-actions,
-        .delete-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        /* Dashboard */
-        .dashboard-hero {
-            background: linear-gradient(135deg, #0f172a, #2563eb);
-            color: white;
-            border-radius: 24px;
-            padding: 35px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .dashboard-hero h1 {
-            margin: 14px 0 8px;
-            font-size: 34px;
-        }
-
-        .dashboard-hero p {
-            margin: 0;
-            color: #dbeafe;
-            max-width: 650px;
-        }
-
-        .welcome-badge {
-            background: rgba(255,255,255,0.15);
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .dashboard-grid,
-        .admin-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 22px;
-        }
-
-        .dashboard-card {
-            padding: 22px;
-            text-decoration: none;
-            color: #0f172a;
-            transition: 0.2s;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .dashboard-icon,
-        .mini-stat-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 16px;
-            background: #dbeafe;
-            color: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .dashboard-icon {
-            margin-bottom: 16px;
-        }
-
-        .dashboard-card span,
-        .mini-stat-card span {
-            display: block;
-            color: #64748b;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .dashboard-card strong {
-            font-size: 34px;
-        }
-
-        .mini-stat-card {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .mini-stat-card strong {
-            font-size: 24px;
-        }
-
-        .dashboard-content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
-        }
-
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .section-title h3 {
-            margin: 0;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .section-title i,
-        .section-title a {
-            color: #2563eb;
-        }
-
-        .section-title a {
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th {
-            background: #0f172a;
-            color: white;
-        }
-
-        th,
-        td {
-            padding: 13px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        tr:hover {
-            background: #f1f5f9;
-        }
-
-        /* Forms */
-        form label {
-            font-weight: bold;
-        }
-
-        form input,
-        form textarea,
-        form select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-        }
-
-        .form-grid,
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .section-divider {
-            margin: 28px 0;
-            border: none;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        /* Filters */
-        .filter-card {
-            margin-bottom: 22px;
-        }
-
-        .filter-form {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
-            gap: 16px;
-            align-items: end;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-group label {
-            margin-bottom: 6px;
-            color: #0f172a;
-            font-weight: 700;
-        }
-
-        .filter-group input,
-        .filter-group select {
-            padding: 11px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-
-        .filter-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Candidate Cell */
-        .candidate-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .candidate-cell span {
-            display: block;
-            color: #64748b;
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .candidate-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #dbeafe;
-            color: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
-
-        /* Badges */
-        .status-pill,
-        .exp-pill,
-        .count-pill,
-        .pipeline-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .status-pill,
-        .exp-mid {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .exp-low {
-            background: #f1f5f9;
-            color: #475569;
-        }
-
-        .exp-high,
-        .status-hired {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .count-pill {
-            background: #f8fafc;
-            color: #0f172a;
-            border: 1px solid #e2e8f0;
-        }
-
-        .status-applied {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .status-screening {
-            background: #fef3c7;
-            color: #b45309;
-        }
-
-        .status-shortlisted {
-            background: #ede9fe;
-            color: #7c3aed;
-        }
-
-        .status-interview-scheduled {
-            background: #ffedd5;
-            color: #ea580c;
-        }
-
-        .status-interview-done {
-            background: #cffafe;
-            color: #0891b2;
-        }
-
-        .status-evaluated {
-            background: #e0e7ff;
-            color: #4338ca;
-        }
-
-        .status-offer-sent {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .status-rejected {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        /* Details */
-        .info-section-card {
-            margin-bottom: 20px;
-        }
-
-        .info-section-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #0f172a;
-        }
-
-        .info-section-card h3 i {
-            color: #2563eb;
-        }
-
-        .info-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 18px;
-        }
-
-        .info-box span {
-            display: block;
-            color: #64748b;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .info-box strong {
-            color: #0f172a;
-            font-size: 17px;
-        }
-
-        .description-box {
-            margin-top: 24px;
-        }
-
-        .description-box p {
-            color: #334155;
-            line-height: 1.7;
-        }
-
-        /* Empty and Pagination */
-        .empty-state {
-            text-align: center;
-            padding: 45px 20px;
-        }
-
-        .empty-icon {
-            width: 70px;
-            height: 70px;
-            background: #dbeafe;
-            color: #2563eb;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 18px;
-            font-size: 30px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .pagination a,
-        .pagination span {
-            padding: 9px 13px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .pagination a {
-            background: #2563eb;
-            color: white;
-        }
-
-        .pagination span {
-            background: #f1f5f9;
-            color: #334155;
-        }
-
-        /* Delete Pages */
-        .delete-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 60px;
-        }
-
-        .delete-card {
-            max-width: 650px;
-            width: 100%;
-            text-align: center;
-            padding: 45px;
-        }
-
-        .warning-icon {
-            width: 85px;
-            height: 85px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            background: #fee2e2;
-            color: #dc2626;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-        }
-
-        .delete-message {
-            font-size: 18px;
-            color: #0f172a;
-        }
-
-        .delete-warning {
-            color: #64748b;
-            margin-bottom: 28px;
-        }
-    /* responsive */
-    @media (max-width: 1024px) {
-    .dashboard-grid,
-    .admin-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dashboard-content-grid,
-    .form-grid,
-    .details-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .dashboard-hero {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
-    }
-
-    .filter-form {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .layout {
-        display: block;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 16px 18px;
-        border-radius: 0;
-    }
-
-    .sidebar-header {
-        margin-bottom: 0;
-    }
-
-    .sidebar-menu {
-        display: none;
-        margin-top: 18px;
-    }
-
-   .sidebar.mobile-open .sidebar-menu {
-    display: block;
-}
-
-    .sidebar.closed {
-        width: 100%;
-    }
-
-    .sidebar.closed .logo {
-        display: block;
-    }
-
-    .sidebar.closed .sidebar-text {
-        display: inline;
-    }
-
-    .sidebar.closed .sidebar-header {
-        justify-content: space-between;
-    }
-
-    .sidebar.closed .sidebar-menu a {
-        justify-content: flex-start;
-    }
-
-    .main {
-        width: 100%;
-    }
-
-    .navbar {
-        padding: 18px 22px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-    }
-
-    .container {
-        padding: 22px 18px;
-    }
-
-    .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-    }
-
-    .dashboard-hero {
-        padding: 26px;
-        border-radius: 20px;
-    }
-
-    .dashboard-hero h1 {
-        font-size: 30px;
-    }
-
-    .hero-actions,
-    .page-actions,
-    .table-actions,
-    .form-actions,
-    .delete-actions,
-    .filter-actions {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .btn,
-    .secondary-btn,
-    .danger-btn {
-        width: 100%;
-    }
-
-    .dashboard-grid,
-    .admin-stats-grid,
-    .filter-form {
-        grid-template-columns: 1fr;
-    }
-
-    .card {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 650px;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-left h2 {
-        font-size: 24px;
-    }
-
-    .navbar-left p {
-        font-size: 13px;
-    }
-
-    .navbar-user {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .dashboard-hero h1,
-    .page-header h1 {
-        font-size: 26px;
-    }
-
-    .dashboard-card strong {
-        font-size: 28px;
-    }
-
-    .mini-stat-card {
-        align-items: flex-start;
-    }
-
-    .container {
-        padding: 18px 14px;
-    }
-
-    th,
-    td {
-        padding: 11px;
-        font-size: 13px;
-    }
-}
-   </style>
+    <link rel="stylesheet"
+          href="{% static 'core/css/admin/base.css' %}">
+
+    {% block extra_css %}
+    {% endblock %}
 </head>
 
 <body>
 
 <div class="layout">
 
-   <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2 class="logo">RecruitCRM</h2>
+            <a href="{% url 'dashboard' %}" class="logo">
+               
+                <span class="logo-text">Recruit<span>CRM</span></span>
+            </a>
 
-            <button onclick="toggleSidebar()" class="toggle-btn">
+            <button onclick="toggleSidebar()" class="toggle-btn" type="button">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
 
         <nav class="sidebar-menu">
-            <a href="{% url 'dashboard' %}">
-                <i class="fa-solid fa-house icon"></i>
-                <span class="sidebar-text">Dashboard</span>
-            </a>
 
-            <a href="{% url 'candidates_list' %}">
-                <i class="fa-solid fa-user icon"></i>
-                <span class="sidebar-text">Candidates</span>
-            </a>
+            <div class="sidebar-section">
+                <p>Admin</p>
 
-            <a href="{% url 'companies_list' %}">
-                <i class="fa-solid fa-building icon"></i>
-                <span class="sidebar-text">Companies</span>
-            </a>
+                <a href="{% url 'dashboard' %}">
+                    <i class="fa-solid fa-house icon"></i>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
 
-            <a href="{% url 'jobs_list' %}">
-                <i class="fa-solid fa-briefcase icon"></i>
-                <span class="sidebar-text">Jobs</span>
-            </a>
+                <a href="{% url 'candidates_list' %}">
+                    <i class="fa-solid fa-users icon"></i>
+                    <span class="sidebar-text">Candidates</span>
+                </a>
 
-            <a href="{% url 'applications_list' %}">
-                <i class="fa-solid fa-file-lines icon"></i>
-                <span class="sidebar-text">Applications</span>
-            </a>
+                <a href="{% url 'companies_list' %}">
+                    <i class="fa-solid fa-building icon"></i>
+                    <span class="sidebar-text">Companies</span>
+                </a>
 
-            <a href="{% url 'interviews_list' %}">
-                <i class="fa-solid fa-calendar-days icon"></i>
-                <span class="sidebar-text">Interviews</span>
-            </a>
+                <a href="{% url 'jobs_list' %}">
+                    <i class="fa-solid fa-briefcase icon"></i>
+                    <span class="sidebar-text">Jobs</span>
+                </a>
+            </div>
 
-            <a href="{% url 'evaluations_list' %}">
-                <i class="fa-solid fa-star icon"></i>
-                <span class="sidebar-text">Evaluations</span>
-            </a>
+            <div class="sidebar-section">
+                <p>Management</p>
 
-            <a href="{% url 'activities_list' %}">
-                <i class="fa-solid fa-list-check icon"></i>
-                <span class="sidebar-text">Activities</span>
-            </a>
+                <a href="{% url 'applications_list' %}">
+                    <i class="fa-solid fa-file-lines icon"></i>
+                    <span class="sidebar-text">Applications</span>
+                </a>
 
-            <a href="{% url 'logout' %}">
-                <i class="fa-solid fa-right-from-bracket icon"></i>
-                <span class="sidebar-text">Logout</span>
-            </a>
+                <a href="{% url 'interviews_list' %}">
+                    <i class="fa-solid fa-calendar-days icon"></i>
+                    <span class="sidebar-text">Interviews</span>
+                </a>
+
+                <a href="{% url 'evaluations_list' %}">
+                    <i class="fa-solid fa-star icon"></i>
+                    <span class="sidebar-text">Evaluations</span>
+                </a>
+
+                <a href="{% url 'activities_list' %}">
+                    <i class="fa-solid fa-list-check icon"></i>
+                    <span class="sidebar-text">Activities</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section logout-section">
+                <p>Account</p>
+
+                <a href="{% url 'logout' %}" class="logout-link">
+                    <i class="fa-solid fa-right-from-bracket icon"></i>
+                    <span class="sidebar-text">Logout</span>
+                </a>
+            </div>
+
         </nav>
     </aside>
 
     <main class="main">
         <header class="navbar">
             <div class="navbar-left">
+                <span class="navbar-kicker">Admin Control Center</span>
                 <h2>Recruitment CRM System</h2>
-                <p>Admin dashboard and system monitoring</p>
+                <p>Monitor users, pipelines, applications, and operations.</p>
             </div>
 
             <div class="navbar-user">
-                <i class="fa-solid fa-user-shield"></i>
-                <span>Hello, {{ request.user.username }}</span>
+                <div class="navbar-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <div>
+                    <small>Welcome back</small>
+                    <strong>{{ request.user.username }}</strong>
+                </div>
             </div>
         </header>
 

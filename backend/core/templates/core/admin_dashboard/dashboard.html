@@ -1,91 +1,144 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/dashboard/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="dashboard-hero">
-    <div>
-        <span class="welcome-badge">
+<div class="admin-dashboard-hero">
+    <div class="admin-hero-content">
+        <span class="admin-hero-badge">
             <i class="fa-solid fa-shield-halved"></i>
-            Admin Workspace
+            Executive Admin Workspace
         </span>
 
         <h1>Recruitment CRM Dashboard</h1>
-        <p>Monitor candidates, companies, jobs, applications, interviews, evaluations, and activities from one place.</p>
+
+        <p>
+            Monitor candidates, companies, jobs, applications, interviews, evaluations,
+            and activities from one powerful control center.
+        </p>
+
+        <div class="admin-hero-metrics">
+            <div class="admin-hero-metric">
+                <strong>{{ candidates_count }}</strong>
+                <span>Candidates</span>
+            </div>
+
+            <div class="admin-hero-metric">
+                <strong>{{ applications_count }}</strong>
+                <span>Applications</span>
+            </div>
+
+            <div class="admin-hero-metric">
+                <strong>{{ scheduled_interviews_count }}</strong>
+                <span>Interviews</span>
+            </div>
+        </div>
     </div>
 
-    <div class="hero-actions">
-        <a href="{% url 'companies_list' %}" class="secondary-btn">
+    <div class="admin-hero-actions">
+        <a href="{% url 'companies_list' %}" class="admin-hero-btn white">
             <i class="fa-solid fa-building"></i>
             Companies
         </a>
 
-        <a href="{% url 'applications_list' %}" class="btn">
+        <a href="{% url 'applications_list' %}" class="admin-hero-btn purple">
             <i class="fa-solid fa-file-lines"></i>
             Applications
         </a>
     </div>
 </div>
 
-<div class="dashboard-grid">
-    <a href="{% url 'candidates_list' %}" class="dashboard-card">
-        <div class="dashboard-icon">
+<div class="admin-stats-grid">
+    <a href="{% url 'candidates_list' %}" class="admin-stat-card">
+        <div class="admin-stat-icon purple">
             <i class="fa-solid fa-users"></i>
         </div>
-        <span>Total Candidates</span>
-        <strong>{{ candidates_count }}</strong>
+
+        <div>
+            <span>Total Candidates</span>
+            <strong>{{ candidates_count }}</strong>
+            <p>Registered candidate profiles</p>
+        </div>
     </a>
 
-    <a href="{% url 'companies_list' %}" class="dashboard-card">
-        <div class="dashboard-icon">
+    <a href="{% url 'companies_list' %}" class="admin-stat-card">
+        <div class="admin-stat-icon blue">
             <i class="fa-solid fa-building"></i>
         </div>
-        <span>Total Companies</span>
-        <strong>{{ companies_count }}</strong>
+
+        <div>
+            <span>Total Companies</span>
+            <strong>{{ companies_count }}</strong>
+            <p>Recruiting organizations</p>
+        </div>
     </a>
 
-    <a href="{% url 'jobs_list' %}" class="dashboard-card">
-        <div class="dashboard-icon">
+    <a href="{% url 'jobs_list' %}" class="admin-stat-card">
+        <div class="admin-stat-icon green">
             <i class="fa-solid fa-briefcase"></i>
         </div>
-        <span>Total Jobs</span>
-        <strong>{{ jobs_count }}</strong>
+
+        <div>
+            <span>Total Jobs</span>
+            <strong>{{ jobs_count }}</strong>
+            <p>Jobs across the platform</p>
+        </div>
     </a>
 
-    <a href="{% url 'applications_list' %}" class="dashboard-card">
-        <div class="dashboard-icon">
+    <a href="{% url 'applications_list' %}" class="admin-stat-card">
+        <div class="admin-stat-icon pink">
             <i class="fa-solid fa-file-lines"></i>
         </div>
-        <span>Total Applications</span>
-        <strong>{{ applications_count }}</strong>
+
+        <div>
+            <span>Total Applications</span>
+            <strong>{{ applications_count }}</strong>
+            <p>Submitted job applications</p>
+        </div>
     </a>
 </div>
 
-<div class="dashboard-grid small-dashboard-grid">
-    <div class="dashboard-card mini-dashboard-card">
+<div class="admin-mini-stats-grid">
+    <div class="admin-mini-card">
         <span>Open Jobs</span>
         <strong>{{ open_jobs_count }}</strong>
+        <i class="fa-solid fa-unlock"></i>
     </div>
 
-    <div class="dashboard-card mini-dashboard-card">
+    <div class="admin-mini-card">
         <span>Scheduled Interviews</span>
         <strong>{{ scheduled_interviews_count }}</strong>
+        <i class="fa-solid fa-calendar-check"></i>
     </div>
 
-    <div class="dashboard-card mini-dashboard-card">
+    <div class="admin-mini-card">
         <span>Hired Candidates</span>
         <strong>{{ hired_count }}</strong>
+        <i class="fa-solid fa-circle-check"></i>
     </div>
 
-    <div class="dashboard-card mini-dashboard-card">
+    <div class="admin-mini-card">
         <span>Pending Activities</span>
         <strong>{{ pending_activities_count }}</strong>
+        <i class="fa-solid fa-hourglass-half"></i>
     </div>
 </div>
 
-<div class="dashboard-content-grid">
-    <div class="card">
-        <div class="section-title">
-            <h3><i class="fa-solid fa-file-lines"></i> Recent Applications</h3>
+<div class="admin-dashboard-content-grid">
+    <div class="admin-panel">
+        <div class="admin-panel-header">
+            <div>
+                <span class="section-label">Pipeline Monitor</span>
+                <h3>
+                    <i class="fa-solid fa-file-lines"></i>
+                    Recent Applications
+                </h3>
+            </div>
+
             <a href="{% url 'applications_list' %}">View all</a>
         </div>
 
@@ -110,13 +163,23 @@
                 {% endfor %}
             </table>
         {% else %}
-            <p>No recent applications yet.</p>
+            <div class="admin-empty-state">
+                <i class="fa-solid fa-inbox"></i>
+                <p>No recent applications yet.</p>
+            </div>
         {% endif %}
     </div>
 
-    <div class="card">
-        <div class="section-title">
-            <h3><i class="fa-solid fa-list-check"></i> Upcoming Activities</h3>
+    <div class="admin-panel">
+        <div class="admin-panel-header">
+            <div>
+                <span class="section-label">Operations Tracker</span>
+                <h3>
+                    <i class="fa-solid fa-list-check"></i>
+                    Upcoming Activities
+                </h3>
+            </div>
+
             <a href="{% url 'activities_list' %}">View all</a>
         </div>
 
@@ -145,7 +208,10 @@
                 {% endfor %}
             </table>
         {% else %}
-            <p>No activities yet.</p>
+            <div class="admin-empty-state">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <p>No activities yet.</p>
+            </div>
         {% endif %}
     </div>
 </div>

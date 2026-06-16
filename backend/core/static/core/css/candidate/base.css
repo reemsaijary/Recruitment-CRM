@@ -82,6 +82,20 @@ a {
     font-size: 25px;
     font-weight: 800;
     letter-spacing: -1px;
+
+    display: inline-block;
+
+    transition: .3s ease;
+}
+
+.logo:hover {
+    color: white;
+
+    transform: scale(1.04);
+
+    text-shadow:
+        0 0 15px rgba(168,85,247,.55),
+        0 0 30px rgba(168,85,247,.25);
 }
 
 .logo span {

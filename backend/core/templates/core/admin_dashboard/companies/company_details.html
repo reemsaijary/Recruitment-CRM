@@ -1,231 +1,304 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/companies/company_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Company Profile</h1>
-        <p class="page-subtitle">Company account and recruitment activity overview.</p>
+<div class="company-profile-hero">
+
+    <div class="company-profile-main">
+
+        <div class="company-large-avatar">
+            {{ company.company_name|first }}
+        </div>
+
+        <div>
+            <span class="hero-badge">
+                <i class="fa-solid fa-building"></i>
+                Company Profile
+            </span>
+
+            <h1>{{ company.company_name }}</h1>
+
+            <p>
+                Review company account details, hiring activity,
+                posted jobs and received applications.
+            </p>
+
+            <div class="company-profile-tags">
+                <span>
+                    <i class="fa-solid fa-globe"></i>
+                    {{ company.country|default:"No Country" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-industry"></i>
+                    {{ company.industry|default:"No Industry" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-users"></i>
+                    {{ company.company_size|default:"No Size" }}
+                </span>
+            </div>
+        </div>
+
     </div>
 
-    <div class="page-actions">
-        <a href="{% url 'companies_list' %}" class="secondary-btn">
+    <div class="company-hero-actions">
+        <a href="{% url 'companies_list' %}" class="hero-secondary-btn">
             <i class="fa-solid fa-arrow-left"></i>
-            Back to Companies
+            Back
         </a>
 
-        <a href="{% url 'edit_company' company.id %}" class="btn">
+        <a href="{% url 'edit_company' company.id %}" class="hero-primary-btn">
             <i class="fa-solid fa-pen"></i>
             Edit Company
         </a>
     </div>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-briefcase"></i>
-        </div>
-        <div>
-            <span>Jobs Posted</span>
-            <strong>{{ jobs_count }}</strong>
-        </div>
-    </div>
+<div class="company-overview-grid">
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-file-lines"></i>
-        </div>
-        <div>
-            <span>Applications</span>
-            <strong>{{ applications_count }}</strong>
-        </div>
-    </div>
-
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-calendar-days"></i>
-        </div>
-        <div>
-            <span>Interviews</span>
-            <strong>{{ interviews_count }}</strong>
-        </div>
-    </div>
-
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-user-tie"></i>
-        </div>
-        <div>
-            <span>Account</span>
-            <strong>
-                {% if company.user %}
-                    Active
-                {% else %}
-                    None
-                {% endif %}
-            </strong>
-        </div>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-building"></i>
-        Company Information
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Company Name</span>
-            <strong>{{ company.company_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Contact Name</span>
-            <strong>{{ company.contact_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Industry</span>
-            <strong>{{ company.industry|default:"No industry added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Country</span>
-            <strong>{{ company.country|default:"No country added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Phone</span>
-            <strong>{{ company.phone|default:"No phone added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Company Size</span>
-            <strong>{{ company.company_size|default:"No size added" }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-user-lock"></i>
-        Login Account
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Username</span>
-            <strong>
-                {% if company.user %}
-                    {{ company.user.username }}
-                {% else %}
-                    No account
-                {% endif %}
-            </strong>
-        </div>
-
-        <div class="info-box">
-            <span>Email</span>
-            <strong>
-                {% if company.user %}
-                    {{ company.user.email }}
-                {% else %}
-                    No email
-                {% endif %}
-            </strong>
-        </div>
-
-        <div class="info-box">
-            <span>Website</span>
-            {% if company.website %}
-                <a href="{{ company.website }}" target="_blank" class="small-btn view-btn">
-                    Open Website
-                </a>
-            {% else %}
-                <strong>No website added</strong>
-            {% endif %}
-        </div>
-
-        <div class="info-box">
-            <span>LinkedIn</span>
-            {% if company.linkedin_url %}
-                <a href="{{ company.linkedin_url }}" target="_blank" class="small-btn view-btn">
-                    Open LinkedIn
-                </a>
-            {% else %}
-                <strong>No LinkedIn added</strong>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="description-box">
-        <h3>Notes</h3>
-        <p>{{ company.notes|default:"No notes added." }}</p>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
+    <div class="overview-card">
         <i class="fa-solid fa-briefcase"></i>
-        Jobs
+        <span>Jobs Posted</span>
+        <strong>{{ jobs_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Applications</span>
+        <strong>{{ applications_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Interviews</span>
+        <strong>{{ interviews_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-user-tie"></i>
+        <span>Account</span>
+        <strong>
+            {% if company.user %}
+                Active
+            {% else %}
+                None
+            {% endif %}
+        </strong>
+    </div>
+
+</div>
+
+<div class="profile-grid">
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-building"></i>
+            Company Information
+        </h3>
+
+        <div class="details-grid">
+            <div class="info-box">
+                <span>Company Name</span>
+                <strong>{{ company.company_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Contact Name</span>
+                <strong>{{ company.contact_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Industry</span>
+                <strong>{{ company.industry|default:"No industry added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Country</span>
+                <strong>{{ company.country|default:"No country added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Phone</span>
+                <strong>{{ company.phone|default:"No phone added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Company Size</span>
+                <strong>{{ company.company_size|default:"No size added" }}</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-user-lock"></i>
+            Login & Links
+        </h3>
+
+        <div class="details-grid">
+            <div class="info-box">
+                <span>Username</span>
+                <strong>
+                    {% if company.user %}
+                        {{ company.user.username }}
+                    {% else %}
+                        No account
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <span>Email</span>
+                <strong>
+                    {% if company.user %}
+                        {{ company.user.email }}
+                    {% else %}
+                        No email
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="info-box">
+                <span>Website</span>
+                {% if company.website %}
+                    <a href="{{ company.website }}" target="_blank" class="profile-link-btn">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Open Website
+                    </a>
+                {% else %}
+                    <strong>No website added</strong>
+                {% endif %}
+            </div>
+
+            <div class="info-box">
+                <span>LinkedIn</span>
+                {% if company.linkedin_url %}
+                    <a href="{{ company.linkedin_url }}" target="_blank" class="profile-link-btn">
+                        <i class="fa-brands fa-linkedin"></i>
+                        Open LinkedIn
+                    </a>
+                {% else %}
+                    <strong>No LinkedIn added</strong>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <h3>
+        <i class="fa-solid fa-note-sticky"></i>
+        Notes
     </h3>
+
+    <div class="content-box">
+        {{ company.notes|default:"No notes added." }}
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Recruitment Activity</span>
+            <h3>
+                <i class="fa-solid fa-briefcase"></i>
+                Jobs
+            </h3>
+        </div>
+    </div>
 
     {% if jobs %}
-        <table>
-            <tr>
-                <th>Job Title</th>
-                <th>Location</th>
-                <th>Type</th>
-                <th>Status</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
 
-            {% for job in jobs %}
-            <tr>
-                <td>{{ job.job_title }}</td>
-                <td>{{ job.location }}</td>
-                <td>{{ job.job_type|default:"No type" }}</td>
-                <td>
-                    <span class="status-pill">{{ job.status }}</span>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.job_title }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.job_type|default:"No type" }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ job.status|slugify }}">
+                            {{ job.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No jobs posted by this company yet.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-briefcase"></i>
+            <p>No jobs posted by this company yet.</p>
+        </div>
     {% endif %}
+
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-file-lines"></i>
-        Applications
-    </h3>
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Application Flow</span>
+            <h3>
+                <i class="fa-solid fa-file-lines"></i>
+                Applications
+            </h3>
+        </div>
+    </div>
 
     {% if applications %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Job</th>
-                <th>Status</th>
-                <th>Applied Date</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Job</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+                </tr>
 
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.candidate.full_name }}</td>
-                <td>{{ application.job.job_title }}</td>
-                <td>
-                    <span class="status-pill">{{ application.status }}</span>
-                </td>
-                <td>{{ application.applied_date }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.candidate.full_name }}</td>
+                    <td>{{ application.job.job_title }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ application.status|slugify }}">
+                            {{ application.status }}
+                        </span>
+                    </td>
+                    <td>{{ application.applied_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No applications received by this company yet.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>No applications received by this company yet.</p>
+        </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

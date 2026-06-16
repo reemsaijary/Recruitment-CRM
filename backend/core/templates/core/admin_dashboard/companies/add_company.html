@@ -1,36 +1,83 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/companies/add_company.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Add Company</h1>
-        <p class="page-subtitle">Create a company account and add company information.</p>
+<div class="company-add-hero">
+
+    <div class="company-add-main">
+
+        <div class="company-add-avatar">
+            <i class="fa-solid fa-building-circle-check"></i>
+        </div>
+
+        <div>
+            <span class="hero-badge">
+                <i class="fa-solid fa-plus"></i>
+                New Company Account
+            </span>
+
+            <h1>Add Company</h1>
+
+            <p>
+                Create a new company login account and store its business,
+                contact and recruitment information.
+            </p>
+
+            <div class="company-tags">
+                <span>
+                    <i class="fa-solid fa-user-lock"></i>
+                    Login Account
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-building"></i>
+                    Business Profile
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    Recruitment Access
+                </span>
+            </div>
+        </div>
+
     </div>
 
-    <a href="{% url 'companies_list' %}" class="secondary-btn">
+    <a href="{% url 'companies_list' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
-        Back to Companies
+        Back
     </a>
+
 </div>
 
 {% if error %}
-    <div class="card error-card">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        {{ error }}
-    </div>
+<div class="company-error-card">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    {{ error }}
+</div>
 {% endif %}
 
-<div class="card info-section-card">
-    <form method="POST">
-        {% csrf_token %}
+<form method="POST">
+    {% csrf_token %}
 
-        <h3>
-            <i class="fa-solid fa-user-lock"></i>
-            Company Login Account
-        </h3>
+    <div class="add-company-card">
+
+        <div class="card-header">
+            <span class="section-label">Authentication</span>
+
+            <h2>
+                <i class="fa-solid fa-user-lock"></i>
+                Company Login Account
+            </h2>
+        </div>
 
         <div class="form-grid">
+
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" name="username" placeholder="example_company" required>
@@ -45,16 +92,24 @@
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Enter company password" required>
             </div>
+
         </div>
 
-        <hr class="section-divider">
+    </div>
 
-        <h3>
-            <i class="fa-solid fa-building"></i>
-            Company Information
-        </h3>
+    <div class="add-company-card">
+
+        <div class="card-header">
+            <span class="section-label">Business Profile</span>
+
+            <h2>
+                <i class="fa-solid fa-building"></i>
+                Company Information
+            </h2>
+        </div>
 
         <div class="form-grid">
+
             <div class="form-group">
                 <label>Company Name</label>
                 <input type="text" name="company_name" placeholder="TechNova Solutions" required>
@@ -99,19 +154,24 @@
                 <label>Notes</label>
                 <textarea name="notes" placeholder="Add internal notes about this company..."></textarea>
             </div>
+
         </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-plus"></i>
-                Create Company
-            </button>
+    </div>
 
-            <a href="{% url 'companies_list' %}" class="secondary-btn">
-                Cancel
-            </a>
-        </div>
-    </form>
-</div>
+    <div class="company-form-actions">
+
+        <button type="submit" class="save-btn">
+            <i class="fa-solid fa-plus"></i>
+            Create Company
+        </button>
+
+        <a href="{% url 'companies_list' %}" class="cancel-btn">
+            Cancel
+        </a>
+
+    </div>
+
+</form>
 
 {% endblock %}

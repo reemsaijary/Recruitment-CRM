@@ -1,13 +1,24 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/companies/delete_company.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="delete-wrapper">
-    <div class="card delete-card">
+<div class="delete-company-wrapper">
 
-        <div class="warning-icon">
+    <div class="delete-company-card">
+
+        <div class="delete-glow-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
+
+        <span class="delete-badge">
+            <i class="fa-solid fa-building-circle-xmark"></i>
+            Dangerous Action
+        </span>
 
         <h1>Delete Company</h1>
 
@@ -17,20 +28,20 @@
         </p>
 
         <p class="delete-warning">
-            This action will remove the company and its linked login account.
+            This action will permanently remove the company and its linked login account.
             This cannot be undone.
         </p>
 
         <form method="POST">
             {% csrf_token %}
 
-            <div class="delete-actions">
-                <a href="{% url 'companies_list' %}" class="secondary-btn">
+            <div class="delete-company-actions">
+                <a href="{% url 'companies_list' %}" class="cancel-delete-btn">
                     <i class="fa-solid fa-arrow-left"></i>
                     Cancel
                 </a>
 
-                <button type="submit" class="danger-btn">
+                <button type="submit" class="confirm-delete-btn">
                     <i class="fa-solid fa-trash"></i>
                     Yes, Delete Company
                 </button>
@@ -38,6 +49,7 @@
         </form>
 
     </div>
+
 </div>
 
 {% endblock %}

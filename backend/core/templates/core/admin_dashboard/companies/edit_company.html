@@ -1,116 +1,204 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/companies/edit_company.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Edit Company</h1>
-        <p class="page-subtitle">Update company account and business information.</p>
+<div class="company-edit-hero">
+
+    <div class="company-edit-main">
+
+        <div class="company-edit-avatar">
+            {{ company.company_name|first }}
+        </div>
+
+        <div>
+
+            <span class="hero-badge">
+                <i class="fa-solid fa-building"></i>
+                Company Management
+            </span>
+
+            <h1>Edit Company</h1>
+
+            <p>
+                Update company account information, business details,
+                contact information and recruitment profile.
+            </p>
+
+            <div class="company-tags">
+
+                <span>
+                    <i class="fa-solid fa-globe"></i>
+                    {{ company.country|default:"No Country" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-industry"></i>
+                    {{ company.industry|default:"No Industry" }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-users"></i>
+                    {{ company.company_size|default:"Not Specified" }}
+                </span>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <a href="{% url 'companies_list' %}" class="secondary-btn">
+    <a href="{% url 'companies_list' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
-        Back to Companies
+        Back
     </a>
+
 </div>
 
 {% if error %}
-    <div class="card error-card">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        {{ error }}
-    </div>
+<div class="company-error-card">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    {{ error }}
+</div>
 {% endif %}
 
-<div class="card info-section-card">
-    <form method="POST">
-        {% csrf_token %}
+<form method="POST">
 
-        <h3>
-            <i class="fa-solid fa-user-lock"></i>
-            Company Login Account
-        </h3>
+    {% csrf_token %}
+
+    <div class="edit-company-card">
+
+        <div class="card-header">
+            <span class="section-label">Authentication</span>
+
+            <h2>
+                <i class="fa-solid fa-user-lock"></i>
+                Company Login Account
+            </h2>
+        </div>
 
         <div class="form-grid">
+
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username"
+                <input type="text"
+                       name="username"
                        value="{% if company.user %}{{ company.user.username }}{% endif %}"
                        required>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email"
+                <input type="email"
+                       name="email"
                        value="{% if company.user %}{{ company.user.email }}{% endif %}"
                        required>
             </div>
+
         </div>
 
-        <hr class="section-divider">
+    </div>
 
-        <h3>
-            <i class="fa-solid fa-building"></i>
-            Company Information
-        </h3>
+    <div class="edit-company-card">
+
+        <div class="card-header">
+            <span class="section-label">Business Profile</span>
+
+            <h2>
+                <i class="fa-solid fa-building"></i>
+                Company Information
+            </h2>
+        </div>
 
         <div class="form-grid">
+
             <div class="form-group">
                 <label>Company Name</label>
-                <input type="text" name="company_name" value="{{ company.company_name }}" required>
+                <input type="text"
+                       name="company_name"
+                       value="{{ company.company_name }}"
+                       required>
             </div>
 
             <div class="form-group">
                 <label>Contact Name</label>
-                <input type="text" name="contact_name" value="{{ company.contact_name }}" required>
+                <input type="text"
+                       name="contact_name"
+                       value="{{ company.contact_name }}"
+                       required>
             </div>
 
             <div class="form-group">
                 <label>Phone</label>
-                <input type="text" name="phone" value="{{ company.phone }}" required>
+                <input type="text"
+                       name="phone"
+                       value="{{ company.phone }}"
+                       required>
             </div>
 
             <div class="form-group">
                 <label>Website</label>
-                <input type="url" name="website" value="{{ company.website }}">
+                <input type="url"
+                       name="website"
+                       value="{{ company.website }}">
             </div>
 
             <div class="form-group">
                 <label>LinkedIn URL</label>
-                <input type="url" name="linkedin_url" value="{{ company.linkedin_url }}">
+                <input type="url"
+                       name="linkedin_url"
+                       value="{{ company.linkedin_url }}">
             </div>
 
             <div class="form-group">
                 <label>Industry</label>
-                <input type="text" name="industry" value="{{ company.industry }}" required>
+                <input type="text"
+                       name="industry"
+                       value="{{ company.industry }}"
+                       required>
             </div>
 
             <div class="form-group">
                 <label>Country</label>
-                <input type="text" name="country" value="{{ company.country }}" required>
+                <input type="text"
+                       name="country"
+                       value="{{ company.country }}"
+                       required>
             </div>
 
             <div class="form-group">
                 <label>Company Size</label>
-                <input type="text" name="company_size" value="{{ company.company_size }}">
+                <input type="text"
+                       name="company_size"
+                       value="{{ company.company_size }}">
             </div>
 
             <div class="form-group full-width">
                 <label>Notes</label>
                 <textarea name="notes">{{ company.notes }}</textarea>
             </div>
+
         </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-floppy-disk"></i>
-                Update Company
-            </button>
+    </div>
 
-            <a href="{% url 'companies_list' %}" class="secondary-btn">
-                Cancel
-            </a>
-        </div>
-    </form>
-</div>
+    <div class="company-form-actions">
+
+        <button type="submit" class="save-btn">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Update Company
+        </button>
+
+        <a href="{% url 'companies_list' %}" class="cancel-btn">
+            Cancel
+        </a>
+
+    </div>
+
+</form>
 
 {% endblock %}

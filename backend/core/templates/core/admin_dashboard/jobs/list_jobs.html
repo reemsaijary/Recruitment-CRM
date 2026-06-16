@@ -1,22 +1,39 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/jobs/list_jobs.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="jobs-hero">
+
     <div>
+        <span class="jobs-hero-badge">
+            <i class="fa-solid fa-briefcase"></i>
+            Job Management Center
+        </span>
+
         <h1>Jobs Management</h1>
-        <p class="page-subtitle">Review all jobs posted by companies.</p>
+
+        <p>
+            Review all jobs posted by companies, track job status,
+            monitor applications and manage recruitment activity.
+        </p>
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="job-stats-grid">
+
+    <div class="job-stat-card">
+        <div class="job-stat-icon purple">
             <i class="fa-solid fa-briefcase"></i>
         </div>
         <div>
@@ -25,8 +42,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="job-stat-card">
+        <div class="job-stat-icon green">
             <i class="fa-solid fa-circle-check"></i>
         </div>
         <div>
@@ -35,8 +52,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="job-stat-card">
+        <div class="job-stat-icon red">
             <i class="fa-solid fa-circle-xmark"></i>
         </div>
         <div>
@@ -45,8 +62,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="job-stat-card">
+        <div class="job-stat-icon blue">
             <i class="fa-solid fa-file-lines"></i>
         </div>
         <div>
@@ -54,20 +71,25 @@
             <strong>{{ total_applications }}</strong>
         </div>
     </div>
+
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="job-filter-card">
+    <form method="GET" class="job-filter-form">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search job, company, location...">
+        <div class="job-filter-group search-group">
+            <label>Search Jobs</label>
+
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search job, company, location...">
+            </div>
         </div>
 
-        <div class="filter-group">
+        <div class="job-filter-group">
             <label>Company</label>
             <select name="company">
                 <option value="">All Companies</option>
@@ -79,7 +101,7 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <div class="job-filter-group">
             <label>Status</label>
             <select name="status">
                 <option value="">All Status</option>
@@ -88,13 +110,13 @@
             </select>
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="job-filter-actions">
+            <button type="submit" class="job-apply-btn">
+                <i class="fa-solid fa-filter"></i>
                 Apply
             </button>
 
-            <a href="{% url 'jobs_list' %}" class="secondary-btn">
+            <a href="{% url 'jobs_list' %}" class="job-clear-btn">
                 Clear
             </a>
         </div>
@@ -102,58 +124,77 @@
     </form>
 </div>
 
-<div class="card">
+<div class="job-table-card">
+
+    <div class="job-table-header">
+        <div>
+            <span class="section-label">Job Directory</span>
+            <h2>
+                <i class="fa-solid fa-clipboard-list"></i>
+                Posted Jobs
+            </h2>
+        </div>
+    </div>
+
     {% if jobs %}
-        <table>
-            <tr>
-                <th>Job</th>
-                <th>Company</th>
-                <th>Location</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Applications</th>
-                <th>Interviews</th>
-                <th>Actions</th>
-            </tr>
+        <div class="job-table-wrapper">
+            <table>
+                <tr>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Applications</th>
+                    <th>Interviews</th>
+                    <th>Actions</th>
+                </tr>
 
-            {% for job in jobs %}
-            <tr>
-                <td>
-                    <strong>{{ job.job_title }}</strong>
-                    <span style="display:block; color:#64748b; font-size:13px; margin-top:4px;">
-                        Posted {{ job.created_at|date:"M d, Y" }}
-                    </span>
-                </td>
+                {% for job in jobs %}
+                <tr>
+                    <td>
+                        <div class="job-cell">
+                            <div class="job-avatar">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
 
-                <td>{{ job.company.company_name }}</td>
-                <td>{{ job.location }}</td>
-                <td>{{ job.job_type|default:"No type" }}</td>
+                            <div>
+                                <strong>{{ job.job_title }}</strong>
+                                <span>Posted {{ job.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </td>
 
-                <td>
-                    {% if job.status == "Open" %}
-                        <span class="exp-pill exp-high">{{ job.status }}</span>
-                    {% else %}
-                        <span class="exp-pill exp-low">{{ job.status }}</span>
-                    {% endif %}
-                </td>
+                    <td>{{ job.company.company_name }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.job_type|default:"No type" }}</td>
 
-                <td>
-                    <span class="count-pill">{{ job.applications_count }}</span>
-                </td>
+                    <td>
+                        {% if job.status == "Open" %}
+                            <span class="job-status-pill status-open">{{ job.status }}</span>
+                        {% else %}
+                            <span class="job-status-pill status-closed">{{ job.status }}</span>
+                        {% endif %}
+                    </td>
 
-                <td>
-                    <span class="count-pill">{{ job.interviews_count }}</span>
-                </td>
+                    <td>
+                        <span class="count-pill">{{ job.applications_count }}</span>
+                    </td>
 
-                <td>
-                    <a href="{% url 'job_details' job.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i>
-                        View
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                    <td>
+                        <span class="count-pill">{{ job.interviews_count }}</span>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'job_details' job.id %}" class="job-view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
         <div class="pagination">
             {% if jobs.has_previous %}
@@ -170,8 +211,8 @@
         </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
+        <div class="job-empty-state">
+            <div class="job-empty-icon">
                 <i class="fa-solid fa-briefcase"></i>
             </div>
 
@@ -179,6 +220,7 @@
             <p>Try changing the search or filter values.</p>
         </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

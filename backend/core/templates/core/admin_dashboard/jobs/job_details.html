@@ -1,196 +1,267 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/jobs/job_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Job Details</h1>
-        <p class="page-subtitle">Read-only job overview and recruitment activity.</p>
+<div class="job-profile-hero">
+
+    <div class="job-profile-main">
+
+        <div class="job-large-avatar">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div>
+            <span class="hero-badge">
+                <i class="fa-solid fa-clipboard-list"></i>
+                Job Profile
+            </span>
+
+            <h1>{{ job.job_title }}</h1>
+
+            <p>
+                Review job information, company details, applications,
+                interviews and hiring progress.
+            </p>
+
+            <div class="job-profile-tags">
+                <span>
+                    <i class="fa-solid fa-building"></i>
+                    {{ job.company.company_name }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ job.location }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-circle-check"></i>
+                    {{ job.status }}
+                </span>
+            </div>
+        </div>
+
     </div>
 
-    <a href="{% url 'jobs_list' %}" class="secondary-btn">
+    <a href="{% url 'jobs_list' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Jobs
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-file-lines"></i>
-        </div>
-        <div>
-            <span>Applications</span>
-            <strong>{{ applications_count }}</strong>
-        </div>
-    </div>
+<div class="job-overview-grid">
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-calendar-days"></i>
-        </div>
-        <div>
-            <span>Interviews</span>
-            <strong>{{ interviews_count }}</strong>
-        </div>
-    </div>
-
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-star"></i>
-        </div>
-        <div>
-            <span>Shortlisted</span>
-            <strong>{{ shortlisted_count }}</strong>
-        </div>
-    </div>
-
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-user-check"></i>
-        </div>
-        <div>
-            <span>Hired</span>
-            <strong>{{ hired_count }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-briefcase"></i>
-        Job Information
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Job Title</span>
-            <strong>{{ job.job_title }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Status</span>
-            {% if job.status == "Open" %}
-                <strong class="exp-pill exp-high">{{ job.status }}</strong>
-            {% else %}
-                <strong class="exp-pill exp-low">{{ job.status }}</strong>
-            {% endif %}
-        </div>
-
-        <div class="info-box">
-            <span>Location</span>
-            <strong>{{ job.location }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Job Type</span>
-            <strong>{{ job.job_type|default:"No type added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Minimum Salary</span>
-            <strong>{{ job.min_salary|default:"Not added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Maximum Salary</span>
-            <strong>{{ job.max_salary|default:"Not added" }}</strong>
-        </div>
-    </div>
-
-    <div class="description-box">
-        <h3>Description</h3>
-        <p>{{ job.description|default:"No description added." }}</p>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-building"></i>
-        Company Information
-    </h3>
-
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Company</span>
-            <strong>{{ job.company.company_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Contact Person</span>
-            <strong>{{ job.company.contact_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Industry</span>
-            <strong>{{ job.company.industry|default:"No industry added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Country</span>
-            <strong>{{ job.company.country|default:"No country added" }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="card info-section-card">
-    <h3>
+    <div class="overview-card">
         <i class="fa-solid fa-file-lines"></i>
-        Applications
+        <span>Applications</span>
+        <strong>{{ applications_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Interviews</span>
+        <strong>{{ interviews_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-star"></i>
+        <span>Shortlisted</span>
+        <strong>{{ shortlisted_count }}</strong>
+    </div>
+
+    <div class="overview-card">
+        <i class="fa-solid fa-user-check"></i>
+        <span>Hired</span>
+        <strong>{{ hired_count }}</strong>
+    </div>
+
+</div>
+
+<div class="profile-grid">
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
+
+        <div class="details-grid">
+            <div class="info-box">
+                <span>Job Title</span>
+                <strong>{{ job.job_title }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Status</span>
+                {% if job.status == "Open" %}
+                    <strong class="pipeline-badge status-open">{{ job.status }}</strong>
+                {% else %}
+                    <strong class="pipeline-badge status-closed">{{ job.status }}</strong>
+                {% endif %}
+            </div>
+
+            <div class="info-box">
+                <span>Location</span>
+                <strong>{{ job.location }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Job Type</span>
+                <strong>{{ job.job_type|default:"No type added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Minimum Salary</span>
+                <strong>{{ job.min_salary|default:"Not added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Maximum Salary</span>
+                <strong>{{ job.max_salary|default:"Not added" }}</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-building"></i>
+            Company Information
+        </h3>
+
+        <div class="details-grid">
+            <div class="info-box">
+                <span>Company</span>
+                <strong>{{ job.company.company_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Contact Person</span>
+                <strong>{{ job.company.contact_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Industry</span>
+                <strong>{{ job.company.industry|default:"No industry added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Country</span>
+                <strong>{{ job.company.country|default:"No country added" }}</strong>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <h3>
+        <i class="fa-solid fa-align-left"></i>
+        Job Description
     </h3>
+
+    <div class="content-box">
+        {{ job.description|default:"No description added." }}
+    </div>
+
+</div>
+
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Applicant Flow</span>
+            <h3>
+                <i class="fa-solid fa-file-lines"></i>
+                Applications
+            </h3>
+        </div>
+    </div>
 
     {% if applications %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Status</th>
-                <th>Applied Date</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+                </tr>
 
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.candidate.full_name }}</td>
-                <td>
-                    <span class="status-pill">{{ application.status }}</span>
-                </td>
-                <td>{{ application.applied_date }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.candidate.full_name }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ application.status|slugify }}">
+                            {{ application.status }}
+                        </span>
+                    </td>
+                    <td>{{ application.applied_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No applications for this job yet.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-inbox"></i>
+            <p>No applications for this job yet.</p>
+        </div>
     {% endif %}
+
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-calendar-days"></i>
-        Interviews
-    </h3>
+<div class="profile-card">
+
+    <div class="profile-card-header">
+        <div>
+            <span class="section-label">Interview Timeline</span>
+            <h3>
+                <i class="fa-solid fa-calendar-days"></i>
+                Interviews
+            </h3>
+        </div>
+    </div>
 
     {% if interviews %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Status</th>
-            </tr>
+        <div class="profile-table-wrapper">
+            <table>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
 
-            {% for interview in interviews %}
-            <tr>
-                <td>{{ interview.application.candidate.full_name }}</td>
-                <td>{{ interview.interview_date }}</td>
-                <td>{{ interview.interview_type }}</td>
-                <td>
-                    <span class="status-pill">{{ interview.status }}</span>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                {% for interview in interviews %}
+                <tr>
+                    <td>{{ interview.application.candidate.full_name }}</td>
+                    <td>{{ interview.interview_date }}</td>
+                    <td>{{ interview.interview_type }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ interview.status|slugify }}">
+                            {{ interview.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     {% else %}
-        <p>No interviews for this job yet.</p>
+        <div class="profile-empty-state">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <p>No interviews for this job yet.</p>
+        </div>
     {% endif %}
+
 </div>
 
 {% endblock %}

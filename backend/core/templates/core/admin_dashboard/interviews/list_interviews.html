@@ -1,113 +1,194 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/interviews/list_interviews.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="interviews-hero">
+
     <div>
+
+        <span class="interviews-hero-badge">
+            <i class="fa-solid fa-calendar-days"></i>
+            Interview Management Center
+        </span>
+
         <h1>Interviews Overview</h1>
-        <p class="page-subtitle">Review scheduled, completed, and cancelled interviews across companies.</p>
+
+        <p>
+            Review scheduled, completed and cancelled interviews
+            across all companies and recruitment pipelines.
+        </p>
+
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="interview-stats-grid">
+
+    <div class="interview-stat-card">
+
+        <div class="interview-stat-icon purple">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
+
         <div>
             <span>Total Interviews</span>
             <strong>{{ total_interviews }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="interview-stat-card">
+
+        <div class="interview-stat-icon orange">
             <i class="fa-solid fa-clock"></i>
         </div>
+
         <div>
             <span>Scheduled</span>
             <strong>{{ scheduled_interviews }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="interview-stat-card">
+
+        <div class="interview-stat-icon green">
             <i class="fa-solid fa-circle-check"></i>
         </div>
+
         <div>
             <span>Completed</span>
             <strong>{{ completed_interviews }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="interview-stat-card">
+
+        <div class="interview-stat-icon red">
             <i class="fa-solid fa-circle-xmark"></i>
         </div>
+
         <div>
             <span>Cancelled</span>
             <strong>{{ cancelled_interviews }}</strong>
         </div>
+
     </div>
+
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="interview-filter-card">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search candidate, job, company, type...">
+    <form method="GET" class="interview-filter-form">
+
+        <div class="interview-filter-group search-group">
+
+            <label>Search Interviews</label>
+
+            <div class="search-input-wrapper">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search candidate, company, job or interview type...">
+
+            </div>
+
         </div>
 
-        <div class="filter-group">
+        <div class="interview-filter-group">
+
             <label>Status</label>
+
             <select name="status">
+
                 <option value="">All Status</option>
+
                 {% for value, label in status_choices %}
                     <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
                         {{ label }}
                     </option>
                 {% endfor %}
+
             </select>
+
         </div>
 
-        <div class="filter-group">
+        <div class="interview-filter-group">
+
             <label>Company</label>
+
             <select name="company">
+
                 <option value="">All Companies</option>
+
                 {% for company in companies %}
                     <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
                         {{ company.company_name }}
                     </option>
                 {% endfor %}
+
             </select>
+
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="interview-filter-actions">
+
+            <button type="submit" class="interview-apply-btn">
+
+                <i class="fa-solid fa-filter"></i>
                 Apply
+
             </button>
 
-            <a href="{% url 'interviews_list' %}" class="secondary-btn">
+            <a href="{% url 'interviews_list' %}" class="interview-clear-btn">
                 Clear
             </a>
+
         </div>
 
     </form>
+
 </div>
 
-<div class="card">
+<div class="interview-table-card">
+
+    <div class="interview-table-header">
+
+        <div>
+
+            <span class="section-label">
+                Interview Directory
+            </span>
+
+            <h2>
+                <i class="fa-solid fa-calendar-days"></i>
+                Interviews
+            </h2>
+
+        </div>
+
+    </div>
+
     {% if interviews %}
+
+    <div class="interview-table-wrapper">
+
         <table>
+
             <tr>
                 <th>Candidate</th>
                 <th>Job</th>
@@ -120,69 +201,115 @@
 
             {% for interview in interviews %}
             <tr>
+
                 <td>
+
                     <div class="candidate-cell">
+
                         <div class="candidate-avatar">
                             {{ interview.application.candidate.full_name|slice:":1" }}
                         </div>
+
                         <div>
                             <strong>{{ interview.application.candidate.full_name }}</strong>
                             <span>{{ interview.application.candidate.phone|default:"No phone" }}</span>
                         </div>
+
                     </div>
+
                 </td>
 
                 <td>{{ interview.application.job.job_title }}</td>
+
                 <td>{{ interview.application.job.company.company_name }}</td>
+
                 <td>{{ interview.interview_date|date:"M d, Y, h:i A" }}</td>
+
                 <td>{{ interview.interview_type }}</td>
 
                 <td>
+
                     {% if interview.status == "Scheduled" %}
-                        <span class="pipeline-badge status-interview-scheduled">{{ interview.status }}</span>
+                        <span class="pipeline-badge status-interview-scheduled">
+                            {{ interview.status }}
+                        </span>
+
                     {% elif interview.status == "Completed" %}
-                        <span class="pipeline-badge status-hired">{{ interview.status }}</span>
+                        <span class="pipeline-badge status-completed">
+                            {{ interview.status }}
+                        </span>
+
                     {% elif interview.status == "Cancelled" %}
-                        <span class="pipeline-badge status-rejected">{{ interview.status }}</span>
-                    {% else %}
-                        <span class="status-pill">{{ interview.status }}</span>
+                        <span class="pipeline-badge status-cancelled">
+                            {{ interview.status }}
+                        </span>
+
                     {% endif %}
+
                 </td>
 
                 <td>
-                    <a href="{% url 'interview_details' interview.id %}" class="small-btn view-btn">
+
+                    <a href="{% url 'interview_details' interview.id %}"
+                       class="interview-view-btn">
+
                         <i class="fa-solid fa-eye"></i>
                         View
+
                     </a>
+
                 </td>
+
             </tr>
+
             {% endfor %}
+
         </table>
 
-        <div class="pagination">
-            {% if interviews.has_previous %}
-                <a href="?page=1&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">First</a>
-                <a href="?page={{ interviews.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Previous</a>
-            {% endif %}
+    </div>
 
-            <span>Page {{ interviews.number }} of {{ interviews.paginator.num_pages }}</span>
+    <div class="pagination">
 
-            {% if interviews.has_next %}
-                <a href="?page={{ interviews.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Next</a>
-                <a href="?page={{ interviews.paginator.num_pages }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Last</a>
-            {% endif %}
-        </div>
+        {% if interviews.has_previous %}
+            <a href="?page=1&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">First</a>
+
+            <a href="?page={{ interviews.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Previous
+            </a>
+        {% endif %}
+
+        <span>
+            Page {{ interviews.number }} of {{ interviews.paginator.num_pages }}
+        </span>
+
+        {% if interviews.has_next %}
+            <a href="?page={{ interviews.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Next
+            </a>
+
+            <a href="?page={{ interviews.paginator.num_pages }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Last
+            </a>
+        {% endif %}
+
+    </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fa-solid fa-calendar-days"></i>
-            </div>
 
-            <h2>No interviews found</h2>
-            <p>Try changing the search or filter values.</p>
+    <div class="interview-empty-state">
+
+        <div class="interview-empty-icon">
+            <i class="fa-solid fa-calendar-days"></i>
         </div>
+
+        <h2>No interviews found</h2>
+
+        <p>Try changing the search or filter values.</p>
+
+    </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

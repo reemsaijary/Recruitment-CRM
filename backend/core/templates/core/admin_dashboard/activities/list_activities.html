@@ -1,113 +1,194 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/activities/list_activities.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="activities-hero">
+
     <div>
+
+        <span class="activities-hero-badge">
+            <i class="fa-solid fa-list-check"></i>
+            Activity Management Center
+        </span>
+
         <h1>Activities Overview</h1>
-        <p class="page-subtitle">Review system and company follow-up activities across applications.</p>
+
+        <p>
+            Review recruitment tasks, follow-ups,
+            deadlines and workflow activities across all applications.
+        </p>
+
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="activity-stats-grid">
+
+    <div class="activity-stat-card">
+
+        <div class="activity-stat-icon purple">
             <i class="fa-solid fa-list-check"></i>
         </div>
+
         <div>
             <span>Total Activities</span>
             <strong>{{ total_activities }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="activity-stat-card">
+
+        <div class="activity-stat-icon orange">
             <i class="fa-solid fa-clock"></i>
         </div>
+
         <div>
             <span>Pending</span>
             <strong>{{ pending_count }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="activity-stat-card">
+
+        <div class="activity-stat-icon green">
             <i class="fa-solid fa-circle-check"></i>
         </div>
+
         <div>
             <span>Completed</span>
             <strong>{{ completed_count }}</strong>
         </div>
+
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="activity-stat-card">
+
+        <div class="activity-stat-icon red">
             <i class="fa-solid fa-circle-xmark"></i>
         </div>
+
         <div>
             <span>Cancelled</span>
             <strong>{{ cancelled_count }}</strong>
         </div>
+
     </div>
+
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="activity-filter-card">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search candidate, job, company, activity...">
+    <form method="GET" class="activity-filter-form">
+
+        <div class="activity-filter-group search-group">
+
+            <label>Search Activities</label>
+
+            <div class="search-input-wrapper">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search candidate, company, job or activity...">
+
+            </div>
+
         </div>
 
-        <div class="filter-group">
+        <div class="activity-filter-group">
+
             <label>Status</label>
+
             <select name="status">
+
                 <option value="">All Status</option>
+
                 {% for value, label in status_choices %}
                     <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
                         {{ label }}
                     </option>
                 {% endfor %}
+
             </select>
+
         </div>
 
-        <div class="filter-group">
+        <div class="activity-filter-group">
+
             <label>Company</label>
+
             <select name="company">
+
                 <option value="">All Companies</option>
+
                 {% for company in companies %}
                     <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
                         {{ company.company_name }}
                     </option>
                 {% endfor %}
+
             </select>
+
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="activity-filter-actions">
+
+            <button type="submit" class="activity-apply-btn">
+
+                <i class="fa-solid fa-filter"></i>
                 Apply
+
             </button>
 
-            <a href="{% url 'activities_list' %}" class="secondary-btn">
+            <a href="{% url 'activities_list' %}" class="activity-clear-btn">
                 Clear
             </a>
+
         </div>
 
     </form>
+
 </div>
 
-<div class="card">
+<div class="activity-table-card">
+
+    <div class="activity-table-header">
+
+        <div>
+
+            <span class="section-label">
+                Activity Directory
+            </span>
+
+            <h2>
+                <i class="fa-solid fa-list-check"></i>
+                Recruitment Activities
+            </h2>
+
+        </div>
+
+    </div>
+
     {% if activities %}
+
+    <div class="activity-table-wrapper">
+
         <table>
+
             <tr>
                 <th>Candidate</th>
                 <th>Job</th>
@@ -120,69 +201,117 @@
 
             {% for activity in activities %}
             <tr>
+
                 <td>
+
                     <div class="candidate-cell">
+
                         <div class="candidate-avatar">
                             {{ activity.application.candidate.full_name|slice:":1" }}
                         </div>
+
                         <div>
                             <strong>{{ activity.application.candidate.full_name }}</strong>
                             <span>{{ activity.application.candidate.phone|default:"No phone" }}</span>
                         </div>
+
                     </div>
+
                 </td>
 
                 <td>{{ activity.application.job.job_title }}</td>
+
                 <td>{{ activity.application.job.company.company_name }}</td>
+
                 <td>{{ activity.activity_type }}</td>
+
                 <td>{{ activity.due_date|date:"M d, Y, h:i A" }}</td>
 
                 <td>
+
                     {% if activity.status == "Pending" %}
-                        <span class="pipeline-badge status-interview-scheduled">{{ activity.status }}</span>
+                        <span class="pipeline-badge status-pending">
+                            {{ activity.status }}
+                        </span>
+
                     {% elif activity.status == "Completed" %}
-                        <span class="pipeline-badge status-hired">{{ activity.status }}</span>
+                        <span class="pipeline-badge status-completed">
+                            {{ activity.status }}
+                        </span>
+
                     {% elif activity.status == "Cancelled" %}
-                        <span class="pipeline-badge status-rejected">{{ activity.status }}</span>
-                    {% else %}
-                        <span class="status-pill">{{ activity.status }}</span>
+                        <span class="pipeline-badge status-cancelled">
+                            {{ activity.status }}
+                        </span>
+
                     {% endif %}
+
                 </td>
 
                 <td>
-                    <a href="{% url 'activity_details' activity.id %}" class="small-btn view-btn">
+
+                    <a href="{% url 'activity_details' activity.id %}"
+                       class="activity-view-btn">
+
                         <i class="fa-solid fa-eye"></i>
                         View
+
                     </a>
+
                 </td>
+
             </tr>
+
             {% endfor %}
+
         </table>
 
-        <div class="pagination">
-            {% if activities.has_previous %}
-                <a href="?page=1&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">First</a>
-                <a href="?page={{ activities.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Previous</a>
-            {% endif %}
+    </div>
 
-            <span>Page {{ activities.number }} of {{ activities.paginator.num_pages }}</span>
+    <div class="pagination">
 
-            {% if activities.has_next %}
-                <a href="?page={{ activities.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Next</a>
-                <a href="?page={{ activities.paginator.num_pages }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">Last</a>
-            {% endif %}
-        </div>
+        {% if activities.has_previous %}
+            <a href="?page=1&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                First
+            </a>
+
+            <a href="?page={{ activities.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Previous
+            </a>
+        {% endif %}
+
+        <span>
+            Page {{ activities.number }} of {{ activities.paginator.num_pages }}
+        </span>
+
+        {% if activities.has_next %}
+            <a href="?page={{ activities.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Next
+            </a>
+
+            <a href="?page={{ activities.paginator.num_pages }}&search={{ search_query }}&status={{ status_filter }}&company={{ company_filter }}">
+                Last
+            </a>
+        {% endif %}
+
+    </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fa-solid fa-list-check"></i>
-            </div>
 
-            <h2>No activities found</h2>
-            <p>Try changing the search or filter values.</p>
+    <div class="activity-empty-state">
+
+        <div class="activity-empty-icon">
+            <i class="fa-solid fa-list-check"></i>
         </div>
+
+        <h2>No activities found</h2>
+
+        <p>Try changing the search or filter values.</p>
+
+    </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

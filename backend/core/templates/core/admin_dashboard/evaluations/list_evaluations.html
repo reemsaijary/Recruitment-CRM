@@ -1,22 +1,39 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/evaluations/list_evaluations.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="evaluations-hero">
+
     <div>
+        <span class="evaluations-hero-badge">
+            <i class="fa-solid fa-star"></i>
+            Evaluation Management Center
+        </span>
+
         <h1>Evaluations Overview</h1>
-        <p class="page-subtitle">Review candidate evaluations submitted for applications.</p>
+
+        <p>
+            Review candidate evaluations, scores, recommendations,
+            company feedback and hiring decisions.
+        </p>
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="evaluation-stats-grid">
+
+    <div class="evaluation-stat-card">
+        <div class="evaluation-stat-icon purple">
             <i class="fa-solid fa-star"></i>
         </div>
         <div>
@@ -25,8 +42,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="evaluation-stat-card">
+        <div class="evaluation-stat-icon green">
             <i class="fa-solid fa-user-check"></i>
         </div>
         <div>
@@ -35,8 +52,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="evaluation-stat-card">
+        <div class="evaluation-stat-icon orange">
             <i class="fa-solid fa-circle-question"></i>
         </div>
         <div>
@@ -45,8 +62,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="evaluation-stat-card">
+        <div class="evaluation-stat-icon red">
             <i class="fa-solid fa-user-xmark"></i>
         </div>
         <div>
@@ -54,23 +71,32 @@
             <strong>{{ reject_count }}</strong>
         </div>
     </div>
+
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="evaluation-filter-card">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search candidate, job, company, feedback...">
+    <form method="GET" class="evaluation-filter-form">
+
+        <div class="evaluation-filter-group search-group">
+            <label>Search Evaluations</label>
+
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search candidate, job, company or feedback...">
+            </div>
         </div>
 
-        <div class="filter-group">
+        <div class="evaluation-filter-group">
             <label>Recommendation</label>
+
             <select name="recommendation">
                 <option value="">All Recommendations</option>
+
                 {% for value, label in recommendation_choices %}
                     <option value="{{ value }}" {% if recommendation_filter == value %}selected{% endif %}>
                         {{ label }}
@@ -79,10 +105,12 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <div class="evaluation-filter-group">
             <label>Company</label>
+
             <select name="company">
                 <option value="">All Companies</option>
+
                 {% for company in companies %}
                     <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
                         {{ company.company_name }}
@@ -91,73 +119,91 @@
             </select>
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="evaluation-filter-actions">
+            <button type="submit" class="evaluation-apply-btn">
+                <i class="fa-solid fa-filter"></i>
                 Apply
             </button>
 
-            <a href="{% url 'evaluations_list' %}" class="secondary-btn">
+            <a href="{% url 'evaluations_list' %}" class="evaluation-clear-btn">
                 Clear
             </a>
         </div>
 
     </form>
+
 </div>
 
-<div class="card">
+<div class="evaluation-table-card">
+
+    <div class="evaluation-table-header">
+        <div>
+            <span class="section-label">Evaluation Directory</span>
+
+            <h2>
+                <i class="fa-solid fa-star"></i>
+                Candidate Evaluations
+            </h2>
+        </div>
+    </div>
+
     {% if evaluations %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Job</th>
-                <th>Company</th>
-                <th>Score</th>
-                <th>Recommendation</th>
-                <th>Actions</th>
-            </tr>
 
-            {% for evaluation in evaluations %}
-            <tr>
-                <td>
-                    <div class="candidate-cell">
-                        <div class="candidate-avatar">
-                            {{ evaluation.application.candidate.full_name|slice:":1" }}
+        <div class="evaluation-table-wrapper">
+
+            <table>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Score</th>
+                    <th>Recommendation</th>
+                    <th>Actions</th>
+                </tr>
+
+                {% for evaluation in evaluations %}
+                <tr>
+                    <td>
+                        <div class="candidate-cell">
+                            <div class="candidate-avatar">
+                                {{ evaluation.application.candidate.full_name|slice:":1" }}
+                            </div>
+
+                            <div>
+                                <strong>{{ evaluation.application.candidate.full_name }}</strong>
+                                <span>{{ evaluation.application.candidate.phone|default:"No phone" }}</span>
+                            </div>
                         </div>
+                    </td>
 
-                        <div>
-                            <strong>{{ evaluation.application.candidate.full_name }}</strong>
-                            <span>{{ evaluation.application.candidate.phone|default:"No phone" }}</span>
-                        </div>
-                    </div>
-                </td>
+                    <td>{{ evaluation.application.job.job_title }}</td>
+                    <td>{{ evaluation.application.job.company.company_name }}</td>
 
-                <td>{{ evaluation.application.job.job_title }}</td>
-                <td>{{ evaluation.application.job.company.company_name }}</td>
+                    <td>
+                        <span class="score-pill">{{ evaluation.score }}</span>
+                    </td>
 
-                <td>
-                    <span class="count-pill">{{ evaluation.score }}</span>
-                </td>
+                    <td>
+                        {% if evaluation.recommendation == "Hire" %}
+                            <span class="pipeline-badge status-hired">{{ evaluation.recommendation }}</span>
+                        {% elif evaluation.recommendation == "Reject" %}
+                            <span class="pipeline-badge status-rejected">{{ evaluation.recommendation }}</span>
+                        {% else %}
+                            <span class="pipeline-badge status-evaluated">{{ evaluation.recommendation }}</span>
+                        {% endif %}
+                    </td>
 
-                <td>
-                    {% if evaluation.recommendation == "Hire" %}
-                        <span class="pipeline-badge status-hired">{{ evaluation.recommendation }}</span>
-                    {% elif evaluation.recommendation == "Reject" %}
-                        <span class="pipeline-badge status-rejected">{{ evaluation.recommendation }}</span>
-                    {% else %}
-                        <span class="pipeline-badge status-evaluated">{{ evaluation.recommendation }}</span>
-                    {% endif %}
-                </td>
+                    <td>
+                        <a href="{% url 'evaluation_details' evaluation.id %}" class="evaluation-view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
 
-                <td>
-                    <a href="{% url 'evaluation_details' evaluation.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i>
-                        View
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+        </div>
 
         <div class="pagination">
             {% if evaluations.has_previous %}
@@ -174,15 +220,18 @@
         </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
+
+        <div class="evaluation-empty-state">
+            <div class="evaluation-empty-icon">
                 <i class="fa-solid fa-star"></i>
             </div>
 
             <h2>No evaluations found</h2>
             <p>Try changing the search or filter values.</p>
         </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

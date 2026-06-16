@@ -1,68 +1,101 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/evaluations/evaluation_details.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <div>
-        <h1>Evaluation Details</h1>
-        <p class="page-subtitle">Read-only evaluation overview for admin monitoring.</p>
+<div class="evaluation-profile-hero">
+
+    <div class="evaluation-profile-main">
+
+        <div class="evaluation-large-avatar">
+            {{ evaluation.application.candidate.full_name|first }}
+        </div>
+
+        <div>
+
+            <span class="hero-badge">
+                <i class="fa-solid fa-star"></i>
+                Evaluation Profile
+            </span>
+
+            <h1>{{ evaluation.application.candidate.full_name }}</h1>
+
+            <p>
+                Review candidate evaluation, recommendation,
+                feedback, application progress and hiring decision.
+            </p>
+
+            <div class="evaluation-profile-tags">
+
+                <span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    {{ evaluation.application.job.job_title }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-building"></i>
+                    {{ evaluation.application.job.company.company_name }}
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-star"></i>
+                    Score: {{ evaluation.score }}
+                </span>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <a href="{% url 'evaluations_list' %}" class="secondary-btn">
+    <a href="{% url 'evaluations_list' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Evaluations
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-user"></i>
-        </div>
-        <div>
-            <span>Candidate</span>
-            <strong>{{ evaluation.application.candidate.full_name }}</strong>
-        </div>
+<div class="evaluation-overview-grid">
+
+    <div class="overview-card">
+        <i class="fa-solid fa-user"></i>
+        <span>Candidate</span>
+        <strong>{{ evaluation.application.candidate.full_name }}</strong>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-briefcase"></i>
-        </div>
-        <div>
-            <span>Job</span>
-            <strong>{{ evaluation.application.job.job_title }}</strong>
-        </div>
+    <div class="overview-card">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>Job</span>
+        <strong>{{ evaluation.application.job.job_title }}</strong>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-building"></i>
-        </div>
-        <div>
-            <span>Company</span>
-            <strong>{{ evaluation.application.job.company.company_name }}</strong>
-        </div>
+    <div class="overview-card">
+        <i class="fa-solid fa-building"></i>
+        <span>Company</span>
+        <strong>{{ evaluation.application.job.company.company_name }}</strong>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
-            <i class="fa-solid fa-star"></i>
-        </div>
-        <div>
-            <span>Score</span>
-            <strong>{{ evaluation.score }}</strong>
-        </div>
+    <div class="overview-card">
+        <i class="fa-solid fa-star"></i>
+        <span>Score</span>
+        <strong>{{ evaluation.score }}</strong>
     </div>
+
 </div>
 
-<div class="card info-section-card">
+<div class="profile-card">
+
     <h3>
         <i class="fa-solid fa-star"></i>
         Evaluation Information
     </h3>
 
     <div class="details-grid">
+
         <div class="info-box">
             <span>Score</span>
             <strong>{{ evaluation.score }}</strong>
@@ -70,94 +103,128 @@
 
         <div class="info-box">
             <span>Recommendation</span>
+
             <strong>
                 {% if evaluation.recommendation == "Hire" %}
-                    <span class="pipeline-badge status-hired">{{ evaluation.recommendation }}</span>
+                    <span class="pipeline-badge status-hired">
+                        {{ evaluation.recommendation }}
+                    </span>
+
                 {% elif evaluation.recommendation == "Reject" %}
-                    <span class="pipeline-badge status-rejected">{{ evaluation.recommendation }}</span>
+                    <span class="pipeline-badge status-rejected">
+                        {{ evaluation.recommendation }}
+                    </span>
+
                 {% else %}
-                    <span class="pipeline-badge status-evaluated">{{ evaluation.recommendation }}</span>
+                    <span class="pipeline-badge status-evaluated">
+                        {{ evaluation.recommendation }}
+                    </span>
                 {% endif %}
             </strong>
+
         </div>
 
         <div class="info-box">
             <span>Application Status</span>
+
             <strong>
                 <span class="pipeline-badge status-{{ evaluation.application.status|slugify }}">
                     {{ evaluation.application.status }}
                 </span>
             </strong>
+
         </div>
 
         <div class="info-box">
             <span>Applied Date</span>
             <strong>{{ evaluation.application.applied_date }}</strong>
         </div>
+
     </div>
 
-    <div class="description-box">
-        <h3>Feedback</h3>
-        <p>{{ evaluation.feedback|default:"No feedback added." }}</p>
-    </div>
 </div>
 
-<div class="card info-section-card">
+<div class="profile-card">
+
     <h3>
-        <i class="fa-solid fa-user"></i>
-        Candidate Information
+        <i class="fa-solid fa-comment-dots"></i>
+        Evaluation Feedback
     </h3>
 
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Full Name</span>
-            <strong>{{ evaluation.application.candidate.full_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Phone</span>
-            <strong>{{ evaluation.application.candidate.phone|default:"No phone added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Location</span>
-            <strong>{{ evaluation.application.candidate.location|default:"No location added" }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Experience</span>
-            <strong>{{ evaluation.application.candidate.experience_years }} Years</strong>
-        </div>
+    <div class="content-box">
+        {{ evaluation.feedback|default:"No feedback added." }}
     </div>
+
 </div>
 
-<div class="card info-section-card">
-    <h3>
-        <i class="fa-solid fa-briefcase"></i>
-        Job Information
-    </h3>
+<div class="profile-grid">
 
-    <div class="details-grid">
-        <div class="info-box">
-            <span>Job Title</span>
-            <strong>{{ evaluation.application.job.job_title }}</strong>
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-user"></i>
+            Candidate Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="info-box">
+                <span>Full Name</span>
+                <strong>{{ evaluation.application.candidate.full_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Phone</span>
+                <strong>{{ evaluation.application.candidate.phone|default:"No phone added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Location</span>
+                <strong>{{ evaluation.application.candidate.location|default:"No location added" }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Experience</span>
+                <strong>{{ evaluation.application.candidate.experience_years }} Years</strong>
+            </div>
+
         </div>
 
-        <div class="info-box">
-            <span>Company</span>
-            <strong>{{ evaluation.application.job.company.company_name }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Location</span>
-            <strong>{{ evaluation.application.job.location }}</strong>
-        </div>
-
-        <div class="info-box">
-            <span>Job Type</span>
-            <strong>{{ evaluation.application.job.job_type|default:"No type added" }}</strong>
-        </div>
     </div>
+
+    <div class="profile-card">
+
+        <h3>
+            <i class="fa-solid fa-briefcase"></i>
+            Job Information
+        </h3>
+
+        <div class="details-grid">
+
+            <div class="info-box">
+                <span>Job Title</span>
+                <strong>{{ evaluation.application.job.job_title }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Company</span>
+                <strong>{{ evaluation.application.job.company.company_name }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Location</span>
+                <strong>{{ evaluation.application.job.location }}</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Job Type</span>
+                <strong>{{ evaluation.application.job.job_type|default:"No type added" }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 {% endblock %}

@@ -1,32 +1,49 @@
 {% extends 'core/admin_dashboard/base_admin.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/admin/applications/list_applications.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="applications-hero">
+
     <div>
+        <span class="applications-hero-badge">
+            <i class="fa-solid fa-file-lines"></i>
+            Application Management Center
+        </span>
+
         <h1>Applications Overview</h1>
-        <p class="page-subtitle">Review all candidate applications across companies.</p>
+
+        <p>
+            Review candidate applications, recruitment progress,
+            hiring pipelines and company activity.
+        </p>
     </div>
 
-    <a href="{% url 'dashboard' %}" class="secondary-btn">
+    <a href="{% url 'dashboard' %}" class="hero-back-btn">
         <i class="fa-solid fa-arrow-left"></i>
         Back
     </a>
+
 </div>
 
-<div class="admin-stats-grid">
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+<div class="application-stats-grid">
+
+    <div class="application-stat-card">
+        <div class="application-stat-icon purple">
             <i class="fa-solid fa-file-lines"></i>
         </div>
         <div>
-            <span>Total</span>
+            <span>Total Applications</span>
             <strong>{{ total_applications }}</strong>
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="application-stat-card">
+        <div class="application-stat-icon blue">
             <i class="fa-solid fa-paper-plane"></i>
         </div>
         <div>
@@ -35,8 +52,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="application-stat-card">
+        <div class="application-stat-icon orange">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <div>
@@ -45,8 +62,8 @@
         </div>
     </div>
 
-    <div class="mini-stat-card">
-        <div class="mini-stat-icon">
+    <div class="application-stat-card">
+        <div class="application-stat-icon green">
             <i class="fa-solid fa-calendar-days"></i>
         </div>
         <div>
@@ -54,23 +71,32 @@
             <strong>{{ interview_count }}</strong>
         </div>
     </div>
+
 </div>
 
-<div class="card filter-card">
-    <form method="GET" class="filter-form">
+<div class="application-filter-card">
 
-        <div class="filter-group">
-            <label>Search</label>
-            <input type="text"
-                   name="search"
-                   value="{{ search_query }}"
-                   placeholder="Search candidate, job, company...">
+    <form method="GET" class="application-filter-form">
+
+        <div class="application-filter-group search-group">
+            <label>Search Applications</label>
+
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input type="text"
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search candidate, company or job...">
+            </div>
         </div>
 
-        <div class="filter-group">
+        <div class="application-filter-group">
             <label>Status</label>
+
             <select name="status">
                 <option value="">All Status</option>
+
                 {% for value, label in status_choices %}
                     <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
                         {{ label }}
@@ -79,10 +105,12 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <div class="application-filter-group">
             <label>Company</label>
+
             <select name="company">
                 <option value="">All Companies</option>
+
                 {% for company in companies %}
                     <option value="{{ company.id }}" {% if company_filter == company.id|stringformat:"s" %}selected{% endif %}>
                         {{ company.company_name }}
@@ -91,68 +119,99 @@
             </select>
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="application-filter-actions">
+
+            <button type="submit" class="application-apply-btn">
+                <i class="fa-solid fa-filter"></i>
                 Apply
             </button>
 
-            <a href="{% url 'applications_list' %}" class="secondary-btn">
+            <a href="{% url 'applications_list' %}" class="application-clear-btn">
                 Clear
             </a>
+
         </div>
 
     </form>
+
 </div>
 
-<div class="card">
+<div class="application-table-card">
+
+    <div class="application-table-header">
+        <div>
+            <span class="section-label">
+                Recruitment Pipeline
+            </span>
+
+            <h2>
+                <i class="fa-solid fa-file-lines"></i>
+                Applications Directory
+            </h2>
+        </div>
+    </div>
+
     {% if applications %}
-        <table>
-            <tr>
-                <th>Candidate</th>
-                <th>Job</th>
-                <th>Company</th>
-                <th>Status</th>
-                <th>Applied</th>
-                <th>Updated</th>
-                <th>Actions</th>
-            </tr>
 
-            {% for application in applications %}
-            <tr>
-                <td>
-                    <div class="candidate-cell">
-                        <div class="candidate-avatar">
-                            {{ application.candidate.full_name|slice:":1" }}
+        <div class="application-table-wrapper">
+
+            <table>
+
+                <tr>
+                    <th>Candidate</th>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+
+                {% for application in applications %}
+                <tr>
+
+                    <td>
+                        <div class="candidate-cell">
+
+                            <div class="candidate-avatar">
+                                {{ application.candidate.full_name|slice:":1" }}
+                            </div>
+
+                            <div>
+                                <strong>{{ application.candidate.full_name }}</strong>
+                                <span>{{ application.candidate.phone|default:"No phone" }}</span>
+                            </div>
+
                         </div>
-                        <div>
-                            <strong>{{ application.candidate.full_name }}</strong>
-                            <span>{{ application.candidate.phone|default:"No phone" }}</span>
-                        </div>
-                    </div>
-                </td>
+                    </td>
 
-                <td>{{ application.job.job_title }}</td>
-                <td>{{ application.job.company.company_name }}</td>
+                    <td>{{ application.job.job_title }}</td>
 
-                <td>
-                    <span class="pipeline-badge status-{{ application.status|slugify }}">
-                        {{ application.status }}
-                    </span>
-                </td>
+                    <td>{{ application.job.company.company_name }}</td>
 
-                <td>{{ application.applied_date }}</td>
-                <td>{{ application.updated_at|date:"M d, Y" }}</td>
+                    <td>
+                        <span class="pipeline-badge status-{{ application.status|slugify }}">
+                            {{ application.status }}
+                        </span>
+                    </td>
 
-                <td>
-                    <a href="{% url 'application_details' application.id %}" class="small-btn view-btn">
-                        <i class="fa-solid fa-eye"></i>
-                        View
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                    <td>{{ application.applied_date }}</td>
+
+                    <td>{{ application.updated_at|date:"M d, Y" }}</td>
+
+                    <td>
+                        <a href="{% url 'application_details' application.id %}" class="application-view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </table>
+
+        </div>
 
         <div class="pagination">
             {% if applications.has_previous %}
@@ -169,15 +228,21 @@
         </div>
 
     {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
+
+        <div class="application-empty-state">
+
+            <div class="application-empty-icon">
                 <i class="fa-solid fa-file-lines"></i>
             </div>
 
             <h2>No applications found</h2>
+
             <p>Try changing the search or filter values.</p>
+
         </div>
+
     {% endif %}
+
 </div>
 
 {% endblock %}

@@ -1,22 +1,86 @@
 # Recruitment CRM Database Design
 
 ## Overview
-The database is designed for a recruitment CRM/ATS system. It manages companies, candidates, jobs, applications, interviews, evaluations, and follow-up activities.
 
-## Main Relationship
-Company → Job → Application ← Candidate
+The Recruitment CRM database is designed to support a multi-role recruitment management platform.
 
-Application is the main table that connects candidates to jobs and tracks the hiring pipeline status.
+The system supports:
 
-## Tables
+- Administrators
+- Companies
+- Candidates
 
-### Company
-Stores company/client information.
+and manages the complete recruitment lifecycle.
 
-Fields:
+---
+
+## Main Relationships
+
+Company
+→ Job
+→ Application
+← Candidate
+
+Application
+→ Interview
+
+Application
+→ Evaluation
+
+Application
+→ Activity
+
+User
+→ Profile
+
+---
+
+# User
+
+Django authentication user.
+
+## Purpose
+
+Stores login credentials.
+
+### Key Fields
+
+- username
+- email
+- password
+
+---
+
+# Profile
+
+Extends the User model.
+
+## Purpose
+
+Stores platform role information.
+
+### Fields
+
+- user
+- role
+
+### Roles
+
+- Admin
+- Company
+- Candidate
+
+---
+
+# Company
+
+Stores company information.
+
+### Fields
+
+- user
 - company_name
 - contact_name
-- email
 - phone
 - website
 - linkedin_url
@@ -26,71 +90,124 @@ Fields:
 - notes
 - created_at
 
-### Candidate
+---
+
+# Candidate
+
 Stores candidate information.
 
-Fields:
+### Fields
+
+- user
 - full_name
-- email
 - phone
 - linkedin_url
 - skills
 - experience_years
 - current_position
+- location
 - source
 - notes
+- cv
 - created_at
 
-### Job
-Stores job openings posted by companies.
+---
 
-Fields:
+# Job
+
+Stores job openings.
+
+### Fields
+
 - company
 - job_title
-- location
-- required_skills
-- status
 - job_type
-- salary_range
+- location
+- status
+- min_salary
+- max_salary
 - description
 - created_at
 
-### Application
-Connects a candidate with a job and tracks pipeline progress.
+---
 
-Fields:
+# Application
+
+Connects candidates with jobs.
+
+### Statuses
+
+- Applied
+- Screening
+- Shortlisted
+- Interview Scheduled
+- Interview Done
+- Evaluated
+- Offer Sent
+- Hired
+- Rejected
+
+### Fields
+
 - candidate
 - job
 - status
-- applied_date
 - notes
+- applied_date
 - updated_at
 
-### Interview
-Stores interview scheduling information.
+---
 
-Fields:
+# Interview
+
+Stores interview information.
+
+### Fields
+
 - application
 - interview_date
 - interview_type
 - status
 - notes
 
-### Evaluation
-Stores candidate evaluation and recruiter feedback.
+---
 
-Fields:
+# Evaluation
+
+Stores evaluation data.
+
+### Fields
+
 - application
 - score
 - recommendation
 - feedback
 
-### Activity
-Stores follow-up tasks and reminders.
+---
 
-Fields:
+# Activity
+
+Stores follow-up tasks.
+
+### Fields
+
 - application
 - activity_type
 - due_date
 - status
 - notes
+
+---
+
+# Notification
+
+Stores system notifications.
+
+### Fields
+
+- user
+- title
+- message
+- notification_type
+- is_read
+- created_at
